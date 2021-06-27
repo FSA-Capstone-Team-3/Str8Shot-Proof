@@ -1,14 +1,10 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { logout } from '../store';
+import { handleLogout } from '../store';
 
 const Navbar = () => {
   const dispatch = useDispatch();
-
-  const handleClick = () => {
-    dispatch(logout());
-  };
 
   const isLoggedIn = useSelector((state) => !!state.auth.id);
 
@@ -20,7 +16,7 @@ const Navbar = () => {
           <div>
             {/* The navbar will show these links after you log in */}
             <Link to="/home">Home</Link>
-            <a href="#" onClick={handleClick}>
+            <a href="#" onClick={() => dispatch(handleLogout())}>
               Logout
             </a>
           </div>
