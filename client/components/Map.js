@@ -4,9 +4,10 @@ import stations from '../../script/data/stations.json';
 
 function Map() {
   const filteredStations = stations.filter(
-    (station) => station['Complex ID'] === 610 || station['Complex ID'] === 611
+    (station) => (station['Complex ID'] === 610 || station['Complex ID'] === 611) && station["Daytime Routes"] === "S"
   );
 
+  console.log(filteredStations);
   return (
     <MapContainer center={[40.7, -74]} zoom={8} scrollWheelZoom={true}>
       <TileLayer
@@ -24,7 +25,7 @@ function Map() {
             {' '}
             <div>
               <p>{station['Stop Name']}</p>
-              <p>{station.Line}</p>
+              <p> Line: {station["Daytime Routes"]} ({station.Line})</p>
             </div>
           </Popup>
         </Marker>
