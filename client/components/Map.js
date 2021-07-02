@@ -1,11 +1,13 @@
 import React from 'react';
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, Polyline } from 'react-leaflet';
 import stations from '../../script/data/stations.json';
 
 function Map() {
   const filteredStations = stations.filter(
     (station) => (station['Complex ID'] === 610 || station['Complex ID'] === 611) && station["Daytime Routes"] === "S"
   );
+
+  const filteredLatLong = filteredStations.map(station => [station['GTFS Latitude'], station['GTFS Longitude']])
 
   console.log(filteredStations);
   return (
@@ -30,6 +32,7 @@ function Map() {
           </Popup>
         </Marker>
       ))}
+      <Polyline pathOptions={{color: "#808183", weight: 8}} positions={filteredLatLong} />
     </MapContainer>
   );
 }
