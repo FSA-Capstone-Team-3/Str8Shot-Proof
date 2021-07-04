@@ -30,7 +30,6 @@ function Map() {
   //   'Stop Name': 'No station selected',
   // });
 
-  console.log(filteredStations);
   return (
     <>
       <p>Your selected station: {selectedStation['Stop Name']}</p>

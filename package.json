@@ -45,6 +45,7 @@
     "chai": "^4.2.0",
     "enzyme": "^3.9.0",
     "esm": "^3.2.25",
+    "json-loader": "^0.5.7",
     "mocha": "^6.2.3",
     "nodemon": "^1.19.4",
     "react-redux": "^7.0.1",
