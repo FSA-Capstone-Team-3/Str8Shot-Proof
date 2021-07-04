@@ -24,17 +24,27 @@ function Map() {
     'Stop Name': 'No station selected',
   });
 
+  const [hoverStation, setHoverStation] = useState(false);
+
+  // const [selectedLine, setSelectedStation] = useState({
+  //   'Stop Name': 'No station selected',
+  // });
+
   console.log(filteredStations);
   return (
     <>
       <p>Your selected station: {selectedStation['Stop Name']}</p>
+      <p>
+        You are hovering over:{' '}
+        {hoverStation ? hoverStation['Stop Name'] : 'None'}
+      </p>
       <MapContainer
         center={[40.785091, -73.968285]}
         zoom={14}
         scrollWheelZoom={true}
       >
         <TileLayer
-          attribution='\u003ca href=\"https://www.maptiler.com/copyright/\" target=\"_blank\"\u003e\u0026copy; MapTiler\u003c/a\u003e \u003ca href=\"https://www.openstreetmap.org/copyright\" target=\"_blank\"\u003e\u0026copy; OpenStreetMap contributors\u003c/a\u003e'
+          attribution='<a href="https://www.maptiler.com/copyright/">&COPY; MapTiler</a> '
           url="https://api.maptiler.com/maps/basic/{z}/{x}/{y}.png?key=481HF56KCNL52f9yp3TR"
         />
         {filteredStations.map((station) => (
@@ -43,13 +53,15 @@ function Map() {
             position={[station['GTFS Latitude'], station['GTFS Longitude']]}
             eventHandlers={{
               mouseover: () => {
-                setSelectedStation(station);
+                setHoverStation(station);
               },
 
               mouseout: () => {
-                setSelectedStation({
-                  'Stop Name': 'No station selected',
-                });
+                setHoverStation(false);
+              },
+
+              click: () => {
+                setSelectedStation(station);
               },
             }}
           >
@@ -70,6 +82,15 @@ function Map() {
         <Polyline
           pathOptions={{ color: '#808183', weight: 8 }}
           positions={filteredLatLong}
+          disabled={true}
+          eventHandlers={{
+            click: (event) => {
+              console.log('Line clicked');
+            },
+            mouseover: (event) => {
+              console.log('Hovered over line');
+            },
+          }}
         />
 
         <Marker
