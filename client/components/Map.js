@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   MapContainer,
   TileLayer,
@@ -9,14 +9,21 @@ import {
 } from 'react-leaflet';
 import stations from '../../script/data/stations.json';
 import allLines from '../../script/data/subway_lines.geojson';
+import allStops from '../../script/data/subway_stops.geojson';
 
-function saturate(rgb, saturation) {
+function deselectedColor(rgb, saturation) {
+  // RGB is a cube, with r,g,b as coords
+  // HSL is a cylinder, hue is angle, lightness is height, saturation is radius
   // https://css-tricks.com/converting-color-spaces-in-javascript/
 
   // get individual color channel values
   let r = Number('0x' + rgb.slice(1, 3)) / 255;
   let g = Number('0x' + rgb.slice(3, 5)) / 255;
   let b = Number('0x' + rgb.slice(5, 7)) / 255;
+
+  // let r = Number('0x' + rgb.slice(1, 3));
+  // let g = Number('0x' + rgb.slice(3, 5));
+  // let b = Number('0x' + rgb.slice(5, 7));
 
   // find greatest and smallest channel values
   let cmin = Math.min(r, g, b),
@@ -26,14 +33,10 @@ function saturate(rgb, saturation) {
     s = 0,
     l = 0;
 
-  // Calculate hue
-  // No difference
+  // Calculate hue from max rgb channel delta
   if (delta == 0) h = 0;
-  // Red is max
   else if (cmax == r) h = ((g - b) / delta) % 6;
-  // Green is max
   else if (cmax == g) h = (b - r) / delta + 2;
-  // Blue is max
   else h = (r - g) / delta + 4;
 
   h = Math.round(h * 60);
@@ -41,17 +44,55 @@ function saturate(rgb, saturation) {
   // Make negative hues positive behind 360°
   if (h < 0) h += 360;
 
-  // Calculate lightness
+  // Calculate lightness, average of largest and smallest channel values
   l = (cmax + cmin) / 2;
 
   // Calculate saturation
   s = delta == 0 ? 0 : delta / (1 - Math.abs(2 * l - 1));
 
+  // modify lightness and saturation
+
+  // bright pale colors
+
+  l = l * 1.5;
+  if (l > 1) l = 1;
+
+  s = s * 0.8;
+  if (s > 1) s = 1;
+
+  // pale desaturated colors
+  // l = l * 1.2;
+  // if (l > 1) l = 1;
+
+  // s = s * 0.35;
+  // if (s > 1) s = 1;
+
   // Multiply l and s by 100
   s = +(s * 100).toFixed(1);
   l = +(l * 100).toFixed(1);
 
-  return 'hsl(' + h + ',' + s * saturation + '%,' + l + '%)';
+  return 'hsl(' + h + ',' + s + '%,' + l + '%)';
+  // const opacity = 0.75;
+  // r = parseInt(r * opacity);
+  // g = parseInt(g * opacity);
+  // b = parseInt(b * opacity);
+
+  // console.log(
+  //   'Turned ' +
+  //     rgb +
+  //     ' to ' +
+  //     '#' +
+  //     r.toString(16) +
+  //     g.toString(16) +
+  //     b.toString(16)
+  // );
+
+  // return (
+  //   '#' +
+  //   r.toString(16).padStart(2, '0') +
+  //   g.toString(16).padStart(2, '0') +
+  //   b.toString(16).padStart(2, '0')
+  // );
 }
 
 function Map() {
@@ -62,203 +103,142 @@ function Map() {
         if (line === selectedLine || line === hoverLine) {
           return { color: '#BD0026', weight: 10 };
         } else {
-          return { color: saturate('#BD0026', 0.35), weight: 5 };
+          return { color: deselectedColor('#BD0026'), weight: 5 };
         }
       case '2':
         if (line === selectedLine || line === hoverLine) {
           return { color: '#BD0026', weight: 10 };
         } else {
-          return { color: saturate('#BD0026', 0.35), weight: 5 };
+          return { color: deselectedColor('#BD0026'), weight: 5 };
         }
       case '3':
         if (line === selectedLine || line === hoverLine) {
           return { color: '#BD0026', weight: 10 };
         } else {
-          return { color: saturate('#BD0026', 0.35), weight: 5 };
+          return { color: deselectedColor('#BD0026'), weight: 5 };
         }
       case '4':
         if (line === selectedLine || line === hoverLine) {
           return { color: '#008000', weight: 10 };
         } else {
-          return { color: saturate('#008000', 0.35), weight: 5 };
+          return { color: deselectedColor('#008000'), weight: 5 };
         }
       case '5':
         if (line === selectedLine || line === hoverLine) {
           return { color: '#008000', weight: 10 };
         } else {
-          return { color: saturate('#008000', 0.35), weight: 5 };
+          return { color: deselectedColor('#008000'), weight: 5 };
         }
       case '6':
         if (line === selectedLine || line === hoverLine) {
           return { color: '#008000', weight: 10510 };
         } else {
-          return { color: saturate('#008000', 0.35), weight: 5 };
+          return { color: deselectedColor('#008000'), weight: 5 };
         }
       case '7':
         if (line === selectedLine || line === hoverLine) {
           return { color: '#710B37', weight: 10 };
         } else {
-          return { color: saturate('#710B37', 0.35), weight: 5 };
+          return { color: deselectedColor('#710B37'), weight: 5 };
         }
       case 'A':
         if (line === selectedLine || line === hoverLine) {
           return { color: '#0057E7', weight: 10 };
         } else {
-          return { color: saturate('#0057E7', 0.35), weight: 5 };
+          return { color: deselectedColor('#0057E7'), weight: 5 };
         }
       case 'C':
         if (line === selectedLine || line === hoverLine) {
           return { color: '#0057E7', weight: 10 };
         } else {
-          return { color: saturate('#0057E7', 0.35), weight: 5 };
+          return { color: deselectedColor('#0057E7'), weight: 5 };
         }
       case 'E':
         if (line === selectedLine || line === hoverLine) {
           return { color: '#0057E7', weight: 10 };
         } else {
-          return { color: saturate('#0057E7', 0.35), weight: 5 };
+          return { color: deselectedColor('#0057E7'), weight: 5 };
         }
       case 'D':
         if (line === selectedLine || line === hoverLine) {
           return { color: '#F37735', weight: 10 };
         } else {
-          return { color: saturate('#F37735', 0.35), weight: 5 };
+          return { color: deselectedColor('#F37735'), weight: 5 };
         }
       case 'B':
         if (line === selectedLine || line === hoverLine) {
           return { color: '#F37735', weight: 10 };
         } else {
-          return { color: saturate('#F37735', 0.35), weight: 5 };
+          return { color: deselectedColor('#F37735'), weight: 5 };
         }
       case 'F':
         if (line === selectedLine || line === hoverLine) {
           return { color: '#F37735', weight: 10 };
         } else {
-          return { color: saturate('#F37735', 0.35), weight: 5 };
+          return { color: deselectedColor('#F37735'), weight: 5 };
         }
       case 'M':
         if (line === selectedLine || line === hoverLine) {
           return { color: '#F37735', weight: 10 };
         } else {
-          return { color: saturate('#F37735', 0.35), weight: 5 };
+          return { color: deselectedColor('#F37735'), weight: 5 };
         }
       case 'N':
         if (line === selectedLine || line === hoverLine) {
           return { color: '#FFDD00', weight: 10 };
         } else {
-          return { color: saturate('#FFDD00', 0.35), weight: 5 };
+          return { color: deselectedColor('#FFDD00'), weight: 5 };
         }
       case 'Q':
         if (line === selectedLine || line === hoverLine) {
           return { color: '#FFDD00', weight: 10 };
         } else {
-          return { color: saturate('#FFDD00', 0.35), weight: 5 };
+          return { color: deselectedColor('#FFDD00'), weight: 5 };
         }
       case 'R':
         if (line === selectedLine || line === hoverLine) {
           return { color: '#FFDD00', weight: 10 };
         } else {
-          return { color: saturate('#FFDD00', 0.35), weight: 5 };
+          return { color: deselectedColor('#FFDD00'), weight: 5 };
         }
       case 'W':
         if (line === selectedLine || line === hoverLine) {
           return { color: '#FFDD00', weight: 10 };
         } else {
-          return { color: saturate('#FFDD00', 0.35), weight: 5 };
+          return { color: deselectedColor('#FFDD00'), weight: 5 };
         }
       case 'L':
         if (line === selectedLine || line === hoverLine) {
           return { color: '#808080', weight: 10 };
         } else {
-          return { color: saturate('#808080', 0.35), weight: 5 };
+          return { color: deselectedColor('#808080'), weight: 5 };
         }
       case 'S':
         if (line === selectedLine || line === hoverLine) {
           return { color: '#808080', weight: 10 };
         } else {
-          return { color: saturate('#808080', 0.35), weight: 5 };
+          return { color: deselectedColor('#808080'), weight: 5 };
         }
       case 'G':
         if (line === selectedLine || line === hoverLine) {
           return { color: '#6CBE45', weight: 10 };
         } else {
-          return { color: saturate('#6CBE45', 0.35), weight: 5 };
+          return { color: deselectedColor('#6CBE45'), weight: 5 };
         }
       case 'J':
         if (line === selectedLine || line === hoverLine) {
           return { color: '#8D5524', weight: 10 };
         } else {
-          return { color: saturate('#8D5524', 0.35), weight: 5 };
+          return { color: deselectedColor('#8D5524'), weight: 5 };
         }
       case 'Z':
         if (line === selectedLine || line === hoverLine) {
           return { color: '#8D5524', weight: 10 };
         } else {
-          return { color: saturate('#8D5524', 0.35), weight: 5 };
+          return { color: deselectedColor('#8D5524'), weight: 5 };
         }
     }
   };
-  // } : (feature) => {
-  //   switch (feature.properties.rt_symbol) {
-  //     case "1":
-  //       return { color: "#ffb3b3", weight: 5 };
-  //     case "2":
-  //       return { color: "#ffb3b3", weight: 5 };
-  //     case "3":
-  //       return { color: "#ffb3b3", weight: 5 };
-  //     case "4":
-  //       return { color: "#008000", weight: 5 };
-  //     case "5":
-  //       return { color: "#008000", weight: 5 };
-  //     case "6":
-  //       return { color: "#008000", weight: 5 };
-  //     case "7":
-  //       return { color: "#710B37", weight: 5 };
-  //     case "A":
-  //       return { color: "#0057E7", weight: 5 };
-  //     case "C":
-  //       return { color: "#0057E7", weight: 5 };
-  //     case "E":
-  //       return { color: "#0057E7", weight: 5 };
-  //     case "D":
-  //       return { color: "#F37735", weight: 5 };
-  //     case "B":
-  //       return { color: "#F37735", weight: 5 };
-  //     case "F":
-  //       return { color: "#F37735", weight: 5 };
-  //     case "M":
-  //       return { color: "#F37735", weight: 5 };
-  //     case "N":
-  //       return { color: "#FFDD00", weight: 5 };
-  //     case "Q":
-  //       return { color: "#FFDD00", weight: 5 };
-  //     case "R":
-  //       return { color: "#FFDD00", weight: 5 };
-  //     case "W":
-  //       return { color: "#FFDD00", weight: 5 };
-  //     case "L":
-  //       return { color: "#808080", weight: 5 };
-  //     case "S":
-  //       return { color: "#808080", weight: 5 };
-  //     case "G":
-  //       return { color: "#6CBE45", weight: 5 };
-  //     case "J":
-  //       return { color: "#8D5524", weight: 5 };
-  //     case "Z":
-  //       return { color: "#8D5524", weight: 5 };
-  //   }
-  // }
-
-  // const filteredStations = stations.filter(
-  //   (station) =>
-  //     (station['Complex ID'] === 610 || station['Complex ID'] === 611) &&
-  //     station['Daytime Routes'] === 'S'
-  // );
-
-  // const filteredLatLong = filteredStations.map((station) => [
-  //   station['GTFS Latitude'],
-  //   station['GTFS Longitude'],
-  // ]);
 
   // state below
   const [selectedStation, setSelectedStation] = useState({
@@ -271,15 +251,91 @@ function Map() {
 
   const [hoverLine, setHoverLine] = useState('');
 
+  const [stations, setStations] = useState({
+    type: 'FeatureCollection',
+    name: 'all_stops_nyc_2017',
+    crs: {
+      type: 'name',
+      properties: { name: 'urn:ogc:def:crs:OGC:1.3:CRS84' },
+    },
+    features: [
+      {
+        type: 'Feature',
+        properties: {
+          stop_id: '101',
+          stop_name: 'Van Cortlandt Park - 242 St',
+          stop_lat: 40.889248,
+          stop_lon: -73.898583,
+          stop_id2: null,
+          trains: '1',
+          GEOID: '36005',
+          County: 'Bronx County',
+          ADA: 0,
+        },
+        geometry: {
+          type: 'Point',
+          coordinates: [-73.898583, 40.889247999999867],
+        },
+      },
+    ],
+  });
+
   // end state
 
+  // select which stations to draw based on selected line
+  useEffect(() => {
+    setStations({
+      type: 'FeatureCollection',
+      name: 'all_stops_nyc_2017',
+      crs: {
+        type: 'name',
+        properties: { name: 'urn:ogc:def:crs:OGC:1.3:CRS84' },
+      },
+      features: allStops.features.filter((station) => {
+        return station.properties.trains.split(' ').includes(selectedLine);
+      }),
+    });
+  }, [selectedLine]);
+
+  const singleStation = {
+    type: 'FeatureCollection',
+    name: 'all_stops_nyc_2017',
+    crs: {
+      type: 'name',
+      properties: { name: 'urn:ogc:def:crs:OGC:1.3:CRS84' },
+    },
+    features: [
+      {
+        type: 'Feature',
+        properties: {
+          stop_id: '101',
+          stop_name: 'Van Cortlandt Park - 242 St',
+          stop_lat: 40.889248,
+          stop_lon: -73.898583,
+          stop_id2: null,
+          trains: '1',
+          GEOID: '36005',
+          County: 'Bronx County',
+          ADA: 0,
+        },
+        geometry: {
+          type: 'Point',
+          coordinates: [-73.898583, 40.889247999999867],
+        },
+      },
+    ],
+  };
+  console.log(stations);
+  console.log(allStops);
   return (
     <>
-      {/* <p>Your selected station: {selectedStation['Stop Name']}</p>
+      <p>Your selected station: {selectedStation['Stop Name']}</p>
       <p>
         You are hovering over:{' '}
         {hoverStation ? hoverStation['Stop Name'] : 'None'}
-      </p> */}
+      </p>
+      <p>Your selected line: {selectedLine}</p>
+      <p>You are hovering over: {hoverLine !== '' ? hoverLine : 'None'}</p>
       <MapContainer
         center={[40.785091, -73.968285]}
         zoom={14}
@@ -314,6 +370,27 @@ function Map() {
           //     console.log('Hovered over line');
           //   },
           // }}
+        />
+
+        <GeoJSON
+          key={stations.features.length} // important!
+          data={allStops}
+          style={function (feature, latlng) {
+            return L.circleMarker(latlng, {
+              color: '#ffffff',
+              radius: 7,
+              pane: 'ALL',
+            })
+              .bindPopup(feature.properties.stop_name)
+              .openPopup()
+              .on('click', nada_stops)
+              .on('mouseover', function (e) {
+                this.openPopup();
+              })
+              .on('mouseout', function (e) {
+                this.closePopup();
+              });
+          }}
         />
 
         {/* {filteredStations.map((station) => (
