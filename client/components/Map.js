@@ -100,139 +100,139 @@ function Map() {
     const line = feature.properties.rt_symbol;
     switch (line) {
       case '1':
-        if (line === selectedLine || line === hoverLine) {
+        if (line === selectedLine) {
           return { color: '#BD0026', weight: 10 };
         } else {
           return { color: deselectedColor('#BD0026'), weight: 5 };
         }
       case '2':
-        if (line === selectedLine || line === hoverLine) {
+        if (line === selectedLine) {
           return { color: '#BD0026', weight: 10 };
         } else {
           return { color: deselectedColor('#BD0026'), weight: 5 };
         }
       case '3':
-        if (line === selectedLine || line === hoverLine) {
+        if (line === selectedLine) {
           return { color: '#BD0026', weight: 10 };
         } else {
           return { color: deselectedColor('#BD0026'), weight: 5 };
         }
       case '4':
-        if (line === selectedLine || line === hoverLine) {
+        if (line === selectedLine) {
           return { color: '#008000', weight: 10 };
         } else {
           return { color: deselectedColor('#008000'), weight: 5 };
         }
       case '5':
-        if (line === selectedLine || line === hoverLine) {
+        if (line === selectedLine) {
           return { color: '#008000', weight: 10 };
         } else {
           return { color: deselectedColor('#008000'), weight: 5 };
         }
       case '6':
-        if (line === selectedLine || line === hoverLine) {
+        if (line === selectedLine) {
           return { color: '#008000', weight: 10510 };
         } else {
           return { color: deselectedColor('#008000'), weight: 5 };
         }
       case '7':
-        if (line === selectedLine || line === hoverLine) {
+        if (line === selectedLine) {
           return { color: '#710B37', weight: 10 };
         } else {
           return { color: deselectedColor('#710B37'), weight: 5 };
         }
       case 'A':
-        if (line === selectedLine || line === hoverLine) {
+        if (line === selectedLine) {
           return { color: '#0057E7', weight: 10 };
         } else {
           return { color: deselectedColor('#0057E7'), weight: 5 };
         }
       case 'C':
-        if (line === selectedLine || line === hoverLine) {
+        if (line === selectedLine) {
           return { color: '#0057E7', weight: 10 };
         } else {
           return { color: deselectedColor('#0057E7'), weight: 5 };
         }
       case 'E':
-        if (line === selectedLine || line === hoverLine) {
+        if (line === selectedLine) {
           return { color: '#0057E7', weight: 10 };
         } else {
           return { color: deselectedColor('#0057E7'), weight: 5 };
         }
       case 'D':
-        if (line === selectedLine || line === hoverLine) {
+        if (line === selectedLine) {
           return { color: '#F37735', weight: 10 };
         } else {
           return { color: deselectedColor('#F37735'), weight: 5 };
         }
       case 'B':
-        if (line === selectedLine || line === hoverLine) {
+        if (line === selectedLine) {
           return { color: '#F37735', weight: 10 };
         } else {
           return { color: deselectedColor('#F37735'), weight: 5 };
         }
       case 'F':
-        if (line === selectedLine || line === hoverLine) {
+        if (line === selectedLine) {
           return { color: '#F37735', weight: 10 };
         } else {
           return { color: deselectedColor('#F37735'), weight: 5 };
         }
       case 'M':
-        if (line === selectedLine || line === hoverLine) {
+        if (line === selectedLine) {
           return { color: '#F37735', weight: 10 };
         } else {
           return { color: deselectedColor('#F37735'), weight: 5 };
         }
       case 'N':
-        if (line === selectedLine || line === hoverLine) {
+        if (line === selectedLine) {
           return { color: '#FFDD00', weight: 10 };
         } else {
           return { color: deselectedColor('#FFDD00'), weight: 5 };
         }
       case 'Q':
-        if (line === selectedLine || line === hoverLine) {
+        if (line === selectedLine) {
           return { color: '#FFDD00', weight: 10 };
         } else {
           return { color: deselectedColor('#FFDD00'), weight: 5 };
         }
       case 'R':
-        if (line === selectedLine || line === hoverLine) {
+        if (line === selectedLine) {
           return { color: '#FFDD00', weight: 10 };
         } else {
           return { color: deselectedColor('#FFDD00'), weight: 5 };
         }
       case 'W':
-        if (line === selectedLine || line === hoverLine) {
+        if (line === selectedLine) {
           return { color: '#FFDD00', weight: 10 };
         } else {
           return { color: deselectedColor('#FFDD00'), weight: 5 };
         }
       case 'L':
-        if (line === selectedLine || line === hoverLine) {
+        if (line === selectedLine) {
           return { color: '#808080', weight: 10 };
         } else {
           return { color: deselectedColor('#808080'), weight: 5 };
         }
       case 'S':
-        if (line === selectedLine || line === hoverLine) {
+        if (line === selectedLine) {
           return { color: '#808080', weight: 10 };
         } else {
           return { color: deselectedColor('#808080'), weight: 5 };
         }
       case 'G':
-        if (line === selectedLine || line === hoverLine) {
+        if (line === selectedLine) {
           return { color: '#6CBE45', weight: 10 };
         } else {
           return { color: deselectedColor('#6CBE45'), weight: 5 };
         }
       case 'J':
-        if (line === selectedLine || line === hoverLine) {
+        if (line === selectedLine) {
           return { color: '#8D5524', weight: 10 };
         } else {
           return { color: deselectedColor('#8D5524'), weight: 5 };
         }
       case 'Z':
-        if (line === selectedLine || line === hoverLine) {
+        if (line === selectedLine) {
           return { color: '#8D5524', weight: 10 };
         } else {
           return { color: deselectedColor('#8D5524'), weight: 5 };
@@ -243,11 +243,7 @@ function Map() {
   // state below
   const [selectedStation, setSelectedStation] = useState(false);
 
-  const [hoverStation, setHoverStation] = useState('');
-
   const [selectedLine, setSelectedLine] = useState('');
-
-  const [hoverLine, setHoverLine] = useState('');
 
   const [stations, setStations] = useState({
     type: 'FeatureCollection',
@@ -277,18 +273,49 @@ function Map() {
   }, [selectedLine]);
 
   return (
-    <>
+    <div>
+      {/* <p>
+        You are hovering over:{' '}
+        {hoverStation ? hoverStation.properties.stop_name : 'None'}
+      </p> */}
+      {/* <p>You are hovering over: {hoverLine !== '' ? hoverLine : 'None'}</p> */}
+      <label htmlFor="line-select">Choose your line:</label>
+      <select
+        name="line"
+        id="line-select"
+        onChange={(evt) => setSelectedLine(evt.target.value)}
+      >
+        <option value="">--Select your line--</option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="6">6</option>
+        <option value="7">7</option>
+        <option value="A">A</option>
+        <option value="B">B</option>
+        <option value="C">C</option>
+        <option value="D">D</option>
+        <option value="E">E</option>
+        <option value="F">F</option>
+        <option value="G">G</option>
+        <option value="J">J</option>
+        <option value="L">L</option>
+        <option value="M">M</option>
+        <option value="N">N</option>
+        <option value="Q">Q</option>
+        <option value="R">R</option>
+        <option value="S">S</option>
+        <option value="W">W</option>
+        <option value="Z">Z</option>
+      </select>
+      <p>Your selected line: {selectedLine}</p>
       <p>
         Your selected station:{' '}
         {selectedStation ? selectedStation.properties.stop_name : 'None'}
       </p>
-      <p>
-        You are hovering over:{' '}
-        {hoverStation ? hoverStation.properties.stop_name : 'None'}
-      </p>
-      <p>Your selected line: {selectedLine}</p>
-      <p>You are hovering over: {hoverLine !== '' ? hoverLine : 'None'}</p>
-      <button onClick={() => setSelectedLine('1')}> Set line 1 selected</button>
+
       <MapContainer
         center={[40.785091, -73.968285]}
         zoom={14}
@@ -308,12 +335,12 @@ function Map() {
               console.log('Feature: ', feature);
               console.log('Event: ', event);
             });
-            layer.on('mouseover', (event) => {
-              setHoverLine(feature.properties.rt_symbol);
-            });
-            layer.on('mouseout', (event) => {
-              setHoverLine('');
-            });
+            // layer.on('mouseover', (event) => {
+            //   setHoverLine(feature.properties.rt_symbol);
+            // });
+            // layer.on('mouseout', (event) => {
+            //   setHoverLine('');
+            // });
           }}
           // eventHandlers={{
           //   click: (event) => {
@@ -339,13 +366,13 @@ function Map() {
                 click: (event) => {
                   setSelectedStation(station);
                 },
-                mouseover: (event) => {
-                  console.log('HOVERED OVER ' + station.properties.stop_name);
-                  setHoverStation(station);
-                },
-                mouseout: (event) => {
-                  setHoverStation(false);
-                },
+                // mouseover: (event) => {
+                //   console.log('HOVERED OVER ' + station.properties.stop_name);
+                //   setHoverStation(station);
+                // },
+                // mouseout: (event) => {
+                //   setHoverStation(false);
+                // },
               }}
             ></Marker>
           );
@@ -428,7 +455,7 @@ function Map() {
           }}
         ></Marker>
       </MapContainer>
-    </>
+    </div>
   );
 }
 
