@@ -241,9 +241,7 @@ function Map() {
   };
 
   // state below
-  const [selectedStation, setSelectedStation] = useState({
-    'Stop Name': 'No station selected',
-  });
+  const [selectedStation, setSelectedStation] = useState(false);
 
   const [hoverStation, setHoverStation] = useState('');
 
@@ -258,26 +256,7 @@ function Map() {
       type: 'name',
       properties: { name: 'urn:ogc:def:crs:OGC:1.3:CRS84' },
     },
-    features: [
-      {
-        type: 'Feature',
-        properties: {
-          stop_id: '101',
-          stop_name: 'Van Cortlandt Park - 242 St',
-          stop_lat: 40.889248,
-          stop_lon: -73.898583,
-          stop_id2: null,
-          trains: '1',
-          GEOID: '36005',
-          County: 'Bronx County',
-          ADA: 0,
-        },
-        geometry: {
-          type: 'Point',
-          coordinates: [-73.898583, 40.889247999999867],
-        },
-      },
-    ],
+    features: [],
   });
 
   // end state
@@ -297,42 +276,15 @@ function Map() {
     });
   }, [selectedLine]);
 
-  const singleStation = {
-    type: 'FeatureCollection',
-    name: 'all_stops_nyc_2017',
-    crs: {
-      type: 'name',
-      properties: { name: 'urn:ogc:def:crs:OGC:1.3:CRS84' },
-    },
-    features: [
-      {
-        type: 'Feature',
-        properties: {
-          stop_id: '101',
-          stop_name: 'Van Cortlandt Park - 242 St',
-          stop_lat: 40.889248,
-          stop_lon: -73.898583,
-          stop_id2: null,
-          trains: '1',
-          GEOID: '36005',
-          County: 'Bronx County',
-          ADA: 0,
-        },
-        geometry: {
-          type: 'Point',
-          coordinates: [-73.898583, 40.889247999999867],
-        },
-      },
-    ],
-  };
-  console.log(stations);
-  console.log(allStops);
   return (
     <>
-      <p>Your selected station: {selectedStation['Stop Name']}</p>
+      <p>
+        Your selected station:{' '}
+        {selectedStation ? selectedStation.properties.stop_name : 'None'}
+      </p>
       <p>
         You are hovering over:{' '}
-        {hoverStation ? hoverStation['Stop Name'] : 'None'}
+        {hoverStation ? hoverStation.properties.stop_name : 'None'}
       </p>
       <p>Your selected line: {selectedLine}</p>
       <p>You are hovering over: {hoverLine !== '' ? hoverLine : 'None'}</p>
@@ -372,9 +324,34 @@ function Map() {
           // }}
         />
 
-        <GeoJSON
+        {stations.features.map((station) => {
+          return (
+            <Marker
+              key={station.properties.stop_id}
+              position={[
+                station.properties.stop_lat,
+                station.properties.stop_lon,
+              ]}
+              title={station.properties.stop_name}
+              eventHandlers={{
+                click: (e) => {
+                  setSelectedStation(station);
+                },
+                mouseover: (event) => {
+                  console.log('HOVERED OVER ' + station.properties.stop_name);
+                  setHoverStation(station);
+                },
+                mouseout: (event) => {
+                  setHoverStation(false);
+                },
+              }}
+            ></Marker>
+          );
+        })}
+
+        {/* <GeoJSON
           key={stations.features.length} // important!
-          data={allStops}
+          data={stations}
           style={function (feature, latlng) {
             return L.circleMarker(latlng, {
               color: '#ffffff',
@@ -391,7 +368,7 @@ function Map() {
                 this.closePopup();
               });
           }}
-        />
+        /> */}
 
         {/* {filteredStations.map((station) => (
           <Marker
