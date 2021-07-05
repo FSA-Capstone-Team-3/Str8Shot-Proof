@@ -23,6 +23,7 @@
     "@reduxjs/toolkit": "^1.6.0",
     "axios": "^0.21.1",
     "bcrypt": "^5.0.0",
+    "bulma": "^0.9.3",
     "compression": "^1.7.3",
     "express": "^4.16.4",
     "history": "^4.9.0",
@@ -33,6 +34,7 @@
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-leaflet": "^3.2.0",
+    "react-timeout": "^2.0.1",
     "sequelize": "^6.3.5"
   },
   "devDependencies": {
@@ -43,6 +45,7 @@
     "axios-mock-adapter": "^1.16.0",
     "babel-loader": "^8.2.2",
     "chai": "^4.2.0",
+    "css-loader": "^5.2.6",
     "enzyme": "^3.9.0",
     "esm": "^3.2.25",
     "json-loader": "^0.5.7",
@@ -55,6 +58,7 @@
     "redux-logger": "^3.0.6",
     "redux-mock-store": "^1.5.3",
     "redux-thunk": "^2.3.0",
+    "style-loader": "^3.0.0",
     "supertest": "^4.0.2",
     "webpack": "^5.15.0",
     "webpack-cli": "^4.3.1"

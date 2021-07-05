@@ -288,6 +288,7 @@ function Map() {
       </p>
       <p>Your selected line: {selectedLine}</p>
       <p>You are hovering over: {hoverLine !== '' ? hoverLine : 'None'}</p>
+      <button onClick={() => setSelectedLine('1')}> Set line 1 selected</button>
       <MapContainer
         center={[40.785091, -73.968285]}
         zoom={14}
@@ -325,6 +326,7 @@ function Map() {
         />
 
         {stations.features.map((station) => {
+          // {allStops.features.map((station) => {
           return (
             <Marker
               key={station.properties.stop_id}
@@ -334,7 +336,7 @@ function Map() {
               ]}
               title={station.properties.stop_name}
               eventHandlers={{
-                click: (e) => {
+                click: (event) => {
                   setSelectedStation(station);
                 },
                 mouseover: (event) => {
