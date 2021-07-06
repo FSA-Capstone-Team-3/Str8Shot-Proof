@@ -1,5 +1,5 @@
 body {
-  font-family: sans-serif;
+  font-family: Helvetica, Arial, sans-serif;
 }
 
 a {
@@ -22,5 +22,5 @@ form div {
 
 .leaflet-container {
   width: 100vw;
-  height: 100vh;
+  height: 50vh;
 }
