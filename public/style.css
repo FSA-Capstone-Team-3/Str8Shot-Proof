@@ -21,6 +21,7 @@ form div {
 }
 
 .leaflet-container {
-  width: 100vw;
-  height: 50vh;
+  margin-left: 50%;
+  width: 800px;
+  height: 800px;
 }
