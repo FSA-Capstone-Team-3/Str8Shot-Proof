@@ -97,147 +97,151 @@ function deselectedColor(rgb, saturation) {
 
 function Map() {
   const trainStyle = (feature) => {
+    // line = getRouteSymbol(selectedLine)
     const line = feature.properties.rt_symbol;
     switch (line) {
       case '1':
-        if (line === selectedLine) {
+        if (feature.properties.name.split('-').includes(selectedLine)) {
           return { color: '#BD0026', weight: 10 };
         } else {
           return { color: deselectedColor('#BD0026'), weight: 5 };
         }
       case '2':
-        if (line === selectedLine) {
+        if (feature.properties.name.split('-').includes(selectedLine)) {
           return { color: '#BD0026', weight: 10 };
         } else {
           return { color: deselectedColor('#BD0026'), weight: 5 };
         }
       case '3':
-        if (line === selectedLine) {
+        if (feature.properties.name.split('-').includes(selectedLine)) {
           return { color: '#BD0026', weight: 10 };
         } else {
           return { color: deselectedColor('#BD0026'), weight: 5 };
         }
       case '4':
-        if (line === selectedLine) {
+        if (feature.properties.name.split('-').includes(selectedLine)) {
           return { color: '#008000', weight: 10 };
         } else {
           return { color: deselectedColor('#008000'), weight: 5 };
         }
       case '5':
-        if (line === selectedLine) {
+        if (feature.properties.name.split('-').includes(selectedLine)) {
           return { color: '#008000', weight: 10 };
         } else {
           return { color: deselectedColor('#008000'), weight: 5 };
         }
       case '6':
-        if (line === selectedLine) {
+        if (feature.properties.name.split('-').includes(selectedLine)) {
           return { color: '#008000', weight: 10510 };
         } else {
           return { color: deselectedColor('#008000'), weight: 5 };
         }
       case '7':
-        if (line === selectedLine) {
+        if (feature.properties.name.split('-').includes(selectedLine)) {
           return { color: '#710B37', weight: 10 };
         } else {
           return { color: deselectedColor('#710B37'), weight: 5 };
         }
       case 'A':
-        if (line === selectedLine) {
+        if (feature.properties.name.split('-').includes(selectedLine)) {
           return { color: '#0057E7', weight: 10 };
         } else {
           return { color: deselectedColor('#0057E7'), weight: 5 };
         }
       case 'C':
-        if (line === selectedLine) {
+        if (feature.properties.name.split('-').includes(selectedLine)) {
           return { color: '#0057E7', weight: 10 };
         } else {
           return { color: deselectedColor('#0057E7'), weight: 5 };
         }
       case 'E':
-        if (line === selectedLine) {
+        if (feature.properties.name.split('-').includes(selectedLine)) {
           return { color: '#0057E7', weight: 10 };
         } else {
           return { color: deselectedColor('#0057E7'), weight: 5 };
         }
       case 'D':
-        if (line === selectedLine) {
+        if (feature.properties.name.split('-').includes(selectedLine)) {
           return { color: '#F37735', weight: 10 };
         } else {
           return { color: deselectedColor('#F37735'), weight: 5 };
         }
       case 'B':
-        if (line === selectedLine) {
+        if (feature.properties.name.split('-').includes(selectedLine)) {
           return { color: '#F37735', weight: 10 };
         } else {
           return { color: deselectedColor('#F37735'), weight: 5 };
         }
       case 'F':
-        if (line === selectedLine) {
+        if (feature.properties.name.split('-').includes(selectedLine)) {
           return { color: '#F37735', weight: 10 };
         } else {
           return { color: deselectedColor('#F37735'), weight: 5 };
         }
       case 'M':
-        if (line === selectedLine) {
+        if (feature.properties.name.split('-').includes(selectedLine)) {
           return { color: '#F37735', weight: 10 };
         } else {
           return { color: deselectedColor('#F37735'), weight: 5 };
         }
       case 'N':
-        if (line === selectedLine) {
+        if (feature.properties.name.split('-').includes(selectedLine)) {
           return { color: '#FFDD00', weight: 10 };
         } else {
           return { color: deselectedColor('#FFDD00'), weight: 5 };
         }
       case 'Q':
-        if (line === selectedLine) {
+        if (feature.properties.name.split('-').includes(selectedLine)) {
           return { color: '#FFDD00', weight: 10 };
         } else {
           return { color: deselectedColor('#FFDD00'), weight: 5 };
         }
       case 'R':
-        if (line === selectedLine) {
+        if (feature.properties.name.split('-').includes(selectedLine)) {
           return { color: '#FFDD00', weight: 10 };
         } else {
           return { color: deselectedColor('#FFDD00'), weight: 5 };
         }
       case 'W':
-        if (line === selectedLine) {
+        if (feature.properties.name.split('-').includes(selectedLine)) {
           return { color: '#FFDD00', weight: 10 };
         } else {
           return { color: deselectedColor('#FFDD00'), weight: 5 };
         }
       case 'L':
-        if (line === selectedLine) {
+        if (feature.properties.name.split('-').includes(selectedLine)) {
           return { color: '#808080', weight: 10 };
         } else {
           return { color: deselectedColor('#808080'), weight: 5 };
         }
       case 'S':
-        if (line === selectedLine) {
+        if (feature.properties.name.split('-').includes(selectedLine)) {
           return { color: '#808080', weight: 10 };
         } else {
           return { color: deselectedColor('#808080'), weight: 5 };
         }
       case 'G':
-        if (line === selectedLine) {
+        if (feature.properties.name.split('-').includes(selectedLine)) {
           return { color: '#6CBE45', weight: 10 };
         } else {
           return { color: deselectedColor('#6CBE45'), weight: 5 };
         }
       case 'J':
-        if (line === selectedLine) {
+        if (feature.properties.name.split('-').includes(selectedLine)) {
           return { color: '#8D5524', weight: 10 };
         } else {
           return { color: deselectedColor('#8D5524'), weight: 5 };
         }
       case 'Z':
-        if (line === selectedLine) {
+        if (feature.properties.name.split('-').includes(selectedLine)) {
           return { color: '#8D5524', weight: 10 };
         } else {
           return { color: deselectedColor('#8D5524'), weight: 5 };
         }
     }
+
+    // do we even have a selectedLine?
+    // if so, does feature.properties.name include selectedLine?
   };
 
   // state below
