@@ -332,9 +332,7 @@ function Map() {
 
         <GeoJSON
           data={allLines}
-          style={(feature) => {
-            return trainStyle(feature);
-          }}
+          style={trainStyle}
           onEachFeature={(feature, layer) => {
             layer.on('click', (event) => {
               setSelectedLine(feature.properties.rt_symbol);
