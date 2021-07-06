@@ -96,10 +96,6 @@ function deselectedColor(rgb, saturation) {
 }
 
 function Map() {
-  const trainStyleBlack = (feature) => {
-    return { color: '#FFFFFF', weight: 20 };
-  };
-
   const trainStyle = (feature) => {
     // line = getRouteSymbol(selectedLine)
     const line = feature.properties.rt_symbol;
