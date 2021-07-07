@@ -24,6 +24,11 @@ module.exports = {
         test: /\.css$/,
         use: ['style-loader', 'css-loader'],
       },
+      {
+        test: /\.svg/,
+        exclude: /node_modules/,
+        type: 'asset/inline',
+      },
     ],
   },
 };

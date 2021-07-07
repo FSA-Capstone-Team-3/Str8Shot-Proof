@@ -1,7 +1,7 @@
 import React from 'react';
 import Navbar from './components/Navbar';
 import Routes from './Routes';
-import Map from './components/Map';
+import MyStations from './components/MyStations';
 
 const App = () => {
   return (
@@ -9,7 +9,7 @@ const App = () => {
       <Navbar />
       <Routes />
 
-      <Map />
+      <MyStations />
     </div>
   );
 };

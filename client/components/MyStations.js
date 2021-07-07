@@ -33,6 +33,41 @@ function Map() {
     }
   };
 
+  // make array from all files in public/line_icons
+  function importAll(res) {
+    const result = [];
+    res.keys().forEach((key) => result.push(res(key)));
+    return result;
+  }
+  const lineIcons = importAll(
+    require.context('../../public/line_icons', true, /\.svg$/)
+  );
+  // helper array with same indexes as img files, to map line name to line image
+  const lineHelper = [
+    'A',
+    'C',
+    'E',
+    'B',
+    'D',
+    'F',
+    'M',
+    'G',
+    'L',
+    'J',
+    'Z',
+    'N',
+    'Q',
+    'R',
+    'W',
+    '1',
+    '2',
+    '3',
+    '4',
+    '5',
+    '6',
+    '7',
+  ];
+
   // state below
   const [selectedStation, setSelectedStation] = useState(false);
 
@@ -67,22 +102,21 @@ function Map() {
 
   return (
     <div>
-      <label htmlFor="line-select">Choose your line:</label>
-      <select
-        name="line"
-        id="line-select"
-        value={selectedLine}
-        onChange={(evt) => setSelectedLine(evt.target.value)}
-      >
-        <option value="">--Select your line--</option>
-        {Object.keys(trainColors).map((train) => {
+      <p>Choose your line:</p>
+      <div id="line-picker">
+        {lineIcons.map((line, idx) => {
+          const lineName = lineHelper[idx];
           return (
-            <option key={train} value={train.toString()}>
-              {train}
-            </option>
+            <img
+              key={line}
+              src={line}
+              onClick={() => {
+                setSelectedLine(lineName);
+              }}
+            />
           );
         })}
-      </select>
+      </div>
       <p>Your selected line: {selectedLine}</p>
       <p>
         Your selected station:{' '}
@@ -103,9 +137,9 @@ function Map() {
           data={allLines}
           style={trainStyle}
           onEachFeature={(feature, layer) => {
-            layer.on('click', (event) => {
-              setSelectedLine(feature.properties.rt_symbol);
-            });
+            // layer.on('click', (event) => {
+            //   setSelectedLine(feature.properties.rt_symbol);
+            // });
           }}
         />
 
