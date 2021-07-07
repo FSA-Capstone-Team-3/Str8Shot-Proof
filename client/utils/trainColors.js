@@ -19,7 +19,7 @@ export const trainColors = {
   W: '#fccc0a',
   L: '#a7a9ac',
   S: '#808183',
-  G: '##6cbe45',
+  G: '#6cbe45',
   J: '#996633',
   Z: '#996633'
 };
