@@ -110,6 +110,7 @@ function Map() {
             <img
               key={line}
               src={line}
+              className={selectedLine === lineName ? 'highlight' : ''}
               onClick={() => {
                 setSelectedLine(lineName);
               }}
@@ -124,7 +125,6 @@ function Map() {
           ? selectedStation.properties.stop_name
           : 'None'}
       </p>
-
       <MapContainer
         center={[40.785091, -73.968285]}
         zoom={14}
@@ -144,7 +144,6 @@ function Map() {
             // });
           }}
         />
-
         {stations.features.map((station) => {
           return (
             <Marker

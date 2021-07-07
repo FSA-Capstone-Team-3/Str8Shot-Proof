@@ -21,7 +21,22 @@ form div {
 }
 
 .leaflet-container {
-  margin-left: 50%;
-  width: 800px;
+  margin-right: 50%;
+  width: 1100px;
   height: 800px;
+}
+
+#line-picker {
+  display: flex;
+  flex-wrap: wrap;
+  width: 1100px;
+}
+
+#line-picker > img {
+  width: 100px;
+  height: auto;
+}
+
+.highlight {
+  border: thick double dodgerblue;
 }
