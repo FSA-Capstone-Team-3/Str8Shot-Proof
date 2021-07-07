@@ -23,12 +23,12 @@ function Map() {
 
     if (feature.properties.name.split('-').includes(selectedLine)) {
       // this feature includes the selected line, return highlighted color and weight
-      return { color: trainColors[line], weight: 10 };
+      return { color: trainColors[line], weight: 7 };
     } else {
       // not selected, return base map style
       return {
         color: deselectedColor(trainColors[line]),
-        weight: 5
+        weight: 3
       };
     }
   };
