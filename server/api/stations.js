@@ -15,14 +15,14 @@ router.get("/", async (req, res, next) => {
     const user = await User.findByPk(userId);
     const stations = await user.getStations();
 
-    const stationIds = stations.map((station) => {
-      return station.id;
+    const stationCodes = stations.map((station) => {
+      return station.code;
     });
 
     const stationsWithLines = await Station.findAll({
       where: {
-        id: {
-          [Op.in]: stationIds,
+        code: {
+          [Op.in]: stationCodes,
         },
       },
       include: { model: Line },
@@ -34,19 +34,26 @@ router.get("/", async (req, res, next) => {
   }
 });
 
-// POST /api/stations/:stationId
-router.post("/:stationId", async (req, res, next) => {
+// POST /api/stations/:stationCode
+router.post("/:stationCode", async (req, res, next) => {
   try {
     // const userId = parseInt(req.user.id);
     const userId = 1;
     const user = await User.findByPk(userId);
 
-    const stationId = parseInt(req.params.stationId);
-    const station = await Station.findByPk(stationId);
+    const stationCode = req.params.stationCode;
+    const station = await Station.findOne({
+      where: {
+        code: stationCode,
+      },
+    });
 
     await user.addStation(station);
 
-    const stationWithLines = await Station.findByPk(stationId, {
+    const stationWithLines = await Station.findOne({
+      where: {
+        code: stationCode,
+      },
       include: { model: Line },
     });
 
@@ -56,19 +63,26 @@ router.post("/:stationId", async (req, res, next) => {
   }
 });
 
-// DELETE /api/stations/:stationId
-router.delete("/:stationId", async (req, res, next) => {
+// DELETE /api/stations/:stationCode
+router.delete("/:stationCode", async (req, res, next) => {
   try {
     // const userId = parseInt(req.user.id);
     const userId = 1;
     const user = await User.findByPk(userId);
 
-    const stationId = parseInt(req.params.stationId);
-    const station = await Station.findByPk(stationId);
+    const stationCode = req.params.stationCode;
+    const station = await Station.findOne({
+      where: {
+        code: stationCode,
+      },
+    });
 
     await user.removeStation(station);
 
-    const stationWithLines = await Station.findByPk(stationId, {
+    const stationWithLines = await Station.findOne({
+      where: {
+        code: stationCode,
+      },
       include: { model: Line },
     });
 
