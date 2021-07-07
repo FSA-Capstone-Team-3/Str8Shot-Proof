@@ -2,7 +2,7 @@ const router = require("express").Router();
 const Sequelize = require("sequelize");
 const { Op } = require("sequelize");
 const {
-  models: { User },
+  models: { User, Station, Line },
 } = require("../db");
 const { loggedIn } = require("./gatekeepingMiddleware");
 module.exports = router;
@@ -10,16 +10,16 @@ module.exports = router;
 // GET /api/stations
 router.get("/", async (req, res, next) => {
   try {
-    // const id = parseInt(req.user.id);
-    const id = 1;
-    const user = await User.findByPk(id);
+    // const userId = parseInt(req.user.id);
+    const userId = 1;
+    const user = await User.findByPk(userId);
     const stations = await user.getStations();
 
     const stationIds = stations.map((station) => {
       return station.id;
     });
 
-    const stationsWithLines = await Stations.findAll({
+    const stationsWithLines = await Station.findAll({
       where: {
         id: {
           [Op.in]: stationIds,
@@ -34,19 +34,45 @@ router.get("/", async (req, res, next) => {
   }
 });
 
-// POST /api/stations
-
-// DELETE /api/stations
-
-router.get("/", async (req, res, next) => {
+// POST /api/stations/:stationId
+router.post("/:stationId", async (req, res, next) => {
   try {
-    const users = await User.findAll({
-      // explicitly select only the id and username fields - even though
-      // users' passwords are encrypted, it won't help if we just
-      // send everything to anyone who asks!
-      attributes: ["id", "username"],
+    // const userId = parseInt(req.user.id);
+    const userId = 1;
+    const user = await User.findByPk(userId);
+
+    const stationId = parseInt(req.params.stationId);
+    const station = await Station.findByPk(stationId);
+
+    await user.addStation(station);
+
+    const stationWithLines = await Station.findByPk(stationId, {
+      include: { model: Line },
     });
-    res.json(users);
+
+    res.json(stationWithLines);
+  } catch (err) {
+    next(err);
+  }
+});
+
+// DELETE /api/stations/:stationId
+router.delete("/:stationId", async (req, res, next) => {
+  try {
+    // const userId = parseInt(req.user.id);
+    const userId = 1;
+    const user = await User.findByPk(userId);
+
+    const stationId = parseInt(req.params.stationId);
+    const station = await Station.findByPk(stationId);
+
+    await user.removeStation(station);
+
+    const stationWithLines = await Station.findByPk(stationId, {
+      include: { model: Line },
+    });
+
+    res.json(stationWithLines);
   } catch (err) {
     next(err);
   }
