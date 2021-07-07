@@ -27,6 +27,8 @@ export const trainColors = {
 export const deselectedColor = (rgb) => {
   // RGB is a cube, with r,g,b as coords
   // HSL is a cylinder, hue is angle, luminance is height, saturation is radius
+
+  // almost all code stolen from below:
   // https://css-tricks.com/converting-color-spaces-in-javascript/
 
   // get individual color channel values

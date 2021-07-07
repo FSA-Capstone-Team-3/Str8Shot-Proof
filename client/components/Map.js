@@ -14,6 +14,7 @@ import allStops from '../../script/data/subway_stops.geojson';
 import { trainColors, deselectedColor } from '../utils/trainColors';
 
 function Map() {
+  // line styling callback
   const trainStyle = (feature) => {
     // map GeoJSON features to their train styles
     // highlight selected line, otherwise draw base map
@@ -66,41 +67,21 @@ function Map() {
 
   return (
     <div>
-      {/* <p>
-        You are hovering over:{' '}
-        {hoverStation ? hoverStation.properties.stop_name : 'None'}
-      </p> */}
-      {/* <p>You are hovering over: {hoverLine !== '' ? hoverLine : 'None'}</p> */}
       <label htmlFor="line-select">Choose your line:</label>
       <select
         name="line"
         id="line-select"
+        value={selectedLine}
         onChange={(evt) => setSelectedLine(evt.target.value)}
       >
         <option value="">--Select your line--</option>
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-        <option value="5">5</option>
-        <option value="6">6</option>
-        <option value="7">7</option>
-        <option value="A">A</option>
-        <option value="B">B</option>
-        <option value="C">C</option>
-        <option value="D">D</option>
-        <option value="E">E</option>
-        <option value="F">F</option>
-        <option value="G">G</option>
-        <option value="J">J</option>
-        <option value="L">L</option>
-        <option value="M">M</option>
-        <option value="N">N</option>
-        <option value="Q">Q</option>
-        <option value="R">R</option>
-        <option value="S">S</option>
-        <option value="W">W</option>
-        <option value="Z">Z</option>
+        {Object.keys(trainColors).map((train) => {
+          return (
+            <option key={train} value={train.toString()}>
+              {train}
+            </option>
+          );
+        })}
       </select>
       <p>Your selected line: {selectedLine}</p>
       <p>
@@ -124,8 +105,6 @@ function Map() {
           onEachFeature={(feature, layer) => {
             layer.on('click', (event) => {
               setSelectedLine(feature.properties.rt_symbol);
-              console.log('Feature: ', feature);
-              console.log('Event: ', event);
             });
           }}
         />
@@ -147,16 +126,6 @@ function Map() {
             ></Marker>
           );
         })}
-
-        <Marker
-          position={[40.785091, -73.968285]}
-          title="A title"
-          eventHandlers={{
-            click: (e) => {
-              console.log('marker clicked', e);
-            },
-          }}
-        ></Marker>
       </MapContainer>
     </div>
   );
