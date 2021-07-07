@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { handleLogout } from '../store';
+import { logout } from '../store';
 
 const NavbarCustom = () => {
   const dispatch = useDispatch();
@@ -31,7 +31,7 @@ const NavbarCustom = () => {
               <div className="navbar-item">
                 {/* The navbar will show these links after you log in */}
                 <Link to="/home">Home</Link>
-                <a href="#" onClick={() => dispatch(handleLogout())}>
+                <a href="#" onClick={() => dispatch(logout())}>
                   Logout
                 </a>
               </div>
