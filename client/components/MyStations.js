@@ -23,12 +23,12 @@ function Map() {
 
     if (feature.properties.name.split('-').includes(selectedLine)) {
       // this feature includes the selected line, return highlighted color and weight
-      return { color: trainColors[line], weight: 10 };
+      return { color: trainColors[line], weight: 7 };
     } else {
       // not selected, return base map style
       return {
         color: deselectedColor(trainColors[line]),
-        weight: 5
+        weight: 3
       };
     }
   };
@@ -110,6 +110,7 @@ function Map() {
             <img
               key={line}
               src={line}
+              className={selectedLine === lineName ? 'highlight' : ''}
               onClick={() => {
                 setSelectedLine(lineName);
               }}
@@ -124,7 +125,6 @@ function Map() {
           ? selectedStation.properties.stop_name
           : 'None'}
       </p>
-
       <MapContainer
         center={[40.785091, -73.968285]}
         zoom={14}
@@ -144,7 +144,6 @@ function Map() {
             // });
           }}
         />
-
         {stations.features.map((station) => {
           return (
             <Marker
