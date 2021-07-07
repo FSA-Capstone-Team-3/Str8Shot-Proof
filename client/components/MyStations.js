@@ -5,7 +5,7 @@ import {
   Marker,
   Popup,
   Polyline,
-  GeoJSON,
+  GeoJSON
 } from 'react-leaflet';
 import stations from '../../script/data/stations.json';
 import allLines from '../../script/data/subway_lines.geojson';
@@ -28,7 +28,7 @@ function Map() {
       // not selected, return base map style
       return {
         color: deselectedColor(trainColors[line]),
-        weight: 5,
+        weight: 5
       };
     }
   };
@@ -65,11 +65,11 @@ function Map() {
     '4',
     '5',
     '6',
-    '7',
+    '7'
   ];
 
   // state below
-  const [selectedStation, setSelectedStation] = useState(false);
+  const [selectedStation, setSelectedStation] = useState({});
 
   const [selectedLine, setSelectedLine] = useState('');
 
@@ -78,9 +78,9 @@ function Map() {
     name: 'all_stops_nyc_2017',
     crs: {
       type: 'name',
-      properties: { name: 'urn:ogc:def:crs:OGC:1.3:CRS84' },
+      properties: { name: 'urn:ogc:def:crs:OGC:1.3:CRS84' }
     },
-    features: [],
+    features: []
   });
 
   // end state
@@ -92,18 +92,18 @@ function Map() {
       name: 'all_stops_nyc_2017',
       crs: {
         type: 'name',
-        properties: { name: 'urn:ogc:def:crs:OGC:1.3:CRS84' },
+        properties: { name: 'urn:ogc:def:crs:OGC:1.3:CRS84' }
       },
       features: allStops.features.filter((station) => {
         return station.properties.trains.split(' ').includes(selectedLine);
-      }),
+      })
     });
   }, [selectedLine]);
 
   return (
     <div>
       <p>Choose your line:</p>
-      <div id="line-picker">
+      <div id='line-picker'>
         {lineIcons.map((line, idx) => {
           const lineName = lineHelper[idx];
           return (
@@ -120,7 +120,9 @@ function Map() {
       <p>Your selected line: {selectedLine}</p>
       <p>
         Your selected station:{' '}
-        {selectedStation ? selectedStation.properties.stop_name : 'None'}
+        {selectedStation.properties
+          ? selectedStation.properties.stop_name
+          : 'None'}
       </p>
 
       <MapContainer
@@ -130,7 +132,7 @@ function Map() {
       >
         <TileLayer
           attribution='<a href="https://www.maptiler.com/copyright/">&COPY; MapTiler</a> '
-          url="https://api.maptiler.com/maps/basic/{z}/{x}/{y}.png?key=481HF56KCNL52f9yp3TR"
+          url='https://api.maptiler.com/maps/basic/{z}/{x}/{y}.png?key=481HF56KCNL52f9yp3TR'
         />
 
         <GeoJSON
@@ -149,13 +151,13 @@ function Map() {
               key={station.properties.stop_id}
               position={[
                 station.properties.stop_lat,
-                station.properties.stop_lon,
+                station.properties.stop_lon
               ]}
               title={station.properties.stop_name}
               eventHandlers={{
                 click: (event) => {
                   setSelectedStation(station);
-                },
+                }
               }}
             ></Marker>
           );
