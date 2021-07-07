@@ -11,237 +11,25 @@ import stations from '../../script/data/stations.json';
 import allLines from '../../script/data/subway_lines.geojson';
 import allStops from '../../script/data/subway_stops.geojson';
 
-function deselectedColor(rgb, saturation) {
-  // RGB is a cube, with r,g,b as coords
-  // HSL is a cylinder, hue is angle, lightness is height, saturation is radius
-  // https://css-tricks.com/converting-color-spaces-in-javascript/
-
-  // get individual color channel values
-  let r = Number('0x' + rgb.slice(1, 3)) / 255;
-  let g = Number('0x' + rgb.slice(3, 5)) / 255;
-  let b = Number('0x' + rgb.slice(5, 7)) / 255;
-
-  // let r = Number('0x' + rgb.slice(1, 3));
-  // let g = Number('0x' + rgb.slice(3, 5));
-  // let b = Number('0x' + rgb.slice(5, 7));
-
-  // find greatest and smallest channel values
-  let cmin = Math.min(r, g, b),
-    cmax = Math.max(r, g, b),
-    delta = cmax - cmin,
-    h = 0,
-    s = 0,
-    l = 0;
-
-  // Calculate hue from max rgb channel delta
-  if (delta == 0) h = 0;
-  else if (cmax == r) h = ((g - b) / delta) % 6;
-  else if (cmax == g) h = (b - r) / delta + 2;
-  else h = (r - g) / delta + 4;
-
-  h = Math.round(h * 60);
-
-  // Make negative hues positive behind 360°
-  if (h < 0) h += 360;
-
-  // Calculate lightness, average of largest and smallest channel values
-  l = (cmax + cmin) / 2;
-
-  // Calculate saturation
-  s = delta == 0 ? 0 : delta / (1 - Math.abs(2 * l - 1));
-
-  // modify lightness and saturation
-
-  // bright pale colors
-
-  l = l * 1.5;
-  if (l > 1) l = 1;
-
-  s = s * 0.8;
-  if (s > 1) s = 1;
-
-  // pale desaturated colors
-  // l = l * 1.2;
-  // if (l > 1) l = 1;
-
-  // s = s * 0.35;
-  // if (s > 1) s = 1;
-
-  // Multiply l and s by 100
-  s = +(s * 100).toFixed(1);
-  l = +(l * 100).toFixed(1);
-
-  return 'hsl(' + h + ',' + s + '%,' + l + '%)';
-  // const opacity = 0.75;
-  // r = parseInt(r * opacity);
-  // g = parseInt(g * opacity);
-  // b = parseInt(b * opacity);
-
-  // console.log(
-  //   'Turned ' +
-  //     rgb +
-  //     ' to ' +
-  //     '#' +
-  //     r.toString(16) +
-  //     g.toString(16) +
-  //     b.toString(16)
-  // );
-
-  // return (
-  //   '#' +
-  //   r.toString(16).padStart(2, '0') +
-  //   g.toString(16).padStart(2, '0') +
-  //   b.toString(16).padStart(2, '0')
-  // );
-}
+import { trainColors, deselectedColor } from '../utils/trainColors';
 
 function Map() {
   const trainStyle = (feature) => {
-    // line = getRouteSymbol(selectedLine)
-    const line = feature.properties.rt_symbol;
-    switch (line) {
-      case '1':
-        if (feature.properties.name.split('-').includes(selectedLine)) {
-          return { color: '#BD0026', weight: 10 };
-        } else {
-          return { color: deselectedColor('#BD0026'), weight: 5 };
-        }
-      case '2':
-        if (feature.properties.name.split('-').includes(selectedLine)) {
-          return { color: '#BD0026', weight: 10 };
-        } else {
-          return { color: deselectedColor('#BD0026'), weight: 5 };
-        }
-      case '3':
-        if (feature.properties.name.split('-').includes(selectedLine)) {
-          return { color: '#BD0026', weight: 10 };
-        } else {
-          return { color: deselectedColor('#BD0026'), weight: 5 };
-        }
-      case '4':
-        if (feature.properties.name.split('-').includes(selectedLine)) {
-          return { color: '#008000', weight: 10 };
-        } else {
-          return { color: deselectedColor('#008000'), weight: 5 };
-        }
-      case '5':
-        if (feature.properties.name.split('-').includes(selectedLine)) {
-          return { color: '#008000', weight: 10 };
-        } else {
-          return { color: deselectedColor('#008000'), weight: 5 };
-        }
-      case '6':
-        if (feature.properties.name.split('-').includes(selectedLine)) {
-          return { color: '#008000', weight: 10510 };
-        } else {
-          return { color: deselectedColor('#008000'), weight: 5 };
-        }
-      case '7':
-        if (feature.properties.name.split('-').includes(selectedLine)) {
-          return { color: '#710B37', weight: 10 };
-        } else {
-          return { color: deselectedColor('#710B37'), weight: 5 };
-        }
-      case 'A':
-        if (feature.properties.name.split('-').includes(selectedLine)) {
-          return { color: '#0057E7', weight: 10 };
-        } else {
-          return { color: deselectedColor('#0057E7'), weight: 5 };
-        }
-      case 'C':
-        if (feature.properties.name.split('-').includes(selectedLine)) {
-          return { color: '#0057E7', weight: 10 };
-        } else {
-          return { color: deselectedColor('#0057E7'), weight: 5 };
-        }
-      case 'E':
-        if (feature.properties.name.split('-').includes(selectedLine)) {
-          return { color: '#0057E7', weight: 10 };
-        } else {
-          return { color: deselectedColor('#0057E7'), weight: 5 };
-        }
-      case 'D':
-        if (feature.properties.name.split('-').includes(selectedLine)) {
-          return { color: '#F37735', weight: 10 };
-        } else {
-          return { color: deselectedColor('#F37735'), weight: 5 };
-        }
-      case 'B':
-        if (feature.properties.name.split('-').includes(selectedLine)) {
-          return { color: '#F37735', weight: 10 };
-        } else {
-          return { color: deselectedColor('#F37735'), weight: 5 };
-        }
-      case 'F':
-        if (feature.properties.name.split('-').includes(selectedLine)) {
-          return { color: '#F37735', weight: 10 };
-        } else {
-          return { color: deselectedColor('#F37735'), weight: 5 };
-        }
-      case 'M':
-        if (feature.properties.name.split('-').includes(selectedLine)) {
-          return { color: '#F37735', weight: 10 };
-        } else {
-          return { color: deselectedColor('#F37735'), weight: 5 };
-        }
-      case 'N':
-        if (feature.properties.name.split('-').includes(selectedLine)) {
-          return { color: '#FFDD00', weight: 10 };
-        } else {
-          return { color: deselectedColor('#FFDD00'), weight: 5 };
-        }
-      case 'Q':
-        if (feature.properties.name.split('-').includes(selectedLine)) {
-          return { color: '#FFDD00', weight: 10 };
-        } else {
-          return { color: deselectedColor('#FFDD00'), weight: 5 };
-        }
-      case 'R':
-        if (feature.properties.name.split('-').includes(selectedLine)) {
-          return { color: '#FFDD00', weight: 10 };
-        } else {
-          return { color: deselectedColor('#FFDD00'), weight: 5 };
-        }
-      case 'W':
-        if (feature.properties.name.split('-').includes(selectedLine)) {
-          return { color: '#FFDD00', weight: 10 };
-        } else {
-          return { color: deselectedColor('#FFDD00'), weight: 5 };
-        }
-      case 'L':
-        if (feature.properties.name.split('-').includes(selectedLine)) {
-          return { color: '#808080', weight: 10 };
-        } else {
-          return { color: deselectedColor('#808080'), weight: 5 };
-        }
-      case 'S':
-        if (feature.properties.name.split('-').includes(selectedLine)) {
-          return { color: '#808080', weight: 10 };
-        } else {
-          return { color: deselectedColor('#808080'), weight: 5 };
-        }
-      case 'G':
-        if (feature.properties.name.split('-').includes(selectedLine)) {
-          return { color: '#6CBE45', weight: 10 };
-        } else {
-          return { color: deselectedColor('#6CBE45'), weight: 5 };
-        }
-      case 'J':
-        if (feature.properties.name.split('-').includes(selectedLine)) {
-          return { color: '#8D5524', weight: 10 };
-        } else {
-          return { color: deselectedColor('#8D5524'), weight: 5 };
-        }
-      case 'Z':
-        if (feature.properties.name.split('-').includes(selectedLine)) {
-          return { color: '#8D5524', weight: 10 };
-        } else {
-          return { color: deselectedColor('#8D5524'), weight: 5 };
-        }
-    }
+    // map GeoJSON features to their train styles
+    // highlight selected line, otherwise draw base map
 
-    // do we even have a selectedLine?
-    // if so, does feature.properties.name include selectedLine?
+    const line = feature.properties.rt_symbol;
+
+    if (feature.properties.name.split('-').includes(selectedLine)) {
+      // this feature includes the selected line, return highlighted color and weight
+      return { color: trainColors[line], weight: 10 };
+    } else {
+      // not selected, return base map style
+      return {
+        color: deselectedColor(trainColors[line]),
+        weight: 5,
+      };
+    }
   };
 
   // state below
@@ -339,25 +127,10 @@ function Map() {
               console.log('Feature: ', feature);
               console.log('Event: ', event);
             });
-            // layer.on('mouseover', (event) => {
-            //   setHoverLine(feature.properties.rt_symbol);
-            // });
-            // layer.on('mouseout', (event) => {
-            //   setHoverLine('');
-            // });
           }}
-          // eventHandlers={{
-          //   click: (event) => {
-          //     console.log('Line clicked', event);
-          //   },
-          //   mouseover: (event) => {
-          //     console.log('Hovered over line');
-          //   },
-          // }}
         />
 
         {stations.features.map((station) => {
-          // {allStops.features.map((station) => {
           return (
             <Marker
               key={station.properties.stop_id}
@@ -370,84 +143,10 @@ function Map() {
                 click: (event) => {
                   setSelectedStation(station);
                 },
-                // mouseover: (event) => {
-                //   console.log('HOVERED OVER ' + station.properties.stop_name);
-                //   setHoverStation(station);
-                // },
-                // mouseout: (event) => {
-                //   setHoverStation(false);
-                // },
               }}
             ></Marker>
           );
         })}
-
-        {/* <GeoJSON
-          key={stations.features.length} // important!
-          data={stations}
-          style={function (feature, latlng) {
-            return L.circleMarker(latlng, {
-              color: '#ffffff',
-              radius: 7,
-              pane: 'ALL',
-            })
-              .bindPopup(feature.properties.stop_name)
-              .openPopup()
-              .on('click', nada_stops)
-              .on('mouseover', function (e) {
-                this.openPopup();
-              })
-              .on('mouseout', function (e) {
-                this.closePopup();
-              });
-          }}
-        /> */}
-
-        {/* {filteredStations.map((station) => (
-          <Marker
-            key={station['Station ID']}
-            position={[station['GTFS Latitude'], station['GTFS Longitude']]}
-            eventHandlers={{
-              mouseover: () => {
-                setHoverStation(station);
-              },
-
-              mouseout: () => {
-                setHoverStation(false);
-              },
-
-              click: () => {
-                setSelectedStation(station);
-              },
-            }}
-          >
-            <Popup
-              position={[station['GTFS Latitude'], station['GTFS Longitude']]}
-            >
-              {' '}
-              <div>
-                <p>{station['Stop Name']}</p>
-                <p>
-                  {' '}
-                  Line: {station['Daytime Routes']} ({station.Line})
-                </p>
-              </div>
-            </Popup>
-          </Marker>
-        ))} */}
-        {/* <Polyline
-          pathOptions={{ color: '#808183', weight: 8 }}
-          positions={filteredLatLong}
-          disabled={true}
-          eventHandlers={{
-            click: (event) => {
-              console.log('Line clicked');
-            },
-            mouseover: (event) => {
-              console.log('Hovered over line');
-            },
-          }}
-        /> */}
 
         <Marker
           position={[40.785091, -73.968285]}
