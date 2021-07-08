@@ -119,9 +119,11 @@ function Map() {
             <img
               key={line}
               src={line}
+              name={lineName}
               className={selectedLine === lineName ? 'highlight' : ''}
-              onClick={() => {
-                if (selectedLine !== '') {
+              onClick={(event) => {
+                if (selectedLine === lineName) {
+                  console.log(event);
                   setSelectedLine('');
                 } else {
                   setSelectedLine(lineName);
