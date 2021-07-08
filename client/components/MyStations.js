@@ -129,7 +129,7 @@ function Map() {
         return feature.properties.name.split('-').includes(selectedLine);
       }),
     });
-  }, [selectedLine, selectedStation]);
+  }, [selectedLine]);
 
   return (
     <div>
