@@ -8,7 +8,7 @@ const { loggedIn } = require("./gatekeepingMiddleware");
 module.exports = router;
 
 // POST /api/matches/:userId
-router.post("/:userId", async (req, res, next) => {
+router.post("/:userId", loggedIn, async (req, res, next) => {
   try {
     // const requestingUserId = parseInt(req.user.id);
     const requestorUserId = 2;

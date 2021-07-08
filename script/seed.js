@@ -79,17 +79,18 @@ async function seed() {
 
   // Associate Stations and Lines with Users for Dummy Data
   const unionsquareStation = await Station.findByPk(214);
+  const columbusCircleStation = await Station.findByPk(162);
   await users[0].addStation(unionsquareStation);
+  await users[0].addStation(columbusCircleStation);
   const unionsquareLines = await unionsquareStation.getLines();
   await users[0].addLines(unionsquareLines);
-
+  const columbusCircleLines = await columbusCircleStation.getLines();
+  await users[0].addLines(columbusCircleLines);
 
   const queensboroughStation = await Station.findByPk(405);
   await users[1].addStation(queensboroughStation);
   const queensboroughLines = await queensboroughStation.getLines();
   await users[1].addLines(queensboroughLines);
-
-
 
   console.log(`seeded successfully`);
   return {
