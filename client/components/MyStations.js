@@ -28,13 +28,12 @@ function Map() {
     if (selectedLine != '') {
       // this feature includes the selected line, return highlighted color and weight
       if (feature.properties.name.split('-').includes(selectedLine)) {
-        return { color: trainColors[selectedLine], weight: 5 };
+        return { color: trainColors[selectedLine], weight: 5, opacity: 100 };
       } else {
         // this is awful I'm so sorry
         // (returning nothing draws the lines in the default style. Returning a broken color code causes them to not render at all, which is what we want. I hate this.)
         return {
-          color: '#2',
-          weight: 1,
+          opacity: 0,
         };
       }
     } else {
@@ -43,7 +42,7 @@ function Map() {
       //   color: '#4d4d4d',
       //   weight: 3,
       // };
-      return { color: trainColors[line], weight: 3 };
+      return { color: trainColors[line], weight: 3, opacity: 100 };
     }
   };
 
@@ -145,7 +144,7 @@ function Map() {
           : 'None'}
       </p>
       <button
-        type='button'
+        type="button"
         onClick={() => {
           dispatch(postStation(selectedStation.properties['stop_id']));
         }}
@@ -153,7 +152,7 @@ function Map() {
         Add Station
       </button>
       <button
-        type='button'
+        type="button"
         onClick={() => {
           dispatch(deleteStation(selectedStation.properties['stop_id']));
         }}
