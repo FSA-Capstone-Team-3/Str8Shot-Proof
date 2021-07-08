@@ -5,7 +5,7 @@ import {
   Marker,
   Popup,
   Polyline,
-  GeoJSON
+  GeoJSON,
 } from 'react-leaflet';
 import stations from '../../script/data/stations.json';
 import allLines from '../../script/data/subway_lines.geojson';
@@ -21,15 +21,24 @@ function Map() {
 
     const line = feature.properties.rt_symbol;
 
-    if (feature.properties.name.split('-').includes(selectedLine)) {
+    if (selectedLine != '') {
       // this feature includes the selected line, return highlighted color and weight
-      return { color: trainColors[line], weight: 7 };
+      if (feature.properties.name.split('-').includes(selectedLine)) {
+        return { color: trainColors[selectedLine], weight: 5 };
+      } else {
+        // this is awful I'm sorry
+        return {
+          color: '#2',
+          weight: 1,
+        };
+      }
     } else {
       // not selected, return base map style
-      return {
-        color: deselectedColor(trainColors[line]),
-        weight: 3
-      };
+      // return {
+      //   color: '#4d4d4d',
+      //   weight: 3,
+      // };
+      return { color: trainColors[line], weight: 3 };
     }
   };
 
@@ -65,7 +74,7 @@ function Map() {
     '4',
     '5',
     '6',
-    '7'
+    '7',
   ];
 
   // state below
@@ -73,37 +82,60 @@ function Map() {
 
   const [selectedLine, setSelectedLine] = useState('');
 
+  const [selectedLineGeo, setSelectedLineGeo] = useState({
+    type: 'FeatureCollection',
+    name: 'subway_lines',
+    crs: {
+      type: 'name',
+      properties: { name: 'urn:ogc:def:crs:OGC:1.3:CRS84' },
+    },
+    features: [],
+  });
+
   const [stations, setStations] = useState({
     type: 'FeatureCollection',
     name: 'all_stops_nyc_2017',
     crs: {
       type: 'name',
-      properties: { name: 'urn:ogc:def:crs:OGC:1.3:CRS84' }
+      properties: { name: 'urn:ogc:def:crs:OGC:1.3:CRS84' },
     },
-    features: []
+    features: [],
   });
 
   // end state
 
-  // select which stations to draw based on selected line
+  // select which stations and line to draw based on selected line
   useEffect(() => {
     setStations({
       type: 'FeatureCollection',
       name: 'all_stops_nyc_2017',
       crs: {
         type: 'name',
-        properties: { name: 'urn:ogc:def:crs:OGC:1.3:CRS84' }
+        properties: { name: 'urn:ogc:def:crs:OGC:1.3:CRS84' },
       },
       features: allStops.features.filter((station) => {
         return station.properties.trains.split(' ').includes(selectedLine);
-      })
+      }),
     });
+
+    setSelectedLineGeo({
+      type: 'FeatureCollection',
+      name: 'subway_lines',
+      crs: {
+        type: 'name',
+        properties: { name: 'urn:ogc:def:crs:OGC:1.3:CRS84' },
+      },
+      features: allLines.features.filter((feature) => {
+        return feature.properties.name.split('-').includes(selectedLine);
+      }),
+    });
+    console.log(trainColors[selectedLine]);
   }, [selectedLine]);
 
   return (
     <div>
       <p>Choose your line:</p>
-      <div id='line-picker'>
+      <div id="line-picker">
         {lineIcons.map((line, idx) => {
           const lineName = lineHelper[idx];
           return (
@@ -132,7 +164,7 @@ function Map() {
       >
         <TileLayer
           attribution='<a href="https://www.maptiler.com/copyright/">&COPY; MapTiler</a> '
-          url='https://api.maptiler.com/maps/basic/{z}/{x}/{y}.png?key=481HF56KCNL52f9yp3TR'
+          url="https://api.maptiler.com/maps/basic/{z}/{x}/{y}.png?key=481HF56KCNL52f9yp3TR"
         />
 
         <GeoJSON
@@ -150,13 +182,13 @@ function Map() {
               key={station.properties.stop_id}
               position={[
                 station.properties.stop_lat,
-                station.properties.stop_lon
+                station.properties.stop_lon,
               ]}
               title={station.properties.stop_name}
               eventHandlers={{
                 click: (event) => {
                   setSelectedStation(station);
-                }
+                },
               }}
             ></Marker>
           );
