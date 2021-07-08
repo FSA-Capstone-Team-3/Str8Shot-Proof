@@ -1,13 +1,13 @@
-const router = require("express").Router();
-const { Op } = require("sequelize");
+const router = require('express').Router();
+const { Op } = require('sequelize');
 const {
-  models: { User, Line, Station },
-} = require("../db");
+  models: { User, Line, Station, Match },
+} = require('../db');
 // const { loggedIn } = require;
 module.exports = router;
 
 // GET /api/connections/
-router.get("/", async (req, res, next) => {
+router.get('/', async (req, res, next) => {
   try {
     // const userId = parseInt(req.user.id);
     const userId = 2;
@@ -46,6 +46,18 @@ router.get("/", async (req, res, next) => {
         {
           model: Station,
           include: { model: Line, where: { name: { [Op.in]: userLineNames } } },
+        },
+        // can we refine down this match query?
+        {
+          model: User,
+          as: 'requestor',
+          attributes: ['id'],
+          where: { id: userId },
+        },
+        {
+          model: User,
+          as: 'requestee',
+          attributes: ['id'],
         },
       ],
     });
