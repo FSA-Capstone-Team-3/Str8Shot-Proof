@@ -1,23 +1,24 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   MapContainer,
   TileLayer,
   Marker,
   Popup,
   Polyline,
-  GeoJSON,
+  GeoJSON
 } from 'react-leaflet';
 import stations from '../../script/data/stations.json';
 import allLines from '../../script/data/subway_lines.geojson';
 import allStops from '../../script/data/subway_stops.geojson';
-import { postStation, deleteStation } from '../store/stations';
-
+import { fetchStations } from '../store/stations';
+import HomeStationButtons from './HomeStationButtons';
 import { trainColors, deselectedColor } from '../utils/trainColors';
 
 function Map() {
   // access dispatch
   const dispatch = useDispatch();
+
   // line styling callback
   const trainStyle = (feature) => {
     // map GeoJSON features to their train styles
@@ -33,7 +34,7 @@ function Map() {
         // this is awful I'm so sorry
         // (returning nothing draws the lines in the default style. Returning a broken color code causes them to not render at all, which is what we want. I hate this.)
         return {
-          opacity: 0,
+          opacity: 0
         };
       }
     } else {
@@ -78,7 +79,7 @@ function Map() {
     '4',
     '5',
     '6',
-    '7',
+    '7'
   ];
 
   // state below
@@ -91,9 +92,9 @@ function Map() {
     name: 'all_stops_nyc_2017',
     crs: {
       type: 'name',
-      properties: { name: 'urn:ogc:def:crs:OGC:1.3:CRS84' },
+      properties: { name: 'urn:ogc:def:crs:OGC:1.3:CRS84' }
     },
-    features: [],
+    features: []
   });
 
   // end state
@@ -105,18 +106,24 @@ function Map() {
       name: 'all_stops_nyc_2017',
       crs: {
         type: 'name',
-        properties: { name: 'urn:ogc:def:crs:OGC:1.3:CRS84' },
+        properties: { name: 'urn:ogc:def:crs:OGC:1.3:CRS84' }
       },
       features: allStops.features.filter((station) => {
         return station.properties.trains.split(' ').includes(selectedLine);
-      }),
+      })
     });
   }, [selectedLine]);
+
+  // Loads homeStations on initial render
+  const homeStations = useSelector((state) => state.stations);
+  useEffect(() => {
+    dispatch(fetchStations());
+  }, []);
 
   return (
     <div>
       <p>Choose your line:</p>
-      <div id="line-picker">
+      <div id='line-picker'>
         {lineIcons.map((line, idx) => {
           const lineName = lineHelper[idx];
           return (
@@ -143,22 +150,12 @@ function Map() {
           ? selectedStation.properties.stop_name
           : 'None'}
       </p>
-      <button
-        type="button"
-        onClick={() => {
-          dispatch(postStation(selectedStation.properties['stop_id']));
-        }}
-      >
-        Add Station
-      </button>
-      <button
-        type="button"
-        onClick={() => {
-          dispatch(deleteStation(selectedStation.properties['stop_id']));
-        }}
-      >
-        Remove Station
-      </button>
+      {selectedStation.properties ? (
+        <HomeStationButtons
+          selectedStation={selectedStation}
+          homeStations={homeStations}
+        />
+      ) : null}
       <MapContainer
         center={[40.785091, -73.968285]}
         zoom={14}
@@ -184,7 +181,7 @@ function Map() {
               key={station.properties.stop_id}
               position={[
                 station.properties.stop_lat,
-                station.properties.stop_lon,
+                station.properties.stop_lon
               ]}
               title={station.properties.stop_name}
               eventHandlers={{
@@ -194,7 +191,7 @@ function Map() {
                   } else {
                     setSelectedStation(station);
                   }
-                },
+                }
               }}
             ></Marker>
           );
@@ -205,3 +202,24 @@ function Map() {
 }
 
 export default Map;
+
+{
+  /* <React.Fragment>
+  <button
+    type='button'
+    onClick={() => {
+      dispatch(postStation(selectedStation.properties['stop_id']));
+    }}
+  >
+    Add Station
+  </button>
+  <button
+    type='button'
+    onClick={() => {
+      dispatch(deleteStation(selectedStation.properties['stop_id']));
+    }}
+  >
+    Remove Station
+  </button>
+</React.Fragment>; */
+}
