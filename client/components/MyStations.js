@@ -78,7 +78,7 @@ function Map() {
   ];
 
   // state below
-  const [selectedStation, setSelectedStation] = useState({});
+  const [selectedStation, setSelectedStation] = useState('');
 
   const [selectedLine, setSelectedLine] = useState('');
 
@@ -129,7 +129,7 @@ function Map() {
         return feature.properties.name.split('-').includes(selectedLine);
       }),
     });
-  }, [selectedLine]);
+  }, [selectedLine, selectedStation]);
 
   return (
     <div>
@@ -143,7 +143,11 @@ function Map() {
               src={line}
               className={selectedLine === lineName ? 'highlight' : ''}
               onClick={() => {
-                setSelectedLine(lineName);
+                if (selectedLine !== '') {
+                  setSelectedLine('');
+                } else {
+                  setSelectedLine(lineName);
+                }
               }}
             />
           );
@@ -186,7 +190,11 @@ function Map() {
               title={station.properties.stop_name}
               eventHandlers={{
                 click: (event) => {
-                  setSelectedStation(station);
+                  if (selectedStation !== '') {
+                    setSelectedStation('');
+                  } else {
+                    setSelectedStation(station);
+                  }
                 },
               }}
             ></Marker>
