@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import {
   MapContainer,
   TileLayer,
@@ -10,10 +11,13 @@ import {
 import stations from '../../script/data/stations.json';
 import allLines from '../../script/data/subway_lines.geojson';
 import allStops from '../../script/data/subway_stops.geojson';
+import { postStation, deleteStation } from '../store/stations';
 
 import { trainColors, deselectedColor } from '../utils/trainColors';
 
 function Map() {
+  // access dispatch
+  const dispatch = useDispatch();
   // line styling callback
   const trainStyle = (feature) => {
     // map GeoJSON features to their train styles
@@ -125,6 +129,22 @@ function Map() {
           ? selectedStation.properties.stop_name
           : 'None'}
       </p>
+      <button
+        type='button'
+        onClick={() => {
+          dispatch(postStation(selectedStation.properties['stop_id']));
+        }}
+      >
+        Add Station
+      </button>
+      <button
+        type='button'
+        onClick={() => {
+          dispatch(deleteStation(selectedStation.properties['stop_id']));
+        }}
+      >
+        Remove Station
+      </button>
       <MapContainer
         center={[40.785091, -73.968285]}
         zoom={14}
