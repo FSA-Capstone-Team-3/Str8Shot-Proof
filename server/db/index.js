@@ -19,13 +19,13 @@ User.belongsToMany(Line, { through: "user_line" });
 
 User.belongsToMany(User, {
   through: Match,
-  as: "user1_id",
-  foreignKey: "user1_id",
+  as: "requestor",
+  foreignKey: "user2_id",
 });
 User.belongsToMany(User, {
   through: Match,
-  as: "user2_id",
-  foreignKey: "user2_id",
+  as: "requestee",
+  foreignKey: "user1_id",
 });
 
 module.exports = {
