@@ -7,6 +7,7 @@ import Welcome from './components/Welcome';
 import MyStations from './components/MyStations';
 import Explore from './components/Explore';
 import { me } from './store';
+import { fetchStations } from './store/stations';
 
 /**
  * COMPONENT
@@ -16,6 +17,7 @@ const Routes = () => {
 
   useEffect(() => {
     dispatch(me());
+    dispatch(fetchStations());
   }, []);
 
   const isLoggedIn = useSelector((state) => !!state.auth.id);

@@ -16,7 +16,7 @@ const NavbarCustom = () => {
             <img
               src="8logo.png"
               alt="site logo"
-              style={{ 'max-height': '70px' }}
+              style={{ maxHeight: '70px' }}
             />
           </a>
         </div>

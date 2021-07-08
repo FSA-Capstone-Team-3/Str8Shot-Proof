@@ -115,18 +115,37 @@ export const deselectedColor = (rgb) => {
 };
 
 // line styling callback
-export const trainStyle = (feature, selectedLine) => {
+export const trainStyle = (feature, highlightLines) => {
+  // works with both array of strings and a single string, which might be empty
+  // convert it to an array so that we can share logic with multiple selected lines
+  if (typeof highlightLines === 'string') {
+    if (highlightLines !== '') {
+      highlightLines = [highlightLines];
+    } else {
+      highlightLines = [];
+    }
+  }
+  // highlightLines is an array of lines to highlight, ie ['N', 'Q', '3']
+
   // map GeoJSON features to their train styles
   // highlight selected line, otherwise draw base map
 
   const line = feature.properties.rt_symbol;
 
-  if (selectedLine != '') {
-    // this feature includes the selected line, return highlighted color and weight
-    if (feature.properties.name.split('-').includes(selectedLine)) {
-      return { color: trainColors[selectedLine], weight: 5, opacity: 100 };
+  if (highlightLines.length !== 0) {
+    // this feature includes one of the selected lines, return highlighted color and weight
+    if (
+      feature.properties.name
+        .split('-')
+        .some((train) => highlightLines.includes(train))
+    ) {
+      return {
+        color: trainColors[feature.properties.rt_symbol],
+        weight: 5,
+        opacity: 100,
+      };
     } else {
-      // make other lines transparent
+      // this feature doesn't include one of our selected lines, make it transparent
       return {
         opacity: 0,
       };

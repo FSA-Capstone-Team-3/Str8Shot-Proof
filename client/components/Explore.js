@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   MapContainer,
   TileLayer,
@@ -19,44 +19,75 @@ function Explore() {
   // access dispatch
   const dispatch = useDispatch();
 
-  // make array from all files in public/line_icons
-  function importAll(res) {
-    const result = [];
-    res.keys().forEach((key) => result.push(res(key)));
-    return result;
-  }
-
   // state below
-  const [selectedStation, setSelectedStation] = useState('');
+  // const [selectedStation, setSelectedStation] = useState('');
 
-  const [selectedLine, setSelectedLine] = useState('');
+  const [myLines, setMyLines] = useState([]);
 
-  const [stations, setStations] = useState({
-    type: 'FeatureCollection',
-    name: 'all_stops_nyc_2017',
-    crs: {
-      type: 'name',
-      properties: { name: 'urn:ogc:def:crs:OGC:1.3:CRS84' },
-    },
-    features: [],
-  });
+  const myStations = useSelector((state) => state.stations);
+
+  // const [myStations, setMyStations] = useState({
+  //   type: 'FeatureCollection',
+  //   name: 'all_stops_nyc_2017',
+  //   crs: {
+  //     type: 'name',
+  //     properties: { name: 'urn:ogc:def:crs:OGC:1.3:CRS84' },
+  //   },
+  //   features: [],
+  // });
 
   // end state
 
   // select which stations and line to draw based on selected line
+  // useEffect(() => {
+  //   setMyStations({
+  //     type: 'FeatureCollection',
+  //     name: 'all_stops_nyc_2017',
+  //     crs: {
+  //       type: 'name',
+  //       properties: { name: 'urn:ogc:def:crs:OGC:1.3:CRS84' },
+  //     },
+  //     features: allStops.features.filter((station) => {
+  //       return station.properties.trains.split(' ').includes(selectedLine);
+  //     }),
+  //   });
+  // }, [myLines]);
   useEffect(() => {
-    setStations({
-      type: 'FeatureCollection',
-      name: 'all_stops_nyc_2017',
-      crs: {
-        type: 'name',
-        properties: { name: 'urn:ogc:def:crs:OGC:1.3:CRS84' },
-      },
-      features: allStops.features.filter((station) => {
-        return station.properties.trains.split(' ').includes(selectedLine);
-      }),
+    // gather list of lines to draw given some stations
+    const lines = [];
+    myStations.forEach((station) => {
+      station.lines.forEach((line) => {
+        if (lines.includes(line.name) === false) {
+          lines.push(line.name);
+        }
+      });
     });
-  }, [selectedLine]);
+    setMyLines(lines);
+  }, [myStations]);
+
+  console.log('My lines:', myLines);
+
+  const renderMyStations = () => {
+    if (myStations.length === 0) {
+      return null;
+    }
+    return myStations.map((station) => {
+      return (
+        <Marker
+          key={station.code}
+          position={[station.latitude, station.longitude]}
+          alt={station.name}
+          title={station.name}
+          eventHandlers={{}}
+        ></Marker>
+      );
+    });
+  };
+
+  // const renderMyLines = () => {
+  //   if (myStations.length === 0) {
+  //     return null;
+  //   }
 
   return (
     <div>
@@ -72,41 +103,15 @@ function Explore() {
 
         <GeoJSON
           data={allLines}
-          style={(feature) => trainStyle(feature, selectedLine)}
+          style={(feature) => trainStyle(feature, myLines)}
           onEachFeature={(feature, layer) => {
             // layer.on('click', (event) => {
             //   setSelectedLine(feature.properties.rt_symbol);
             // });
           }}
         />
-        {stations.features.map((station) => {
-          return (
-            <Marker
-              key={station.properties.stop_id}
-              position={[
-                station.properties.stop_lat,
-                station.properties.stop_lon,
-              ]}
-              alt={station.properties.stop_name}
-              title={station.properties.stop_name}
-              eventHandlers={{
-                click: (event) => {
-                  // are we clicking on an already selected station? If so, deselect it
-                  if (
-                    selectedStation != '' &&
-                    selectedStation.properties.stop_name ===
-                      station.properties.stop_name
-                  ) {
-                    setSelectedStation('');
-                  } else {
-                    // else make new selected station
-                    setSelectedStation(station);
-                  }
-                },
-              }}
-            ></Marker>
-          );
-        })}
+        {renderMyStations()}
+        {/* {renderMyLines()} */}
       </MapContainer>
     </div>
   );
