@@ -82,16 +82,6 @@ function Map() {
 
   const [selectedLine, setSelectedLine] = useState('');
 
-  const [selectedLineGeo, setSelectedLineGeo] = useState({
-    type: 'FeatureCollection',
-    name: 'subway_lines',
-    crs: {
-      type: 'name',
-      properties: { name: 'urn:ogc:def:crs:OGC:1.3:CRS84' },
-    },
-    features: [],
-  });
-
   const [stations, setStations] = useState({
     type: 'FeatureCollection',
     name: 'all_stops_nyc_2017',
@@ -115,18 +105,6 @@ function Map() {
       },
       features: allStops.features.filter((station) => {
         return station.properties.trains.split(' ').includes(selectedLine);
-      }),
-    });
-
-    setSelectedLineGeo({
-      type: 'FeatureCollection',
-      name: 'subway_lines',
-      crs: {
-        type: 'name',
-        properties: { name: 'urn:ogc:def:crs:OGC:1.3:CRS84' },
-      },
-      features: allLines.features.filter((feature) => {
-        return feature.properties.name.split('-').includes(selectedLine);
       }),
     });
   }, [selectedLine]);
