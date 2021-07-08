@@ -129,7 +129,6 @@ function Map() {
         return feature.properties.name.split('-').includes(selectedLine);
       }),
     });
-    console.log(trainColors[selectedLine]);
   }, [selectedLine]);
 
   return (
@@ -164,7 +163,7 @@ function Map() {
       >
         <TileLayer
           attribution='<a href="https://www.maptiler.com/copyright/">&COPY; MapTiler</a> '
-          url="https://api.maptiler.com/maps/basic/{z}/{x}/{y}.png?key=481HF56KCNL52f9yp3TR"
+          url={`https://api.maptiler.com/maps/basic/{z}/{x}/{y}.png?key=${process.env.MAPTILER_API_KEY}`}
         />
 
         <GeoJSON
