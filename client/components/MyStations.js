@@ -124,7 +124,6 @@ function Map() {
               className={selectedLine === lineName ? 'highlight' : ''}
               onClick={(event) => {
                 if (selectedLine === lineName) {
-                  console.log(event);
                   setSelectedLine('');
                 } else {
                   setSelectedLine(lineName);
