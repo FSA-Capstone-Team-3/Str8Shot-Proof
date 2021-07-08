@@ -30,7 +30,7 @@ router.post("/:userId", async (req, res, next) => {
       await existingMatch.update({
         user2_status: true,
       });
-      res.json(existingMatch);
+      return res.json(existingMatch);
       // Otherwise, set requesting user to user1_id, and mark user1_status as "true" and user2_status as "false"
     } else {
       await requestor.addRequestee(requestee);
