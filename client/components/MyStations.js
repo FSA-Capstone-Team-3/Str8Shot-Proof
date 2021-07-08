@@ -30,18 +30,13 @@ function Map() {
       if (feature.properties.name.split('-').includes(selectedLine)) {
         return { color: trainColors[selectedLine], weight: 5, opacity: 100 };
       } else {
-        // this is awful I'm so sorry
-        // (returning nothing draws the lines in the default style. Returning a broken color code causes them to not render at all, which is what we want. I hate this.)
+        // make other lines transparent
         return {
           opacity: 0,
         };
       }
     } else {
       // not selected, return base map style
-      // return {
-      //   color: '#4d4d4d',
-      //   weight: 3,
-      // };
       return { color: trainColors[line], weight: 3, opacity: 100 };
     }
   };
@@ -124,6 +119,7 @@ function Map() {
               key={line}
               src={line}
               name={lineName}
+              alt={lineName + ' train'}
               className={selectedLine === lineName ? 'highlight' : ''}
               onClick={(event) => {
                 if (selectedLine === lineName) {
@@ -189,7 +185,11 @@ function Map() {
               title={station.properties.stop_name}
               eventHandlers={{
                 click: (event) => {
-                  if (selectedStation !== '') {
+                  if (
+                    selectedStation != '' &&
+                    selectedStation.properties.stop_name ===
+                      station.properties.stop_name
+                  ) {
                     setSelectedStation('');
                   } else {
                     setSelectedStation(station);
