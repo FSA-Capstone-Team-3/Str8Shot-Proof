@@ -26,7 +26,8 @@ function Map() {
       if (feature.properties.name.split('-').includes(selectedLine)) {
         return { color: trainColors[selectedLine], weight: 5 };
       } else {
-        // this is awful I'm sorry
+        // this is awful I'm so sorry
+        // (returning nothing draws the lines in the default style. Returning a broken color code causes them to not render at all, which is what we want. I hate this.)
         return {
           color: '#2',
           weight: 1,
