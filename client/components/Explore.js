@@ -15,9 +15,16 @@ import { postStation, deleteStation } from '../store/stations';
 
 import { trainStyle, lineIcons, lineOrder } from '../utils/trainUtils';
 
-function MyStations() {
+function Explore() {
   // access dispatch
   const dispatch = useDispatch();
+
+  // make array from all files in public/line_icons
+  function importAll(res) {
+    const result = [];
+    res.keys().forEach((key) => result.push(res(key)));
+    return result;
+  }
 
   // state below
   const [selectedStation, setSelectedStation] = useState('');
@@ -53,51 +60,6 @@ function MyStations() {
 
   return (
     <div>
-      <p>Choose your line:</p>
-      <div id="line-picker">
-        {lineIcons.map((line, idx) => {
-          const lineName = lineOrder[idx];
-          return (
-            <img
-              key={line}
-              src={line}
-              name={lineName}
-              alt={lineName + ' train'}
-              className={selectedLine === lineName ? 'highlight' : ''}
-              onClick={(event) => {
-                if (selectedLine === lineName) {
-                  setSelectedLine('');
-                } else {
-                  setSelectedLine(lineName);
-                }
-              }}
-            />
-          );
-        })}
-      </div>
-      <p>Your selected line: {selectedLine}</p>
-      <p>
-        Your selected station:{' '}
-        {selectedStation.properties
-          ? selectedStation.properties.stop_name
-          : 'None'}
-      </p>
-      <button
-        type="button"
-        onClick={() => {
-          dispatch(postStation(selectedStation.properties['stop_id']));
-        }}
-      >
-        Add Station
-      </button>
-      <button
-        type="button"
-        onClick={() => {
-          dispatch(deleteStation(selectedStation.properties['stop_id']));
-        }}
-      >
-        Remove Station
-      </button>
       <MapContainer
         center={[40.785091, -73.968285]}
         zoom={14}
@@ -150,4 +112,4 @@ function MyStations() {
   );
 }
 
-export default MyStations;
+export default Explore;

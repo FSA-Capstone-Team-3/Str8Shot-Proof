@@ -21,8 +21,45 @@ export const trainColors = {
   S: '#808183',
   G: '#6cbe45',
   J: '#996633',
-  Z: '#996633'
+  Z: '#996633',
 };
+
+// helper array with same indexes as img files, to map line name to line image
+export const lineOrder = [
+  'A',
+  'C',
+  'E',
+  'B',
+  'D',
+  'F',
+  'M',
+  'G',
+  'L',
+  'J',
+  'Z',
+  'N',
+  'Q',
+  'R',
+  'W',
+  '1',
+  '2',
+  '3',
+  '4',
+  '5',
+  '6',
+  '7',
+];
+
+// make array from all files in public/line_icons
+function importAll(res) {
+  const result = [];
+  res.keys().forEach((key) => result.push(res(key)));
+  return result;
+}
+
+export const lineIcons = importAll(
+  require.context('../../public/line_icons', true, /\.svg$/)
+);
 
 export const deselectedColor = (rgb) => {
   // RGB is a cube, with r,g,b as coords
@@ -75,4 +112,27 @@ export const deselectedColor = (rgb) => {
 
   // return hsl CSS color code
   return 'hsl(' + hue + ',' + saturation + '%,' + luminance + '%)';
+};
+
+// line styling callback
+export const trainStyle = (feature, selectedLine) => {
+  // map GeoJSON features to their train styles
+  // highlight selected line, otherwise draw base map
+
+  const line = feature.properties.rt_symbol;
+
+  if (selectedLine != '') {
+    // this feature includes the selected line, return highlighted color and weight
+    if (feature.properties.name.split('-').includes(selectedLine)) {
+      return { color: trainColors[selectedLine], weight: 5, opacity: 100 };
+    } else {
+      // make other lines transparent
+      return {
+        opacity: 0,
+      };
+    }
+  } else {
+    // not selected, return base map style
+    return { color: trainColors[line], weight: 3, opacity: 100 };
+  }
 };
