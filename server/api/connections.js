@@ -10,7 +10,7 @@ module.exports = router;
 router.get('/', async (req, res, next) => {
   try {
     // const userId = parseInt(req.user.id);
-    const userId = 2;
+    const userId = 1;
     const loggedInUser = await User.findByPk(userId);
     const userLines = await loggedInUser.getLines();
 
@@ -47,17 +47,23 @@ router.get('/', async (req, res, next) => {
           model: Station,
           include: { model: Line, where: { name: { [Op.in]: userLineNames } } },
         },
-        // can we refine down this match query?
         {
           model: User,
+          required: false,
           as: 'requestor',
           attributes: ['id'],
-          where: { id: userId },
+          where: {
+            id: userId,
+          },
         },
         {
           model: User,
+          required: false,
           as: 'requestee',
           attributes: ['id'],
+          where: {
+            id: userId,
+          },
         },
       ],
     });
