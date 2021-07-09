@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
   MapContainer,
   TileLayer,
@@ -7,13 +7,13 @@ import {
   Popup,
   Polyline,
   GeoJSON,
-} from 'react-leaflet';
-import stations from '../../script/data/stations.json';
-import allLines from '../../script/data/subway_lines.geojson';
-import allStops from '../../script/data/subway_stops.geojson';
-import { postStation, deleteStation } from '../store/stations';
-
-import { trainStyle, lineIcons, lineOrder } from '../utils/trainUtils';
+} from "react-leaflet";
+import stations from "../../script/data/stations.json";
+import allLines from "../../script/data/subway_lines.geojson";
+import allStops from "../../script/data/subway_stops.geojson";
+import { postStation, deleteStation } from "../store/stations";
+import { trainStyle, lineIcons, lineOrder } from "../utils/trainUtils";
+import ExploreUsers from "./ExploreUsers";
 
 function Explore() {
   // access dispatch
@@ -43,7 +43,7 @@ function Explore() {
     // do this on every change to my stations
   }, [myStations]);
 
-  console.log('My lines:', myLines);
+  console.log("My lines:", myLines);
 
   const renderMyStations = () => {
     if (myStations.length === 0) {
@@ -64,6 +64,7 @@ function Explore() {
 
   return (
     <div>
+      <ExploreUsers />
       <MapContainer
         center={[40.785091, -73.968285]}
         zoom={14}
