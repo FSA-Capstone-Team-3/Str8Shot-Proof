@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
   MapContainer,
   TileLayer,
@@ -7,14 +7,15 @@ import {
   Popup,
   Polyline,
   GeoJSON,
-} from 'react-leaflet';
-import stations from '../../script/data/stations.json';
-import allLines from '../../script/data/subway_lines.geojson';
-import allStops from '../../script/data/subway_stops.geojson';
-import { postStation, deleteStation } from '../store/stations';
-
-import { trainStyle, lineIcons, lineOrder } from '../utils/trainUtils';
+} from "react-leaflet";
+import stations from "../../script/data/stations.json";
+import allLines from "../../script/data/subway_lines.geojson";
+import allStops from "../../script/data/subway_stops.geojson";
+import { postStation, deleteStation } from "../store/stations";
+import { trainStyle, lineIcons, lineOrder } from "../utils/trainUtils";
+import ExploreUsers from "./ExploreUsers";
 import { greenIcon } from '../utils/markerIcons';
+
 
 function Explore() {
   // access dispatch
@@ -41,7 +42,10 @@ function Explore() {
     });
     // store the list of lines in local state
     setMyLines(lines);
+
+
   }, [myStations]); // do this on every change to my stations
+
 
   const renderMyStations = () => {
     if (myStations.length === 0) {
@@ -62,6 +66,7 @@ function Explore() {
   };
 
   return (
+
     <>
       <div className="columns is-mobile">
         <div className="column is-8"></div>
@@ -84,7 +89,7 @@ function Explore() {
       </div>
       <div className="columns is-mobile">
         <div className="column is-3">
-          <p> Connections go here </p>
+          <ExploreUsers />
         </div>
         <div className="column is-9">
           <p>Explore stations and nearby activites</p>

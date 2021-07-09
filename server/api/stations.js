@@ -8,10 +8,9 @@ module.exports = router;
 
 // GET /api/stations
 // returns users home/chosen stations
-router.get('/', async (req, res, next) => {
+router.get('/', loggedIn, async (req, res, next) => {
   try {
-    // const userId = parseInt(req.user.id);
-    const userId = 1;
+    const userId = parseInt(req.user.id);
     const user = await User.findByPk(userId);
     const stations = await user.getStations();
 
@@ -42,10 +41,9 @@ router.get('/', async (req, res, next) => {
 });
 
 // POST /api/stations/:stationCode
-router.post('/:stationCode', async (req, res, next) => {
+router.post('/:stationCode', loggedIn, async (req, res, next) => {
   try {
-    // const userId = parseInt(req.user.id);
-    const userId = 1;
+    const userId = parseInt(req.user.id);
     const user = await User.findByPk(userId);
 
     const stationCode = req.params.stationCode;
@@ -56,6 +54,8 @@ router.post('/:stationCode', async (req, res, next) => {
     });
 
     await user.addStation(station);
+    const lines = await station.getLines();
+    await user.addLines(lines);
 
     const stationWithLines = await Station.findOne({
       where: {
@@ -71,10 +71,9 @@ router.post('/:stationCode', async (req, res, next) => {
 });
 
 // DELETE /api/stations/:stationCode
-router.delete('/:stationCode', async (req, res, next) => {
+router.delete('/:stationCode', loggedIn, async (req, res, next) => {
   try {
-    // const userId = parseInt(req.user.id);
-    const userId = 1;
+    const userId = parseInt(req.user.id);
     const user = await User.findByPk(userId);
 
     const stationCode = req.params.stationCode;
@@ -84,7 +83,17 @@ router.delete('/:stationCode', async (req, res, next) => {
       },
     });
 
+    const lines = await station.getLines();
+    await user.removeLines(lines);
     await user.removeStation(station);
+
+    const stationsLeft = await user.getStations();
+    await Promise.all(
+      stationsLeft.map(async (station) => {
+        const linesLeft = await station.getLines();
+        await user.addLines(linesLeft);
+      })
+    );
 
     const stationWithLines = await Station.findOne({
       where: {
