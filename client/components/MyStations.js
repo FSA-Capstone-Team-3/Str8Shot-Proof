@@ -1,19 +1,21 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   MapContainer,
   TileLayer,
   Marker,
   Popup,
   Polyline,
-  GeoJSON,
+  GeoJSON
 } from 'react-leaflet';
 import stations from '../../script/data/stations.json';
 import allLines from '../../script/data/subway_lines.geojson';
 import allStops from '../../script/data/subway_stops.geojson';
-import { postStation, deleteStation } from '../store/stations';
 
+import { fetchStations } from '../store/stations';
+import HomeStationButtons from './HomeStationButtons';
 import { trainStyle, lineIcons, lineOrder } from '../utils/trainUtils';
+
 
 function MyStations() {
   // access dispatch
@@ -29,9 +31,9 @@ function MyStations() {
     name: 'all_stops_nyc_2017',
     crs: {
       type: 'name',
-      properties: { name: 'urn:ogc:def:crs:OGC:1.3:CRS84' },
+      properties: { name: 'urn:ogc:def:crs:OGC:1.3:CRS84' }
     },
-    features: [],
+    features: []
   });
 
   // end state
@@ -43,18 +45,24 @@ function MyStations() {
       name: 'all_stops_nyc_2017',
       crs: {
         type: 'name',
-        properties: { name: 'urn:ogc:def:crs:OGC:1.3:CRS84' },
+        properties: { name: 'urn:ogc:def:crs:OGC:1.3:CRS84' }
       },
       features: allStops.features.filter((station) => {
         return station.properties.trains.split(' ').includes(selectedLine);
-      }),
+      })
     });
   }, [selectedLine]);
+
+  // Loads homeStations on initial render
+  const homeStations = useSelector((state) => state.stations);
+  useEffect(() => {
+    dispatch(fetchStations());
+  }, []);
 
   return (
     <div>
       <p>Choose your line:</p>
-      <div id="line-picker">
+      <div id='line-picker'>
         {lineIcons.map((line, idx) => {
           const lineName = lineOrder[idx];
           return (
@@ -82,22 +90,12 @@ function MyStations() {
           ? selectedStation.properties.stop_name
           : 'None'}
       </p>
-      <button
-        type="button"
-        onClick={() => {
-          dispatch(postStation(selectedStation.properties['stop_id']));
-        }}
-      >
-        Add Station
-      </button>
-      <button
-        type="button"
-        onClick={() => {
-          dispatch(deleteStation(selectedStation.properties['stop_id']));
-        }}
-      >
-        Remove Station
-      </button>
+      {selectedStation.properties ? (
+        <HomeStationButtons
+          selectedStation={selectedStation}
+          homeStations={homeStations}
+        />
+      ) : null}
       <MapContainer
         center={[40.785091, -73.968285]}
         zoom={14}
@@ -123,7 +121,7 @@ function MyStations() {
               key={station.properties.stop_id}
               position={[
                 station.properties.stop_lat,
-                station.properties.stop_lon,
+                station.properties.stop_lon
               ]}
               alt={station.properties.stop_name}
               title={station.properties.stop_name}
@@ -140,7 +138,7 @@ function MyStations() {
                     // else make new selected station
                     setSelectedStation(station);
                   }
-                },
+                }
               }}
             ></Marker>
           );
