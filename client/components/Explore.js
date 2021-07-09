@@ -20,49 +20,27 @@ function Explore() {
   const dispatch = useDispatch();
 
   // state below
-  // const [selectedStation, setSelectedStation] = useState('');
 
   const [myLines, setMyLines] = useState([]);
 
   const myStations = useSelector((state) => state.stations);
 
-  // const [myStations, setMyStations] = useState({
-  //   type: 'FeatureCollection',
-  //   name: 'all_stops_nyc_2017',
-  //   crs: {
-  //     type: 'name',
-  //     properties: { name: 'urn:ogc:def:crs:OGC:1.3:CRS84' },
-  //   },
-  //   features: [],
-  // });
-
-  // end state
-
-  // select which stations and line to draw based on selected line
-  // useEffect(() => {
-  //   setMyStations({
-  //     type: 'FeatureCollection',
-  //     name: 'all_stops_nyc_2017',
-  //     crs: {
-  //       type: 'name',
-  //       properties: { name: 'urn:ogc:def:crs:OGC:1.3:CRS84' },
-  //     },
-  //     features: allStops.features.filter((station) => {
-  //       return station.properties.trains.split(' ').includes(selectedLine);
-  //     }),
-  //   });
-  // }, [myLines]);
   useEffect(() => {
     // gather list of lines to draw given some stations
     const lines = [];
+    // walk through list of stations
     myStations.forEach((station) => {
+      // on each station, walk through list of lines that go through that station
       station.lines.forEach((line) => {
+        // if the line isn't in our list, add it
         if (lines.includes(line.name) === false) {
           lines.push(line.name);
         }
       });
     });
+    // store the list of lines in local state
     setMyLines(lines);
+    // do this on every change to my stations
   }, [myStations]);
 
   console.log('My lines:', myLines);
@@ -83,11 +61,6 @@ function Explore() {
       );
     });
   };
-
-  // const renderMyLines = () => {
-  //   if (myStations.length === 0) {
-  //     return null;
-  //   }
 
   return (
     <div>
@@ -111,7 +84,6 @@ function Explore() {
           }}
         />
         {renderMyStations()}
-        {/* {renderMyLines()} */}
       </MapContainer>
     </div>
   );
