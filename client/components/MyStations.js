@@ -202,24 +202,3 @@ function Map() {
 }
 
 export default Map;
-
-{
-  /* <React.Fragment>
-  <button
-    type='button'
-    onClick={() => {
-      dispatch(postStation(selectedStation.properties['stop_id']));
-    }}
-  >
-    Add Station
-  </button>
-  <button
-    type='button'
-    onClick={() => {
-      dispatch(deleteStation(selectedStation.properties['stop_id']));
-    }}
-  >
-    Remove Station
-  </button>
-</React.Fragment>; */
-}
