@@ -21,7 +21,7 @@ import {
   allStations,
 } from '../utils/trainUtils';
 
-import { greenIcon } from '../utils/icons';
+import { greenIcon } from '../utils/markerIcons';
 
 function MyStations() {
   // access dispatch
@@ -56,12 +56,12 @@ function MyStations() {
     <div>
       <p>Choose your line:</p>
       <div id="line-picker">
-        {lineIcons.map((line, idx) => {
-          const lineName = lineOrder[idx];
+        {Object.keys(lineIcons).map((lineName, idx) => {
+          // const lineName = lineOrder[idx];
           return (
             <img
-              key={line}
-              src={line}
+              key={lineName}
+              src={lineIcons[lineName]}
               name={lineName}
               alt={lineName + ' train'}
               className={selectedLine === lineName ? 'highlight' : ''}

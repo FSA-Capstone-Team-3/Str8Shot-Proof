@@ -69,9 +69,15 @@ function importAll(res) {
   return result;
 }
 
-export const lineIcons = importAll(
+const lineIconsSVG = importAll(
   require.context('../../public/line_icons', true, /\.svg$/)
 );
+
+export const lineIcons = {};
+
+lineOrder.forEach((line, idx) => {
+  lineIcons[line] = lineIconsSVG[idx];
+});
 
 export const deselectedColor = (rgb) => {
   // RGB is a cube, with r,g,b as coords
