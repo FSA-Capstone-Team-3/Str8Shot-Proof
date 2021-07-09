@@ -6,7 +6,7 @@ import {
   Marker,
   Popup,
   Polyline,
-  GeoJSON
+  GeoJSON,
 } from 'react-leaflet';
 import stations from '../../script/data/stations.json';
 import allLines from '../../script/data/subway_lines.geojson';
@@ -14,8 +14,14 @@ import allStops from '../../script/data/subway_stops.geojson';
 
 import { fetchStations } from '../store/stations';
 import HomeStationButtons from './HomeStationButtons';
-import { trainStyle, lineIcons, lineOrder } from '../utils/trainUtils';
+import {
+  trainStyle,
+  lineIcons,
+  lineOrder,
+  allStations,
+} from '../utils/trainUtils';
 
+import { greenIcon } from '../utils/markerIcons';
 
 function MyStations() {
   // access dispatch
@@ -26,35 +32,22 @@ function MyStations() {
 
   const [selectedLine, setSelectedLine] = useState('');
 
-  const [stations, setStations] = useState({
-    type: 'FeatureCollection',
-    name: 'all_stops_nyc_2017',
-    crs: {
-      type: 'name',
-      properties: { name: 'urn:ogc:def:crs:OGC:1.3:CRS84' }
-    },
-    features: []
-  });
+  const [stations, setStations] = useState([]);
+
+  const homeStations = useSelector((state) => state.stations);
 
   // end state
 
   // select which stations and line to draw based on selected line
   useEffect(() => {
-    setStations({
-      type: 'FeatureCollection',
-      name: 'all_stops_nyc_2017',
-      crs: {
-        type: 'name',
-        properties: { name: 'urn:ogc:def:crs:OGC:1.3:CRS84' }
-      },
-      features: allStops.features.filter((station) => {
-        return station.properties.trains.split(' ').includes(selectedLine);
+    setStations(
+      allStations.filter((station) => {
+        return station.lines.includes(selectedLine);
       })
-    });
+    );
   }, [selectedLine]);
 
   // Loads homeStations on initial render
-  const homeStations = useSelector((state) => state.stations);
   useEffect(() => {
     dispatch(fetchStations());
   }, []);
@@ -62,13 +55,13 @@ function MyStations() {
   return (
     <div>
       <p>Choose your line:</p>
-      <div id='line-picker'>
-        {lineIcons.map((line, idx) => {
-          const lineName = lineOrder[idx];
+      <div id="line-picker">
+        {Object.keys(lineIcons).map((lineName, idx) => {
+          // const lineName = lineOrder[idx];
           return (
             <img
-              key={line}
-              src={line}
+              key={lineName}
+              src={lineIcons[lineName]}
               name={lineName}
               alt={lineName + ' train'}
               className={selectedLine === lineName ? 'highlight' : ''}
@@ -90,7 +83,7 @@ function MyStations() {
           ? selectedStation.properties.stop_name
           : 'None'}
       </p>
-      {selectedStation.properties ? (
+      {selectedStation !== '' ? (
         <HomeStationButtons
           selectedStation={selectedStation}
           homeStations={homeStations}
@@ -115,32 +108,55 @@ function MyStations() {
             // });
           }}
         />
-        {stations.features.map((station) => {
+
+        {stations.map((station) => {
           return (
             <Marker
-              key={station.properties.stop_id}
-              position={[
-                station.properties.stop_lat,
-                station.properties.stop_lon
-              ]}
-              alt={station.properties.stop_name}
-              title={station.properties.stop_name}
+              key={station.code}
+              position={[station.latitude, station.longitude]}
+              alt={station.name}
+              title={station.name}
               eventHandlers={{
                 click: (event) => {
                   // are we clicking on an already selected station? If so, deselect it
                   if (
                     selectedStation != '' &&
-                    selectedStation.properties.stop_name ===
-                      station.properties.stop_name
+                    selectedStation.name === station.name
                   ) {
                     setSelectedStation('');
                   } else {
                     // else make new selected station
                     setSelectedStation(station);
                   }
-                }
+                },
               }}
-            ></Marker>
+            />
+          );
+        })}
+
+        {homeStations.map((station) => {
+          return (
+            <Marker
+              icon={greenIcon}
+              key={station.code}
+              position={[station.latitude, station.longitude]}
+              alt={station.name}
+              title={station.name}
+              eventHandlers={{
+                click: (event) => {
+                  // are we clicking on an already selected station? If so, deselect it
+                  if (
+                    selectedStation != '' &&
+                    selectedStation.name === station.name
+                  ) {
+                    setSelectedStation('');
+                  } else {
+                    // else make new selected station
+                    setSelectedStation(station);
+                  }
+                },
+              }}
+            />
           );
         })}
       </MapContainer>

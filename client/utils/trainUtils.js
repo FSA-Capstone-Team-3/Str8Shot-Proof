@@ -1,3 +1,15 @@
+import allStops from '../../script/data/subway_stops.geojson';
+
+export const allStations = allStops.features.map((station) => {
+  return {
+    name: station.properties.stop_name,
+    code: station.properties.stop_id,
+    latitude: station.properties.stop_lat,
+    longitude: station.properties.stop_lon,
+    lines: station.properties.trains.split(' '),
+  };
+});
+
 export const trainColors = {
   1: '#ee352e',
   2: '#ee352e',
@@ -57,9 +69,15 @@ function importAll(res) {
   return result;
 }
 
-export const lineIcons = importAll(
+const lineIconsSVG = importAll(
   require.context('../../public/line_icons', true, /\.svg$/)
 );
+
+export const lineIcons = {};
+
+lineOrder.forEach((line, idx) => {
+  lineIcons[line] = lineIconsSVG[idx];
+});
 
 export const deselectedColor = (rgb) => {
   // RGB is a cube, with r,g,b as coords

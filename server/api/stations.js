@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const { Op } = require('sequelize');
 const {
-  models: { User, Station, Line }
+  models: { User, Station, Line },
 } = require('../db');
 const { loggedIn } = require('./gatekeepingMiddleware');
 module.exports = router;
@@ -22,13 +22,20 @@ router.get('/', async (req, res, next) => {
     const stationsWithLines = await Station.findAll({
       where: {
         code: {
-          [Op.in]: stationCodes
-        }
+          [Op.in]: stationCodes,
+        },
       },
-      include: { model: Line }
+      include: { model: Line },
     });
 
-    res.json(stationsWithLines);
+    const stationsWithSimpleLines = stationsWithLines.map((station) => {
+      // for each station, map lines prop to array of line names
+      station = station.get({ plain: true });
+      station.lines = station.lines.map((line) => line.name);
+      return station;
+    });
+
+    res.json(stationsWithSimpleLines);
   } catch (err) {
     next(err);
   }
@@ -44,17 +51,17 @@ router.post('/:stationCode', async (req, res, next) => {
     const stationCode = req.params.stationCode;
     const station = await Station.findOne({
       where: {
-        code: stationCode
-      }
+        code: stationCode,
+      },
     });
 
     await user.addStation(station);
 
     const stationWithLines = await Station.findOne({
       where: {
-        code: stationCode
+        code: stationCode,
       },
-      include: { model: Line }
+      include: { model: Line },
     });
 
     res.json(stationWithLines);
@@ -73,17 +80,17 @@ router.delete('/:stationCode', async (req, res, next) => {
     const stationCode = req.params.stationCode;
     const station = await Station.findOne({
       where: {
-        code: stationCode
-      }
+        code: stationCode,
+      },
     });
 
     await user.removeStation(station);
 
     const stationWithLines = await Station.findOne({
       where: {
-        code: stationCode
+        code: stationCode,
       },
-      include: { model: Line }
+      include: { model: Line },
     });
 
     res.json(stationWithLines);
