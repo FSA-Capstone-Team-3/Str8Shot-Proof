@@ -52,9 +52,6 @@ function MyStations() {
     dispatch(fetchStations());
   }, []);
 
-  console.log('>>>>>>', selectedLine);
-  console.log('>>>>>>>>', stations);
-
   return (
     <div>
       <p>Choose your line:</p>
