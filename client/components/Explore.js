@@ -14,6 +14,8 @@ import allStops from "../../script/data/subway_stops.geojson";
 import { postStation, deleteStation } from "../store/stations";
 import { trainStyle, lineIcons, lineOrder } from "../utils/trainUtils";
 import ExploreUsers from "./ExploreUsers";
+import { greenIcon } from '../utils/markerIcons';
+
 
 function Explore() {
   // access dispatch
@@ -33,17 +35,17 @@ function Explore() {
       // on each station, walk through list of lines that go through that station
       station.lines.forEach((line) => {
         // if the line isn't in our list, add it
-        if (lines.includes(line.name) === false) {
-          lines.push(line.name);
+        if (lines.includes(line) === false) {
+          lines.push(line);
         }
       });
     });
     // store the list of lines in local state
     setMyLines(lines);
-    // do this on every change to my stations
-  }, [myStations]);
 
-  console.log("My lines:", myLines);
+
+  }, [myStations]); // do this on every change to my stations
+
 
   const renderMyStations = () => {
     if (myStations.length === 0) {
@@ -53,6 +55,7 @@ function Explore() {
       return (
         <Marker
           key={station.code}
+          icon={greenIcon}
           position={[station.latitude, station.longitude]}
           alt={station.name}
           title={station.name}
@@ -63,30 +66,57 @@ function Explore() {
   };
 
   return (
-    <div>
-      <ExploreUsers />
-      <MapContainer
-        center={[40.785091, -73.968285]}
-        zoom={14}
-        scrollWheelZoom={true}
-      >
-        <TileLayer
-          attribution='<a href="https://www.maptiler.com/copyright/">&COPY; MapTiler</a> '
-          url={`https://api.maptiler.com/maps/basic/{z}/{x}/{y}.png?key=${process.env.MAPTILER_API_KEY}`}
-        />
 
-        <GeoJSON
-          data={allLines}
-          style={(feature) => trainStyle(feature, myLines)}
-          onEachFeature={(feature, layer) => {
-            // layer.on('click', (event) => {
-            //   setSelectedLine(feature.properties.rt_symbol);
-            // });
-          }}
-        />
-        {renderMyStations()}
-      </MapContainer>
-    </div>
+    <>
+      <div className="columns is-mobile">
+        <div className="column is-8"></div>
+        <div className="column">
+          <p>My lines</p>
+          {Object.keys(lineIcons)
+            .filter((line) => myLines.includes(line))
+            .map((line) => {
+              return (
+                <img
+                  className="line-icon-small"
+                  key={line}
+                  src={lineIcons[line]}
+                  name={line}
+                  alt={line + ' train'}
+                />
+              );
+            })}
+        </div>
+      </div>
+      <div className="columns is-mobile">
+        <div className="column is-3">
+          <ExploreUsers />
+        </div>
+        <div className="column is-9">
+          <p>Explore stations and nearby activites</p>
+          <MapContainer
+            center={[40.785091, -73.968285]}
+            zoom={14}
+            scrollWheelZoom={true}
+          >
+            <TileLayer
+              attribution='<a href="https://www.maptiler.com/copyright/">&COPY; MapTiler</a> '
+              url={`https://api.maptiler.com/maps/basic/{z}/{x}/{y}.png?key=${process.env.MAPTILER_API_KEY}`}
+            />
+
+            <GeoJSON
+              data={allLines}
+              style={(feature) => trainStyle(feature, myLines)}
+              onEachFeature={(feature, layer) => {
+                // layer.on('click', (event) => {
+                //   setSelectedLine(feature.properties.rt_symbol);
+                // });
+              }}
+            />
+            {renderMyStations()}
+          </MapContainer>
+        </div>
+      </div>
+    </>
   );
 }
 

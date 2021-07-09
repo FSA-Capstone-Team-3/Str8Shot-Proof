@@ -27,7 +27,14 @@ router.get('/', loggedIn, async (req, res, next) => {
       include: { model: Line },
     });
 
-    res.json(stationsWithLines);
+    const stationsWithSimpleLines = stationsWithLines.map((station) => {
+      // for each station, map lines prop to array of line names
+      station = station.get({ plain: true });
+      station.lines = station.lines.map((line) => line.name);
+      return station;
+    });
+
+    res.json(stationsWithSimpleLines);
   } catch (err) {
     next(err);
   }
