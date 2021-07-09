@@ -1,3 +1,15 @@
+import allStops from '../../script/data/subway_stops.geojson';
+
+export const allStations = allStops.features.map((station) => {
+  return {
+    name: station.properties.stop_name,
+    code: station.properties.stop_id,
+    latitude: station.properties.stop_lat,
+    longitude: station.properties.stop_lon,
+    lines: station.properties.trains.split(' '),
+  };
+});
+
 export const trainColors = {
   1: '#ee352e',
   2: '#ee352e',
