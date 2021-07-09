@@ -3,14 +3,13 @@ const { Op } = require('sequelize');
 const {
   models: { User, Line, Station },
 } = require('../db');
-// const { loggedIn } = require;
+const { loggedIn } = require('./gatekeepingMiddleware');
 module.exports = router;
 
 // GET /api/connections/
-router.get('/', async (req, res, next) => {
+router.get('/', loggedIn, async (req, res, next) => {
   try {
-    // const userId = parseInt(req.user.id);
-    const userId = 1;
+    const userId = parseInt(req.user.id);
     const loggedInUser = await User.findByPk(userId);
     const userLines = await loggedInUser.getLines();
 

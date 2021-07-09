@@ -13,33 +13,58 @@ const setStations = (stations) => ({ type: SET_STATIONS, stations });
 
 export const fetchStations = () => {
   return async (dispatch) => {
-    try {
-      const { data } = await axios.get('/api/stations');
-      dispatch(setStations(data));
-    } catch (err) {
-      console.log(err);
+    const token = window.localStorage.getItem(TOKEN);
+    if (token) {
+      try {
+        const { data } = await axios.get('/api/stations', {
+          headers: {
+            authorization: token,
+          },
+        });
+        dispatch(setStations(data));
+      } catch (err) {
+        console.log(err);
+      }
     }
   };
 };
 
 export const postStation = (stationCode) => {
   return async (dispatch) => {
-    try {
-      const { data } = await axios.post(`/api/stations/${stationCode}`);
-      dispatch(fetchStations());
-    } catch (err) {
-      console.log(err);
+    const token = window.localStorage.getItem(TOKEN);
+    if (token) {
+      try {
+        const { data } = await axios.post(
+          `/api/stations/${stationCode}`,
+          null,
+          {
+            headers: {
+              authorization: token,
+            },
+          }
+        );
+        dispatch(fetchStations());
+      } catch (err) {
+        console.log(err);
+      }
     }
   };
 };
 
 export const deleteStation = (stationCode) => {
   return async (dispatch) => {
-    try {
-      const { data } = await axios.delete(`/api/stations/${stationCode}`);
-      dispatch(fetchStations());
-    } catch (err) {
-      console.log(err);
+    const token = window.localStorage.getItem(TOKEN);
+    if (token) {
+      try {
+        const { data } = await axios.delete(`/api/stations/${stationCode}`, {
+          headers: {
+            authorization: token,
+          },
+        });
+        dispatch(fetchStations());
+      } catch (err) {
+        console.log(err);
+      }
     }
   };
 };
