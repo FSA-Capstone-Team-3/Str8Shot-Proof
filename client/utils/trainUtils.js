@@ -21,8 +21,45 @@ export const trainColors = {
   S: '#808183',
   G: '#6cbe45',
   J: '#996633',
-  Z: '#996633'
+  Z: '#996633',
 };
+
+// helper array with same indexes as img files, to map line name to line image
+export const lineOrder = [
+  'A',
+  'C',
+  'E',
+  'B',
+  'D',
+  'F',
+  'M',
+  'G',
+  'L',
+  'J',
+  'Z',
+  'N',
+  'Q',
+  'R',
+  'W',
+  '1',
+  '2',
+  '3',
+  '4',
+  '5',
+  '6',
+  '7',
+];
+
+// make array from all files in public/line_icons
+function importAll(res) {
+  const result = [];
+  res.keys().forEach((key) => result.push(res(key)));
+  return result;
+}
+
+export const lineIcons = importAll(
+  require.context('../../public/line_icons', true, /\.svg$/)
+);
 
 export const deselectedColor = (rgb) => {
   // RGB is a cube, with r,g,b as coords
@@ -75,4 +112,46 @@ export const deselectedColor = (rgb) => {
 
   // return hsl CSS color code
   return 'hsl(' + hue + ',' + saturation + '%,' + luminance + '%)';
+};
+
+// line styling callback
+export const trainStyle = (feature, highlightLines) => {
+  // works with both array of strings and a single string, which might be empty
+  // convert it to an array so that we can share logic with multiple selected lines
+  if (typeof highlightLines === 'string') {
+    if (highlightLines !== '') {
+      highlightLines = [highlightLines];
+    } else {
+      highlightLines = [];
+    }
+  }
+  // highlightLines is an array of lines to highlight, ie ['N', 'Q', '3']
+
+  // map GeoJSON features to their train styles
+  // highlight selected line, otherwise draw base map
+
+  const line = feature.properties.rt_symbol;
+
+  if (highlightLines.length !== 0) {
+    // this feature includes one of the selected lines, return highlighted color and weight
+    if (
+      feature.properties.name
+        .split('-')
+        .some((train) => highlightLines.includes(train))
+    ) {
+      return {
+        color: trainColors[feature.properties.rt_symbol],
+        weight: 5,
+        opacity: 100,
+      };
+    } else {
+      // this feature doesn't include one of our selected lines, make it transparent
+      return {
+        opacity: 0,
+      };
+    }
+  } else {
+    // not selected, return base map style
+    return { color: trainColors[line], weight: 3, opacity: 100 };
+  }
 };

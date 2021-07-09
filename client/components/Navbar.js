@@ -16,12 +16,20 @@ const NavbarCustom = () => {
             <img
               src="8logo.png"
               alt="site logo"
-              style={{ 'max-height': '70px' }}
+              style={{ maxHeight: '70px' }}
             />
           </a>
         </div>
         <div className="navbar-item">
           <h1>Str8Shot</h1>
+        </div>
+
+        <div className="navbar-item">
+          <Link to="/mystations">My Stations</Link>
+        </div>
+
+        <div className="navbar-item">
+          <Link to="/explore">Explore</Link>
         </div>
 
         <div className="navbar-menu" id="nav-links">
@@ -30,7 +38,6 @@ const NavbarCustom = () => {
             {isLoggedIn ? (
               <div className="navbar-item">
                 {/* The navbar will show these links after you log in */}
-                <Link to="/home">Home</Link>
                 <a href="#" onClick={() => dispatch(logout())}>
                   Logout
                 </a>

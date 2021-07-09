@@ -13,73 +13,11 @@ import allLines from '../../script/data/subway_lines.geojson';
 import allStops from '../../script/data/subway_stops.geojson';
 import { postStation, deleteStation } from '../store/stations';
 
-import { trainColors, deselectedColor } from '../utils/trainColors';
+import { trainStyle, lineIcons, lineOrder } from '../utils/trainUtils';
 
-function Map() {
+function MyStations() {
   // access dispatch
   const dispatch = useDispatch();
-  // line styling callback
-  const trainStyle = (feature) => {
-    // map GeoJSON features to their train styles
-    // highlight selected line, otherwise draw base map
-
-    const line = feature.properties.rt_symbol;
-
-    if (selectedLine != '') {
-      // this feature includes the selected line, return highlighted color and weight
-      if (feature.properties.name.split('-').includes(selectedLine)) {
-        return { color: trainColors[selectedLine], weight: 5, opacity: 100 };
-      } else {
-        // this is awful I'm so sorry
-        // (returning nothing draws the lines in the default style. Returning a broken color code causes them to not render at all, which is what we want. I hate this.)
-        return {
-          opacity: 0,
-        };
-      }
-    } else {
-      // not selected, return base map style
-      // return {
-      //   color: '#4d4d4d',
-      //   weight: 3,
-      // };
-      return { color: trainColors[line], weight: 3, opacity: 100 };
-    }
-  };
-
-  // make array from all files in public/line_icons
-  function importAll(res) {
-    const result = [];
-    res.keys().forEach((key) => result.push(res(key)));
-    return result;
-  }
-  const lineIcons = importAll(
-    require.context('../../public/line_icons', true, /\.svg$/)
-  );
-  // helper array with same indexes as img files, to map line name to line image
-  const lineHelper = [
-    'A',
-    'C',
-    'E',
-    'B',
-    'D',
-    'F',
-    'M',
-    'G',
-    'L',
-    'J',
-    'Z',
-    'N',
-    'Q',
-    'R',
-    'W',
-    '1',
-    '2',
-    '3',
-    '4',
-    '5',
-    '6',
-    '7',
-  ];
 
   // state below
   const [selectedStation, setSelectedStation] = useState('');
@@ -118,12 +56,13 @@ function Map() {
       <p>Choose your line:</p>
       <div id="line-picker">
         {lineIcons.map((line, idx) => {
-          const lineName = lineHelper[idx];
+          const lineName = lineOrder[idx];
           return (
             <img
               key={line}
               src={line}
               name={lineName}
+              alt={lineName + ' train'}
               className={selectedLine === lineName ? 'highlight' : ''}
               onClick={(event) => {
                 if (selectedLine === lineName) {
@@ -171,7 +110,7 @@ function Map() {
 
         <GeoJSON
           data={allLines}
-          style={trainStyle}
+          style={(feature) => trainStyle(feature, selectedLine)}
           onEachFeature={(feature, layer) => {
             // layer.on('click', (event) => {
             //   setSelectedLine(feature.properties.rt_symbol);
@@ -186,12 +125,19 @@ function Map() {
                 station.properties.stop_lat,
                 station.properties.stop_lon,
               ]}
+              alt={station.properties.stop_name}
               title={station.properties.stop_name}
               eventHandlers={{
                 click: (event) => {
-                  if (selectedStation !== '') {
+                  // are we clicking on an already selected station? If so, deselect it
+                  if (
+                    selectedStation != '' &&
+                    selectedStation.properties.stop_name ===
+                      station.properties.stop_name
+                  ) {
                     setSelectedStation('');
                   } else {
+                    // else make new selected station
                     setSelectedStation(station);
                   }
                 },
@@ -204,4 +150,4 @@ function Map() {
   );
 }
 
-export default Map;
+export default MyStations;
