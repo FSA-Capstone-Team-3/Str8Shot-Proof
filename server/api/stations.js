@@ -47,6 +47,8 @@ router.post('/:stationCode', loggedIn, async (req, res, next) => {
     });
 
     await user.addStation(station);
+    const lines = await station.getLines();
+    await user.addLines(lines);
 
     const stationWithLines = await Station.findOne({
       where: {
@@ -74,7 +76,17 @@ router.delete('/:stationCode', loggedIn, async (req, res, next) => {
       },
     });
 
+    const lines = await station.getLines();
+    await user.removeLines(lines);
     await user.removeStation(station);
+
+    const stationsLeft = await user.getStations();
+    await Promise.all(
+      stationsLeft.map(async (station) => {
+        const linesLeft = await station.getLines();
+        await user.addLines(linesLeft);
+      })
+    );
 
     const stationWithLines = await Station.findOne({
       where: {
