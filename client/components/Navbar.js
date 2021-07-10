@@ -1,7 +1,7 @@
-import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
-import { logout } from '../store';
+import React from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
+import { logout } from "../store";
 
 const NavbarCustom = () => {
   const dispatch = useDispatch();
@@ -10,18 +10,15 @@ const NavbarCustom = () => {
 
   return (
     <>
-      <nav className="navbar has-shadow">
+      <nav className="navbar has-shadow is-dark">
         <div className="navbar-brand">
           <a className="navbar-item">
             <img
               src="8logo.png"
               alt="site logo"
-              style={{ maxHeight: '70px' }}
+              style={{ maxHeight: "70px" }}
             />
           </a>
-        </div>
-        <div className="navbar-item">
-          <h1>Str8Shot</h1>
         </div>
 
         <div className="navbar-item">
@@ -34,7 +31,6 @@ const NavbarCustom = () => {
 
         <div className="navbar-menu" id="nav-links">
           <div className="navbar-end">
-            "
             {isLoggedIn ? (
               <div className="navbar-item">
                 {/* The navbar will show these links after you log in */}

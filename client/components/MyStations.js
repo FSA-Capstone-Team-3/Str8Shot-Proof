@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
   MapContainer,
   TileLayer,
@@ -7,30 +7,31 @@ import {
   Popup,
   Polyline,
   GeoJSON,
-} from 'react-leaflet';
-import stations from '../../script/data/stations.json';
-import allLines from '../../script/data/subway_lines.geojson';
-import allStops from '../../script/data/subway_stops.geojson';
+  Tooltip,
+} from "react-leaflet";
+import stations from "../../script/data/stations.json";
+import allLines from "../../script/data/subway_lines.geojson";
+import allStops from "../../script/data/subway_stops.geojson";
 
-import { fetchStations } from '../store/stations';
-import HomeStationButtons from './HomeStationButtons';
+import { fetchStations } from "../store/stations";
+import HomeStationButtons from "./HomeStationButtons";
 import {
   trainStyle,
   lineIcons,
   lineOrder,
   allStations,
-} from '../utils/trainUtils';
+} from "../utils/trainUtils";
 
-import { greenIcon } from '../utils/markerIcons';
+import { blueIcon, greenIcon } from "../utils/markerIcons";
 
 function MyStations() {
   // access dispatch
   const dispatch = useDispatch();
 
   // state below
-  const [selectedStation, setSelectedStation] = useState('');
+  const [selectedStation, setSelectedStation] = useState("");
 
-  const [selectedLine, setSelectedLine] = useState('');
+  const [selectedLine, setSelectedLine] = useState("");
 
   const [stations, setStations] = useState([]);
 
@@ -54,44 +55,55 @@ function MyStations() {
 
   return (
     <div>
-      <p>Choose your line:</p>
-      <div id="line-picker">
-        {Object.keys(lineIcons).map((lineName, idx) => {
-          // const lineName = lineOrder[idx];
-          return (
-            <img
-              key={lineName}
-              src={lineIcons[lineName]}
-              name={lineName}
-              alt={lineName + ' train'}
-              className={selectedLine === lineName ? 'highlight' : ''}
-              onClick={(event) => {
-                if (selectedLine === lineName) {
-                  setSelectedLine('');
-                } else {
-                  setSelectedLine(lineName);
-                }
-              }}
-            />
-          );
-        })}
-      </div>
-      <p>Your selected line: {selectedLine}</p>
-      <p>
-        Your selected station:{' '}
-        {selectedStation.properties
-          ? selectedStation.properties.stop_name
-          : 'None'}
-      </p>
-      {selectedStation !== '' ? (
-        <HomeStationButtons
-          selectedStation={selectedStation}
-          homeStations={homeStations}
-        />
-      ) : null}
+      <section className="section">
+        <h1 className="title">Choose Your Lines and Stations</h1>
+        <h2 className="subtitle">
+          Select a line first, and then add a station on that line.
+        </h2>
+        <div id="line-picker">
+          {Object.keys(lineIcons).map((lineName, idx) => {
+            // const lineName = lineOrder[idx];
+            return (
+              <img
+                key={lineName}
+                src={lineIcons[lineName]}
+                name={lineName}
+                alt={lineName + " train"}
+                className={selectedLine === lineName ? "highlight" : ""}
+                onClick={(event) => {
+                  if (selectedLine === lineName) {
+                    setSelectedLine("");
+                  } else {
+                    setSelectedLine(lineName);
+                  }
+                }}
+              />
+            );
+          })}
+        </div>
+        <br />
+        <p className="title is-4">
+          Your selected station: <br />
+        </p>
+        <p className="subtitle is-5">
+          {selectedStation
+            ? `${selectedStation.name} (Lines: ${selectedStation.lines.join(
+                " / "
+              )})`
+            : ""}
+        </p>
+        {selectedStation !== "" ? (
+          <HomeStationButtons
+            selectedStation={selectedStation}
+            homeStations={homeStations}
+            setSelectedLine={setSelectedLine}
+          />
+        ) : null}
+      </section>
+
       <MapContainer
         center={[40.785091, -73.968285]}
-        zoom={14}
+        zoom={12}
         scrollWheelZoom={true}
       >
         <TileLayer
@@ -112,6 +124,13 @@ function MyStations() {
         {stations.map((station) => {
           return (
             <Marker
+              icon={
+                homeStations.filter(
+                  (homeStation) => homeStation.name === station.name
+                ).length
+                  ? greenIcon
+                  : blueIcon
+              }
               key={station.code}
               position={[station.latitude, station.longitude]}
               alt={station.name}
@@ -120,17 +139,20 @@ function MyStations() {
                 click: (event) => {
                   // are we clicking on an already selected station? If so, deselect it
                   if (
-                    selectedStation != '' &&
+                    selectedStation != "" &&
                     selectedStation.name === station.name
                   ) {
-                    setSelectedStation('');
+                    setSelectedStation("");
                   } else {
                     // else make new selected station
                     setSelectedStation(station);
+                    console.log(selectedStation);
                   }
                 },
               }}
-            />
+            >
+              <Tooltip>{station.name}</Tooltip>
+            </Marker>
           );
         })}
 
@@ -146,17 +168,19 @@ function MyStations() {
                 click: (event) => {
                   // are we clicking on an already selected station? If so, deselect it
                   if (
-                    selectedStation != '' &&
+                    selectedStation != "" &&
                     selectedStation.name === station.name
                   ) {
-                    setSelectedStation('');
+                    setSelectedStation("");
                   } else {
                     // else make new selected station
                     setSelectedStation(station);
                   }
                 },
               }}
-            />
+            >
+              <Tooltip>{station.name}</Tooltip>
+            </Marker>
           );
         })}
       </MapContainer>
