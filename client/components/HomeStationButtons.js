@@ -6,6 +6,7 @@ function HomeStationButtons({
   selectedStation,
   homeStations,
   setSelectedLine,
+  setSelectedStation,
 }) {
   const dispatch = useDispatch();
 
@@ -29,6 +30,7 @@ function HomeStationButtons({
           onClick={() => {
             dispatch(deleteStation(selectedStation.code));
             setSelectedLine("");
+            setSelectedStation("");
           }}
         >
           Remove Station
@@ -40,6 +42,7 @@ function HomeStationButtons({
           onClick={() => {
             dispatch(postStation(selectedStation.code));
             setSelectedLine("");
+            setSelectedStation("");
           }}
         >
           Add Station

@@ -97,14 +97,15 @@ function MyStations() {
             selectedStation={selectedStation}
             homeStations={homeStations}
             setSelectedLine={setSelectedLine}
+            setSelectedStation={setSelectedStation}
           />
         ) : null}
       </section>
 
       <MapContainer
-        center={[40.785091, -73.968285]}
-        zoom={12}
-        scrollWheelZoom={true}
+        center={[40.758845, -73.983382]}
+        zoom={13}
+        scrollWheelZoom={false}
       >
         <TileLayer
           attribution='<a href="https://www.maptiler.com/copyright/">&COPY; MapTiler</a> '
