@@ -53,8 +53,12 @@ form div {
 }
 
 .leaflet-container {
-  margin-left: 4.5em;
+  margin-left: 4.1em;
   margin-bottom: 4.5em;
   height: 800px;
   width: 1075px;
+}
+
+.display-flex {
+  display: flex;
 }

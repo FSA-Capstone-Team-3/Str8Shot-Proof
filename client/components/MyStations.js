@@ -58,7 +58,8 @@ function MyStations() {
       <section className="section">
         <h1 className="title">Choose Your Lines and Stations</h1>
         <h2 className="subtitle">
-          Select a line first, and then add a station on that line.
+          First, select a line first. Then, select a station on that line on the
+          map below.
         </h2>
         <div id="line-picker">
           {Object.keys(lineIcons).map((lineName, idx) => {
@@ -82,16 +83,42 @@ function MyStations() {
           })}
         </div>
         <br />
-        <p className="title is-4">
-          Your selected station: <br />
-        </p>
-        <p className="subtitle is-5">
+        <p className="title is-5">{selectedStation ? "You've selected" : ""}</p>
+        <p className="subtitle is-6 display-flex">
           {selectedStation
-            ? `${selectedStation.name} (Lines: ${selectedStation.lines.join(
-                " / "
-              )})`
+            ? Object.keys(lineIcons)
+                .filter((line) => selectedStation.lines.includes(line))
+                .map((line, idx) => {
+                  if (idx === 0) {
+                    return (
+                      <React.Fragment>
+                        <div style={{ marginRight: ".5rem" }}>
+                          {selectedStation.name}
+                        </div>
+                        <img
+                          className="line-icon-small"
+                          key={line}
+                          src={lineIcons[line]}
+                          name={line}
+                          alt={line + " train"}
+                        />
+                      </React.Fragment>
+                    );
+                  } else {
+                    return (
+                      <img
+                        className="line-icon-small"
+                        key={line}
+                        src={lineIcons[line]}
+                        name={line}
+                        alt={line + " train"}
+                      />
+                    );
+                  }
+                })
             : ""}
         </p>
+
         {selectedStation !== "" ? (
           <HomeStationButtons
             selectedStation={selectedStation}
