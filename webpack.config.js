@@ -1,4 +1,10 @@
-const Dotenv = require('dotenv-webpack');
+let dotenvPlugin;
+if (process.env.DEPLOY) {
+  const Dotenv = require('dotenv-webpack');
+  dotenvPlugin = new Dotenv();
+} else {
+  dotenvPlugin = null;
+}
 
 module.exports = {
   entry: ['./client/index.js'],
@@ -6,7 +12,7 @@ module.exports = {
     path: __dirname,
     filename: './public/bundle.js',
   },
-  plugins: [new Dotenv()],
+  plugins: [dotenvPlugin],
   devtool: 'source-map',
   module: {
     rules: [
