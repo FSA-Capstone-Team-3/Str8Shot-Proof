@@ -27,7 +27,7 @@ module.exports = {
     path: __dirname,
     filename: './public/bundle.js',
   },
-  plugins: [new webpack.DefinePlugin(envKeys)],
+  plugins: [new webpack.DefinePlugin(envVars)],
   devtool: 'source-map',
   module: {
     rules: [
