@@ -94,10 +94,6 @@ function MyStations() {
         zoom={14}
         scrollWheelZoom={true}
       >
-        {/* <TileLayer
-          attribution='<a href="https://www.maptiler.com/copyright/">&COPY; MapTiler</a> '
-          url={`https://api.maptiler.com/maps/basic/{z}/{x}/{y}.png?key=${process.env.MAPTILER_API_KEY}`}
-        /> */}
         <TileLayer
           attribution='<a href="https://www.maptiler.com/copyright/">&COPY; MapTiler</a> '
           url={`https://api.maptiler.com/maps/basic/{z}/{x}/{y}.png?key=${process.env.MAPTILER_API_KEY}`}
