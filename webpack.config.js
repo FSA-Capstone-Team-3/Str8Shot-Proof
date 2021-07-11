@@ -2,12 +2,16 @@ const webpack = require('webpack');
 const dotenv = require('dotenv');
 const env = dotenv.config().parsed;
 
-console.log('??????????', env);
 // create object of env variables
-const envKeys = Object.keys(env).reduce((prev, next) => {
-  prev[`process.env.${next}`] = JSON.stringify(env[next]);
-  return prev;
-}, {});
+let envVars;
+if (env) {
+  envVars = Object.keys(env).reduce((prev, next) => {
+    prev[`process.env.${next}`] = JSON.stringify(env[next]);
+    return prev;
+  }, {});
+} else {
+  envVars = process.env;
+}
 
 // let dotenvPlugin;
 // if (process.env.DEPLOY) {
