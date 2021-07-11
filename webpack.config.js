@@ -11,7 +11,7 @@ if (env) {
   }, {});
 } else {
   envVars = Object.keys(process.env).reduce((prev, next) => {
-    prev[`process.env.${next}`] = JSON.stringify(env[next]);
+    prev[`process.env.${next}`] = JSON.stringify(process.env[next]);
     return prev;
   }, {});
 }
