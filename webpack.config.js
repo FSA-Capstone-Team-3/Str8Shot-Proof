@@ -10,6 +10,7 @@ if (env) {
     return prev;
   }, {});
 } else {
+  console.log('>>>>>>>>>>', process.env);
   envVars = process.env;
 }
 
