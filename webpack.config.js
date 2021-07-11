@@ -10,8 +10,10 @@ if (env) {
     return prev;
   }, {});
 } else {
-  console.log('>>>>>>>>>>', process.env);
-  envVars = process.env;
+  envVars = Object.keys(process.env).reduce((prev, next) => {
+    prev[`process.env.${next}`] = JSON.stringify(env[next]);
+    return prev;
+  }, {});
 }
 
 // let dotenvPlugin;
