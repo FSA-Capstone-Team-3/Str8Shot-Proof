@@ -1,10 +1,20 @@
-let dotenvPlugin;
-if (process.env.DEPLOY) {
-  const Dotenv = require('dotenv-webpack');
-  dotenvPlugin = new Dotenv();
-} else {
-  dotenvPlugin = null;
-}
+const webpack = require('webpack');
+const dotenv = require('dotenv');
+const env = dotenv.config().parsed;
+
+// create object of env variables
+const envKeys = Object.keys(env).reduce((prev, next) => {
+  prev[`process.env.${next}`] = JSON.stringify(env[next]);
+  return prev;
+}, {});
+
+// let dotenvPlugin;
+// if (process.env.DEPLOY) {
+//   const Dotenv = require('dotenv-webpack');
+//   dotenvPlugin = new Dotenv();
+// } else {
+//   dotenvPlugin = null;
+// }
 
 module.exports = {
   entry: ['./client/index.js'],
@@ -12,7 +22,7 @@ module.exports = {
     path: __dirname,
     filename: './public/bundle.js',
   },
-  plugins: [dotenvPlugin],
+  plugins: [new webpack.DefinePlugin(envKeys)],
   devtool: 'source-map',
   module: {
     rules: [
