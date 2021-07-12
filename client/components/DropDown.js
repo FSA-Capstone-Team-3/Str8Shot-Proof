@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-export default function DropDown({ connection }) {
+export default function DropDown({ connection, setSharedLines, setStationsOnLine }) {
   // state below
   const [isActive, setActive] = useState("");
 
@@ -13,7 +13,16 @@ export default function DropDown({ connection }) {
     }
   }
 
-  const matchingLines = [];
+  let stationsOnLine = []
+  function getStationsOnLine(line) {
+    connection.stations.forEach((station) => {
+      if(station.lines.includes(line)) {
+        stationsOnLine.push(station)
+      }
+    })
+  }
+
+  let matchingLines = [];
   connection.stations.forEach((station) => {
     // on each station, walk through list of lines that go through that station
     station.lines.forEach((line) => {
@@ -23,6 +32,7 @@ export default function DropDown({ connection }) {
       }
     });
   });
+
 
   return (
     <div className={`dropdown ${isActive}`}>
@@ -47,12 +57,20 @@ export default function DropDown({ connection }) {
         <div className="dropdown-content">
           {matchingLines.map((line) => {
             return (
-              <a href="#" className="dropdown-item">
-              {line}
-            </a>
-            )
+              <a
+                href="#"
+                className="dropdown-item"
+                onClick={(event) => {
+                  activateDropDown(event);
+                  setSharedLines(line);
+                  getStationsOnLine(line)
+                  setStationsOnLine(stationsOnLine)
+                }}
+              >
+                {line}
+              </a>
+            );
           })}
-
         </div>
       </div>
     </div>
