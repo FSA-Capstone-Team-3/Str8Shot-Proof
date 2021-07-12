@@ -52,6 +52,16 @@ form div {
   );
 }
 
+.leaflet-container {
+  margin-left: 4.1em;
+  margin-bottom: 4.5em;
+  height: 800px;
+  width: 1075px;
+}
+
+.display-flex {
+  display: flex;
+
 /* container for the whole thing so that the loader will be in front of everything so you cant interact with the app itself if its rendered */
 #loader-wrapper {
   position: fixed;
@@ -300,4 +310,6 @@ form div {
     -ms-transform: rotate(360deg); /* IE 9 */
     transform: rotate(360deg); /* Firefox 16+, IE 10+, Opera */
   }
+
+
 }

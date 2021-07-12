@@ -1,8 +1,13 @@
-import React from 'react';
-import { useDispatch } from 'react-redux';
-import { postStation, deleteStation } from '../store/stations';
+import React from "react";
+import { useDispatch } from "react-redux";
+import { postStation, deleteStation } from "../store/stations";
 
-function HomeStationButtons({ selectedStation, homeStations }) {
+function HomeStationButtons({
+  selectedStation,
+  homeStations,
+  setSelectedLine,
+  setSelectedStation,
+}) {
   const dispatch = useDispatch();
 
   const homeStationsCheck = (homeStations, selectedStation) => {
@@ -20,18 +25,24 @@ function HomeStationButtons({ selectedStation, homeStations }) {
     <React.Fragment>
       {homeStationsCheck(homeStations, selectedStation) ? (
         <button
+          className="button"
           type="button"
           onClick={() => {
             dispatch(deleteStation(selectedStation.code));
+            setSelectedLine("");
+            setSelectedStation("");
           }}
         >
           Remove Station
         </button>
       ) : (
         <button
+          className="button"
           type="button"
           onClick={() => {
             dispatch(postStation(selectedStation.code));
+            setSelectedLine("");
+            setSelectedStation("");
           }}
         >
           Add Station
