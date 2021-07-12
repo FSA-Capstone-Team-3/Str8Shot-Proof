@@ -14,8 +14,7 @@ import allStops from "../../script/data/subway_stops.geojson";
 import { postStation, deleteStation } from "../store/stations";
 import { trainStyle, lineIcons, lineOrder } from "../utils/trainUtils";
 import ExploreUsers from "./ExploreUsers";
-import { greenIcon } from '../utils/markerIcons';
-
+import { greenIcon } from "../utils/markerIcons";
 
 function Explore() {
   // access dispatch
@@ -42,10 +41,7 @@ function Explore() {
     });
     // store the list of lines in local state
     setMyLines(lines);
-
-
   }, [myStations]); // do this on every change to my stations
-
 
   const renderMyStations = () => {
     if (myStations.length === 0) {
@@ -66,8 +62,7 @@ function Explore() {
   };
 
   return (
-
-    <>
+    <React.Fragment>
       <div className="columns is-mobile">
         <div className="column is-8"></div>
         <div className="column">
@@ -81,18 +76,20 @@ function Explore() {
                   key={line}
                   src={lineIcons[line]}
                   name={line}
-                  alt={line + ' train'}
+                  alt={line + " train"}
                 />
               );
             })}
         </div>
       </div>
+
       <div className="columns is-mobile">
-        <div className="column is-3">
+        <section className="section">
+          <h1 className="title">Who's a Str8Shot Away?</h1>
           <ExploreUsers />
-        </div>
-        <div className="column is-9">
-          <p>Explore stations and nearby activites</p>
+        </section>
+        <section className="section">
+          <h1 className="title">Explore Stations and Nearby Activities</h1>
           <MapContainer
             center={[40.785091, -73.968285]}
             zoom={14}
@@ -114,9 +111,9 @@ function Explore() {
             />
             {renderMyStations()}
           </MapContainer>
-        </div>
+        </section>
       </div>
-    </>
+    </React.Fragment>
   );
 }
 
