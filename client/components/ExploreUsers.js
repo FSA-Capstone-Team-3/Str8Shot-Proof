@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchConnections, createMatch } from "../store/exploreUsers";
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchConnections, createMatch } from '../store/exploreUsers';
 
 export default function ExploreUsers() {
   // react-redux
@@ -26,7 +26,7 @@ export default function ExploreUsers() {
             </div>
 
             {/* Dropdown needs to be updated to be dynamic*/}
-            <div className="dropdown">
+            <div className="dropdown is-hoverable">
               <div className="dropdown-trigger">
                 <button
                   className="button"

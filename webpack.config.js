@@ -18,14 +18,6 @@ if (env) {
   }, {});
 }
 
-// let dotenvPlugin;
-// if (process.env.DEPLOY) {
-//   const Dotenv = require('dotenv-webpack');
-//   dotenvPlugin = new Dotenv();
-// } else {
-//   dotenvPlugin = null;
-// }
-
 module.exports = {
   entry: ['./client/index.js'],
   output: {
