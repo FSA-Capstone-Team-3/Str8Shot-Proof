@@ -1,18 +1,25 @@
 body {
   font-family: Helvetica, Arial, sans-serif;
-}
-
-a {
-  text-decoration: none;
+  background-color: rgba(230, 230, 230, 0.993);
 }
 
 label {
   display: block;
 }
 
-nav a {
+nav a:link {
   display: inline-block;
   margin: 1em;
+  color: white;
+  font-size: 1.5em;
+}
+
+nav a:visited {
+  color: white;
+}
+
+nav a:hover {
+  color: #a7a9ac;
 }
 
 form div {
@@ -56,7 +63,7 @@ form div {
   margin-left: 4.1em;
   margin-bottom: 4.5em;
   height: 800px;
-  width: 1075px;
+  width: 1100px;
 }
 
 .display-flex {
