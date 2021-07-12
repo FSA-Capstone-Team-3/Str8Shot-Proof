@@ -7,27 +7,16 @@ import {
   Popup,
   Polyline,
   GeoJSON,
-<<<<<<< HEAD
 } from 'react-leaflet';
 import stations from '../../script/data/stations.json';
 import allLines from '../../script/data/subway_lines.geojson';
 import allStops from '../../script/data/subway_stops.geojson';
 import { postStation, deleteStation } from '../store/stations';
+import { fetchConnections, createMatch } from '../store/exploreUsers';
+
 import { trainStyle, lineIcons, lineOrder } from '../utils/trainUtils';
 import ExploreUsers from './ExploreUsers';
-import { greenIcon } from '../utils/markerIcons';
-=======
-} from "react-leaflet";
-import stations from "../../script/data/stations.json";
-import allLines from "../../script/data/subway_lines.geojson";
-import allStops from "../../script/data/subway_stops.geojson";
-import { postStation, deleteStation } from "../store/stations";
-import { fetchConnections, createMatch } from "../store/exploreUsers";
-
-import { trainStyle, lineIcons, lineOrder } from "../utils/trainUtils";
-import ExploreUsers from "./ExploreUsers";
-import { greenIcon, orangeIcon } from "../utils/markerIcons";
->>>>>>> f73fc6a62a4840d5b833a2195e1c99e634f5faf4
+import { greenIcon, orangeIcon } from '../utils/markerIcons';
 
 function Explore() {
   // access dispatch
@@ -80,12 +69,8 @@ function Explore() {
     });
   };
 
-<<<<<<< HEAD
-  return (
-    <>
-=======
   const renderConnectionsStations = () => {
-    console.log("stationsOnLine-->", stationsOnLine);
+    console.log('stationsOnLine-->', stationsOnLine);
     return stationsOnLine.map((station) => {
       return (
         <Marker
@@ -102,7 +87,6 @@ function Explore() {
 
   return (
     <React.Fragment>
->>>>>>> f73fc6a62a4840d5b833a2195e1c99e634f5faf4
       <div className="columns is-mobile">
         <div className="column is-8"></div>
         <div className="column">
@@ -116,7 +100,7 @@ function Explore() {
                   key={line}
                   src={lineIcons[line]}
                   name={line}
-                  alt={line + " train"}
+                  alt={line + ' train'}
                 />
               );
             })}
