@@ -18,6 +18,7 @@ import { greenIcon } from "../utils/markerIcons";
 
 function Explore() {
   // access dispatch
+  // o: is this being used???
   const dispatch = useDispatch();
 
   // state below
@@ -31,6 +32,7 @@ function Explore() {
     const lines = [];
     // walk through list of stations
     myStations.forEach((station) => {
+      // o: you can probably use map here?
       // on each station, walk through list of lines that go through that station
       station.lines.forEach((line) => {
         // if the line isn't in our list, add it

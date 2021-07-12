@@ -11,9 +11,11 @@ module.exports = router;
 router.get('/', loggedIn, async (req, res, next) => {
   try {
     const userId = parseInt(req.user.id);
+    // o: check for when not found, also eager loading
     const user = await User.findByPk(userId);
     const stations = await user.getStations();
 
+    // o: can be made into a one liner
     const stationCodes = stations.map((station) => {
       return station.code;
     });
@@ -27,6 +29,7 @@ router.get('/', loggedIn, async (req, res, next) => {
       include: { model: Line },
     });
 
+    // o: maybe do in Sequelize
     const stationsWithSimpleLines = stationsWithLines.map((station) => {
       // for each station, map lines prop to array of line names
       station = station.get({ plain: true });
@@ -44,6 +47,7 @@ router.get('/', loggedIn, async (req, res, next) => {
 router.post('/:stationCode', loggedIn, async (req, res, next) => {
   try {
     const userId = parseInt(req.user.id);
+    // o: check for when not found
     const user = await User.findByPk(userId);
 
     const stationCode = req.params.stationCode;

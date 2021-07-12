@@ -7,9 +7,10 @@ const { loggedIn } = require("./gatekeepingMiddleware");
 module.exports = router;
 
 // GET /api/connections/
-router.get("/", loggedIn, async (req, res, next) => {
+router.get('/', loggedIn, async (req, res, next) => {
   try {
     const userId = parseInt(req.user.id);
+    // o: can do this in one query, also check for if not found
     const loggedInUser = await User.findByPk(userId);
     const userLines = await loggedInUser.getLines();
 
@@ -18,16 +19,18 @@ router.get("/", loggedIn, async (req, res, next) => {
     const connectionsIds = [];
     // Map over lines array to find corresponding users
     for (let i = 0; i < userLines.length; i++) {
+      // o: can use eager loading above for this
       const usersOnLine = await userLines[i].getUsers();
 
-      const filteredUsers = usersOnLine.filter((user) => {
-        // Is the user the logged in user, if so ignore
-        if (user.id !== userId) return true;
-      });
+      // o: can be made into a one liner
+      const filteredUsers = usersOnLine.filter((user) => user.id !== userId);
 
+      // o: can use map here
       for (let j = 0; j < filteredUsers.length; j++) {
         connectionsIds.push(filteredUsers[j].id);
       }
+
+      connectionsIds = filteredUsers.map(user => user.id)
     }
 
     // Filter connectionsArr to remove duplicate user objects

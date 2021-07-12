@@ -36,6 +36,7 @@ const AuthForm = (props) => {
         <div>
           <button type="submit">{displayName}</button>
         </div>
+         {/* o: there is a simplification to this, optional chaining */}
         {error && error.response && <div> {error.response.data} </div>}
       </form>
     </div>
