@@ -61,6 +61,7 @@ function MyStations() {
           First, select a line first. Then, select a station on that line on the
           map below.
         </h2>
+        <br />
         <div id="line-picker">
           {Object.keys(lineIcons).map((lineName, idx) => {
             // const lineName = lineOrder[idx];
@@ -83,8 +84,7 @@ function MyStations() {
           })}
         </div>
         <br />
-        <p className="title is-5">{selectedStation ? "You've selected" : ""}</p>
-        <p className="subtitle is-6 display-flex">
+        <p className="title is-5 display-flex">
           {selectedStation
             ? Object.keys(lineIcons)
                 .filter((line) => selectedStation.lines.includes(line))
@@ -93,7 +93,7 @@ function MyStations() {
                     return (
                       <React.Fragment>
                         <div style={{ marginRight: ".5rem" }}>
-                          {selectedStation.name}
+                          You've selected {selectedStation.name}
                         </div>
                         <img
                           className="line-icon-small"

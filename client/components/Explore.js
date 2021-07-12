@@ -7,6 +7,7 @@ import {
   Popup,
   Polyline,
   GeoJSON,
+<<<<<<< HEAD
 } from 'react-leaflet';
 import stations from '../../script/data/stations.json';
 import allLines from '../../script/data/subway_lines.geojson';
@@ -15,14 +16,28 @@ import { postStation, deleteStation } from '../store/stations';
 import { trainStyle, lineIcons, lineOrder } from '../utils/trainUtils';
 import ExploreUsers from './ExploreUsers';
 import { greenIcon } from '../utils/markerIcons';
+=======
+} from "react-leaflet";
+import stations from "../../script/data/stations.json";
+import allLines from "../../script/data/subway_lines.geojson";
+import allStops from "../../script/data/subway_stops.geojson";
+import { postStation, deleteStation } from "../store/stations";
+import { fetchConnections, createMatch } from "../store/exploreUsers";
+
+import { trainStyle, lineIcons, lineOrder } from "../utils/trainUtils";
+import ExploreUsers from "./ExploreUsers";
+import { greenIcon, orangeIcon } from "../utils/markerIcons";
+>>>>>>> f73fc6a62a4840d5b833a2195e1c99e634f5faf4
 
 function Explore() {
   // access dispatch
   const dispatch = useDispatch();
+  const myConnections = useSelector((state) => state.exploreUsers);
 
   // state below
-
   const [myLines, setMyLines] = useState([]);
+  const [sharedLines, setSharedLines] = useState([]);
+  const [stationsOnLine, setStationsOnLine] = useState([]);
 
   const myStations = useSelector((state) => state.stations);
 
@@ -43,6 +58,10 @@ function Explore() {
     setMyLines(lines);
   }, [myStations]); // do this on every change to my stations
 
+  useEffect(() => {
+    dispatch(fetchConnections());
+  }, []);
+
   const renderMyStations = () => {
     if (myStations.length === 0) {
       return null;
@@ -61,8 +80,29 @@ function Explore() {
     });
   };
 
+<<<<<<< HEAD
   return (
     <>
+=======
+  const renderConnectionsStations = () => {
+    console.log("stationsOnLine-->", stationsOnLine);
+    return stationsOnLine.map((station) => {
+      return (
+        <Marker
+          key={station.code}
+          icon={orangeIcon}
+          position={[station.latitude, station.longitude]}
+          alt={station.name}
+          title={station.name}
+          eventHandlers={{}}
+        ></Marker>
+      );
+    });
+  };
+
+  return (
+    <React.Fragment>
+>>>>>>> f73fc6a62a4840d5b833a2195e1c99e634f5faf4
       <div className="columns is-mobile">
         <div className="column is-8"></div>
         <div className="column">
@@ -76,18 +116,24 @@ function Explore() {
                   key={line}
                   src={lineIcons[line]}
                   name={line}
-                  alt={line + ' train'}
+                  alt={line + " train"}
                 />
               );
             })}
         </div>
       </div>
+
       <div className="columns is-mobile">
-        <div className="column is-3">
-          <ExploreUsers />
-        </div>
-        <div className="column is-9">
-          <p>Explore stations and nearby activites</p>
+        <section className="section">
+          <h1 className="title">Who's a Str8Shot Away?</h1>
+          <ExploreUsers
+            setSharedLines={setSharedLines}
+            setStationsOnLine={setStationsOnLine}
+            myConnections={myConnections}
+          />
+        </section>
+        <section className="section">
+          <h1 className="title">Explore Stations and Nearby Activities</h1>
           <MapContainer
             center={[40.785091, -73.968285]}
             zoom={14}
@@ -100,7 +146,7 @@ function Explore() {
 
             <GeoJSON
               data={allLines}
-              style={(feature) => trainStyle(feature, myLines)}
+              style={(feature) => trainStyle(feature, sharedLines)}
               onEachFeature={(feature, layer) => {
                 // layer.on('click', (event) => {
                 //   setSelectedLine(feature.properties.rt_symbol);
@@ -108,10 +154,11 @@ function Explore() {
               }}
             />
             {renderMyStations()}
+            {renderConnectionsStations()}
           </MapContainer>
-        </div>
+        </section>
       </div>
-    </>
+    </React.Fragment>
   );
 }
 

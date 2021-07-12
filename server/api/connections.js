@@ -1,13 +1,13 @@
-const router = require('express').Router();
-const { Op } = require('sequelize');
+const router = require("express").Router();
+const { Op } = require("sequelize");
 const {
   models: { User, Line, Station },
-} = require('../db');
-const { loggedIn } = require('./gatekeepingMiddleware');
+} = require("../db");
+const { loggedIn } = require("./gatekeepingMiddleware");
 module.exports = router;
 
 // GET /api/connections/
-router.get('/', loggedIn, async (req, res, next) => {
+router.get("/", loggedIn, async (req, res, next) => {
   try {
     const userId = parseInt(req.user.id);
     const loggedInUser = await User.findByPk(userId);
@@ -49,8 +49,8 @@ router.get('/', loggedIn, async (req, res, next) => {
         {
           model: User,
           required: false,
-          as: 'requestor',
-          attributes: ['id'],
+          as: "requestor",
+          attributes: ["id"],
           where: {
             id: userId,
           },
@@ -58,8 +58,8 @@ router.get('/', loggedIn, async (req, res, next) => {
         {
           model: User,
           required: false,
-          as: 'requestee',
-          attributes: ['id'],
+          as: "requestee",
+          attributes: ["id"],
           where: {
             id: userId,
           },
@@ -67,7 +67,20 @@ router.get('/', loggedIn, async (req, res, next) => {
       ],
     });
 
-    res.json(connectionsObjects);
+    const connectionsObjectsSimpleLines = connectionsObjects.map(
+      (connection) => {
+        connection = connection.get({ plain: true });
+        connection.stations = connection.stations.map((station) => {
+          // for each station, map lines prop to array of line names
+          station.lines = station.lines.map((line) => line.name);
+          return station;
+        });
+        return connection;
+      }
+    );
+
+  
+    res.json(connectionsObjectsSimpleLines);
   } catch (err) {
     next(err);
   }
