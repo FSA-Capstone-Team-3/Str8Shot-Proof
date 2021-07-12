@@ -7,6 +7,7 @@ const { loggedIn } = require("./gatekeepingMiddleware");
 module.exports = router;
 
 // GET /api/connections/
+// o: I have questions about this route
 router.get('/', loggedIn, async (req, res, next) => {
   try {
     const userId = parseInt(req.user.id);
