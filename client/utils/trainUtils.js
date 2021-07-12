@@ -1,4 +1,4 @@
-import allStops from '../../script/data/subway_stops.geojson';
+import allStops from "../../script/data/subway_stops.geojson";
 
 export const allStations = allStops.features.map((station) => {
   return {
@@ -6,60 +6,60 @@ export const allStations = allStops.features.map((station) => {
     code: station.properties.stop_id,
     latitude: station.properties.stop_lat,
     longitude: station.properties.stop_lon,
-    lines: station.properties.trains.split(' '),
+    lines: station.properties.trains.split(" "),
   };
 });
 
 export const trainColors = {
-  1: '#ee352e',
-  2: '#ee352e',
-  3: '#ee352e',
-  4: '#00933c',
-  5: '#00933c',
-  6: '#00933c',
-  7: '#b933ad',
-  A: '#0039a6',
-  C: '#0039a6',
-  E: '#0039a6',
-  D: '#ff6319',
-  B: '#ff6319',
-  F: '#ff6319',
-  M: '#ff6319',
-  N: '#fccc0a',
-  Q: '#fccc0a',
-  R: '#fccc0a',
-  W: '#fccc0a',
-  L: '#a7a9ac',
-  S: '#808183',
-  G: '#6cbe45',
-  J: '#996633',
-  Z: '#996633',
+  1: "#ee352e",
+  2: "#ee352e",
+  3: "#ee352e",
+  4: "#00933c",
+  5: "#00933c",
+  6: "#00933c",
+  7: "#b933ad",
+  A: "#0039a6",
+  C: "#0039a6",
+  E: "#0039a6",
+  D: "#ff6319",
+  B: "#ff6319",
+  F: "#ff6319",
+  M: "#ff6319",
+  N: "#fccc0a",
+  Q: "#fccc0a",
+  R: "#fccc0a",
+  W: "#fccc0a",
+  L: "#a7a9ac",
+  S: "#808183",
+  G: "#6cbe45",
+  J: "#996633",
+  Z: "#996633",
 };
 
 // helper array with same indexes as img files, to map line name to line image
 export const lineOrder = [
-  'A',
-  'C',
-  'E',
-  'B',
-  'D',
-  'F',
-  'M',
-  'G',
-  'L',
-  'J',
-  'Z',
-  'N',
-  'Q',
-  'R',
-  'W',
-  '1',
-  '2',
-  '3',
-  '4',
-  '5',
-  '6',
-  '7',
+  "A",
+  "C",
+  "E",
+  "B",
+  "D",
+  "F",
+  "M",
+  "G",
+  "L",
+  "J",
+  "Z",
+  "N",
+  "Q",
+  "R",
+  "W",
+  "1",
+  "2",
+  "3",
+  "4",
+  "5",
+  "6",
+  "7",
 ];
 
 // make array from all files in public/line_icons
@@ -70,7 +70,7 @@ function importAll(res) {
 }
 
 const lineIconsSVG = importAll(
-  require.context('../../public/line_icons', true, /\.svg$/)
+  require.context("../../public/line_icons", true, /\.svg$/)
 );
 
 export const lineIcons = {};
@@ -87,9 +87,9 @@ export const deselectedColor = (rgb) => {
   // https://css-tricks.com/converting-color-spaces-in-javascript/
 
   // get individual color channel values
-  let red = Number('0x' + rgb.slice(1, 3)) / 255;
-  let green = Number('0x' + rgb.slice(3, 5)) / 255;
-  let blue = Number('0x' + rgb.slice(5, 7)) / 255;
+  let red = Number("0x" + rgb.slice(1, 3)) / 255;
+  let green = Number("0x" + rgb.slice(3, 5)) / 255;
+  let blue = Number("0x" + rgb.slice(5, 7)) / 255;
 
   // find greatest and smallest channel values
   let minChannel = Math.min(red, green, blue),
@@ -129,15 +129,15 @@ export const deselectedColor = (rgb) => {
   luminance = +(luminance * 100).toFixed(1);
 
   // return hsl CSS color code
-  return 'hsl(' + hue + ',' + saturation + '%,' + luminance + '%)';
+  return "hsl(" + hue + "," + saturation + "%," + luminance + "%)";
 };
 
 // line styling callback
 export const trainStyle = (feature, highlightLines) => {
   // works with both array of strings and a single string, which might be empty
   // convert it to an array so that we can share logic with multiple selected lines
-  if (typeof highlightLines === 'string') {
-    if (highlightLines !== '') {
+  if (typeof highlightLines === "string") {
+    if (highlightLines !== "") {
       highlightLines = [highlightLines];
     } else {
       highlightLines = [];
@@ -154,7 +154,7 @@ export const trainStyle = (feature, highlightLines) => {
     // this feature includes one of the selected lines, return highlighted color and weight
     if (
       feature.properties.name
-        .split('-')
+        .split("-")
         .some((train) => highlightLines.includes(train))
     ) {
       return {
