@@ -68,23 +68,42 @@ export default function ExploreUsers({
     if (connection.requestor.length === 0) {
       return (
         <button
-          className="button card-footer-item"
+          className="button"
           onClick={() => dispatch(createMatch(connection.id))}
         >
-          Request to Match
+          Request
         </button>
       );
     } else if (
       connection.requestor.length === 1 &&
       connection.requestee.length === 0
     ) {
-      return <span>Match Pending...</span>;
+      return (
+        <div className="tag is-large" id="pending">
+          Pending...
+        </div>
+      );
     } else if (
       connection.requestor.length === 1 &&
       connection.requestee.length === 1
     ) {
-      return <span>Matched!</span>;
+      return (
+        <div className="tag is-large" id="match">
+          Matched!
+        </div>
+      );
     }
+  }
+
+  function renderEmail(connection) {
+    if (connection.requestor.length === 1 && connection.requestee.length === 1)
+      return (
+        <footer class="card-footer">
+          <a href={`mailto: ${connection.email}`} class="card-footer-item">
+            Email {connection.username} at {connection.email}!
+          </a>
+        </footer>
+      );
   }
 
   return (
@@ -96,7 +115,7 @@ export default function ExploreUsers({
               <header className="card-header">
                 <p className="card-header-title">{connection.username}</p>
               </header>
-              <div className="card-content display-flex">
+              <div className="card-content display-flex-users">
                 <div className="select">
                   <select
                     value={selectValues[connection.id]}
@@ -116,10 +135,9 @@ export default function ExploreUsers({
                     })}
                   </select>
                 </div>
-              </div>
-              <footer className="card-footer">
                 {renderMatchButton(connection)}
-              </footer>
+              </div>
+              {renderEmail(connection)}
             </div>
           </div>
         );

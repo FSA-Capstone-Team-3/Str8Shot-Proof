@@ -5,6 +5,7 @@ html {
 body {
   font-family: Helvetica, Arial, sans-serif;
   background-color: rgba(230, 230, 230, 0.993);
+  height: 100%;
 }
 
 label {
@@ -63,6 +64,20 @@ form div {
   );
 }
 
+div#match.tag.is-large {
+  font-size: 1rem;
+  background-color: #00933c;
+  color: white;
+  height: 2.5em;
+}
+
+div#pending.tag.is-large {
+  font-size: 1rem;
+  background-color: #fccc0a;
+  color: white;
+  height: 2.5em;
+}
+
 .indent {
   margin-left: 48px;
 }
@@ -76,6 +91,12 @@ form div {
 
 .display-flex {
   display: flex;
+}
+
+.display-flex-users {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .card {

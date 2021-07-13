@@ -1,13 +1,13 @@
-'use strict';
+"use strict";
 // const stationsJson = require('./data/subway_lines.geojson');
-const fs = require('fs');
+const fs = require("fs");
 const {
   db,
   models: { User, Line, Station },
-} = require('../server/db');
+} = require("../server/db");
 
 const stationsParsed = JSON.parse(
-  fs.readFileSync('script/data/subway_stops.geojson', 'utf8')
+  fs.readFileSync("script/data/subway_stops.geojson", "utf8")
 );
 
 // console.log('sparsed = ', stationsParsed);
@@ -17,42 +17,54 @@ const stationsParsed = JSON.parse(
  */
 async function seed() {
   await db.sync({ force: true }); // clears db and matches models to tables
-  console.log('db synced!');
+  console.log("db synced!");
 
   // Creating Users
   const users = await Promise.all([
-    User.create({ username: 'alex', password: '123' }),
-    User.create({ username: 'brian', password: '123' }),
-    User.create({ username: 'gabriel', password: '123' }),
-    User.create({ username: 'phillip', password: '123' }),
+    User.create({ username: "alex", password: "123", email: "alex@email.com" }),
+    User.create({
+      username: "brian",
+      password: "123",
+      email: "brian@email.com",
+    }),
+    User.create({
+      username: "gabriel",
+      password: "123",
+      email: "gabriel@email.com",
+    }),
+    User.create({
+      username: "phillip",
+      password: "123",
+      email: "phillip@email.com",
+    }),
   ]);
 
   console.log(`seeded ${users.length} users`);
 
   const lines = await Promise.all([
-    Line.create({ name: '1' }),
-    Line.create({ name: '2' }),
-    Line.create({ name: '3' }),
-    Line.create({ name: '4' }),
-    Line.create({ name: '5' }),
-    Line.create({ name: '6' }),
-    Line.create({ name: '7' }),
-    Line.create({ name: 'A' }),
-    Line.create({ name: 'B' }),
-    Line.create({ name: 'C' }),
-    Line.create({ name: 'D' }),
-    Line.create({ name: 'E' }),
-    Line.create({ name: 'F' }),
-    Line.create({ name: 'G' }),
-    Line.create({ name: 'J' }),
-    Line.create({ name: 'L' }),
-    Line.create({ name: 'M' }),
-    Line.create({ name: 'N' }),
-    Line.create({ name: 'Q' }),
-    Line.create({ name: 'R' }),
-    Line.create({ name: 'S' }),
-    Line.create({ name: 'W' }),
-    Line.create({ name: 'Z' }),
+    Line.create({ name: "1" }),
+    Line.create({ name: "2" }),
+    Line.create({ name: "3" }),
+    Line.create({ name: "4" }),
+    Line.create({ name: "5" }),
+    Line.create({ name: "6" }),
+    Line.create({ name: "7" }),
+    Line.create({ name: "A" }),
+    Line.create({ name: "B" }),
+    Line.create({ name: "C" }),
+    Line.create({ name: "D" }),
+    Line.create({ name: "E" }),
+    Line.create({ name: "F" }),
+    Line.create({ name: "G" }),
+    Line.create({ name: "J" }),
+    Line.create({ name: "L" }),
+    Line.create({ name: "M" }),
+    Line.create({ name: "N" }),
+    Line.create({ name: "Q" }),
+    Line.create({ name: "R" }),
+    Line.create({ name: "S" }),
+    Line.create({ name: "W" }),
+    Line.create({ name: "Z" }),
   ]);
   console.log(`seeded ${lines.length} lines`);
 
@@ -68,8 +80,8 @@ async function seed() {
       longitude: stop_lon,
     });
 
-    if (trains.split(' ').length > 1) {
-      trains.split(' ').forEach(async (train) => {
+    if (trains.split(" ").length > 1) {
+      trains.split(" ").forEach(async (train) => {
         const lineToAssign = await Line.findByName(train);
         await newStation.addLine(lineToAssign);
       });
@@ -120,16 +132,16 @@ async function seed() {
  The `seed` function is concerned only with modifying the database.
 */
 async function runSeed() {
-  console.log('seeding...');
+  console.log("seeding...");
   try {
     await seed();
   } catch (err) {
     console.error(err);
     process.exitCode = 1;
   } finally {
-    console.log('closing db connection');
+    console.log("closing db connection");
     await db.close();
-    console.log('db connection closed');
+    console.log("db connection closed");
   }
 }
 
