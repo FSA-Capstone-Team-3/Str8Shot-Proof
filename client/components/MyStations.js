@@ -152,11 +152,6 @@ function MyStations() {
           <GeoJSON
             data={allLines}
             style={(feature) => trainStyle(feature, selectedLine)}
-            onEachFeature={(feature, layer) => {
-              // layer.on('click', (event) => {
-              //   setSelectedLine(feature.properties.rt_symbol);
-              // });
-            }}
           />
 
           {stations.map((station) => {
