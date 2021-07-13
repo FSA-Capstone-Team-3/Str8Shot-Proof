@@ -1,11 +1,10 @@
 html {
-  height: 100%;
 }
 
 body {
   font-family: Helvetica, Arial, sans-serif;
   background-color: rgba(230, 230, 230, 0.993);
-  height: 100%;
+  height: 100vh;
 }
 
 label {
@@ -38,6 +37,13 @@ form div {
   width: 100vw;
   height: 50vh;
 }
+
+/* .leaflet-container {
+  margin-left: 4.1em;
+  margin-bottom: 4.5em;
+  height: 800px;
+  width: 1100px;
+} */
 
 #line-picker {
   display: flex;
@@ -82,13 +88,6 @@ div#pending.tag.is-large {
 
 .indent {
   margin-left: 48px;
-}
-
-.leaflet-container {
-  margin-left: 4.1em;
-  margin-bottom: 4.5em;
-  height: 800px;
-  width: 1100px;
 }
 
 .display-flex {
