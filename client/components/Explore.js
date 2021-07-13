@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
   MapContainer,
   TileLayer,
@@ -7,16 +7,16 @@ import {
   Popup,
   Polyline,
   GeoJSON,
-} from 'react-leaflet';
-import stations from '../../script/data/stations.json';
-import allLines from '../../script/data/subway_lines.geojson';
-import allStops from '../../script/data/subway_stops.geojson';
-import { postStation, deleteStation } from '../store/stations';
-import { fetchConnections, createMatch } from '../store/exploreUsers';
+} from "react-leaflet";
+import stations from "../../script/data/stations.json";
+import allLines from "../../script/data/subway_lines.geojson";
+import allStops from "../../script/data/subway_stops.geojson";
+import { postStation, deleteStation } from "../store/stations";
+import { fetchConnections, createMatch } from "../store/exploreUsers";
 
-import { trainStyle, lineIcons, lineOrder } from '../utils/trainUtils';
-import ExploreUsers from './ExploreUsers';
-import { greenIcon, orangeIcon } from '../utils/markerIcons';
+import { trainStyle, lineIcons, lineOrder } from "../utils/trainUtils";
+import ExploreUsers from "./ExploreUsers";
+import { greenIcon, orangeIcon } from "../utils/markerIcons";
 
 function Explore() {
   // access dispatch
@@ -70,7 +70,7 @@ function Explore() {
   };
 
   const renderConnectionsStations = () => {
-    console.log('stationsOnLine-->', stationsOnLine);
+    console.log("stationsOnLine-->", stationsOnLine);
     return stationsOnLine.map((station) => {
       return (
         <Marker
@@ -88,28 +88,9 @@ function Explore() {
   return (
     <React.Fragment>
       <div className="columns is-mobile">
-        <div className="column is-8"></div>
-        <div className="column">
-          <p>My lines</p>
-          {Object.keys(lineIcons)
-            .filter((line) => myLines.includes(line))
-            .map((line) => {
-              return (
-                <img
-                  className="line-icon-small"
-                  key={line}
-                  src={lineIcons[line]}
-                  name={line}
-                  alt={line + ' train'}
-                />
-              );
-            })}
-        </div>
-      </div>
-
-      <div className="columns is-mobile">
         <section className="section">
           <h1 className="title">Who's a Str8Shot Away?</h1>
+          <h2 className="subtitle">Connect with nearby users</h2>
           <ExploreUsers
             setSharedLines={setSharedLines}
             setStationsOnLine={setStationsOnLine}
@@ -117,7 +98,28 @@ function Explore() {
           />
         </section>
         <section className="section">
-          <h1 className="title">Explore Stations and Nearby Activities</h1>
+          <h1 className="title indent">
+            Explore Stations and Nearby Activities
+          </h1>
+
+          <h2 className="subtitle indent display-flex">
+            <div style={{ marginRight: ".5rem" }}>My Lines</div>
+
+            {Object.keys(lineIcons)
+              .filter((line) => myLines.includes(line))
+              .map((line) => {
+                return (
+                  <img
+                    className="line-icon-small"
+                    key={line}
+                    src={lineIcons[line]}
+                    name={line}
+                    alt={line + " train"}
+                  />
+                );
+              })}
+          </h2>
+
           <MapContainer
             center={[40.785091, -73.968285]}
             zoom={14}
