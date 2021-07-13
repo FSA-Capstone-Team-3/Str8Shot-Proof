@@ -95,16 +95,16 @@ function Explore() {
             setSharedLines={setSharedLines}
             setStationsOnLine={setStationsOnLine}
             myConnections={myConnections}
+            createMatch={createMatch}
           />
         </section>
+
         <section className="section">
           <h1 className="title indent">
             Explore Stations and Nearby Activities
           </h1>
-
           <h2 className="subtitle indent display-flex">
-            <div style={{ marginRight: ".5rem" }}>My Lines</div>
-
+            <div style={{ marginRight: ".5rem" }}>My lines</div>
             {Object.keys(lineIcons)
               .filter((line) => myLines.includes(line))
               .map((line) => {
@@ -119,17 +119,15 @@ function Explore() {
                 );
               })}
           </h2>
-
           <MapContainer
-            center={[40.785091, -73.968285]}
-            zoom={14}
-            scrollWheelZoom={true}
+            center={[40.758845, -73.983382]}
+            zoom={13}
+            scrollWheelZoom={false}
           >
             <TileLayer
               attribution='<a href="https://www.maptiler.com/copyright/">&COPY; MapTiler</a> '
               url={`https://api.maptiler.com/maps/basic/{z}/{x}/{y}.png?key=${process.env.MAPTILER_API_KEY}`}
             />
-
             <GeoJSON
               data={allLines}
               style={(feature) => trainStyle(feature, sharedLines)}
