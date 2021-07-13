@@ -4,9 +4,15 @@ import thunkMiddleware from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import auth from './auth';
 import stations from './stations';
-import exploreUsers from "./exploreUsers"
+import exploreUsers from './exploreUsers';
+import yelpLocations from './yelpLocations';
 
-const reducer = combineReducers({ auth, stations, exploreUsers });
+const reducer = combineReducers({
+  auth,
+  stations,
+  exploreUsers,
+  yelpLocations
+});
 const middleware = composeWithDevTools(
   applyMiddleware(thunkMiddleware, createLogger({ collapsed: true }))
 );
