@@ -98,8 +98,8 @@ export default function ExploreUsers({
   function renderEmail(connection) {
     if (connection.requestor.length === 1 && connection.requestee.length === 1)
       return (
-        <footer class="card-footer">
-          <a href={`mailto: ${connection.email}`} class="card-footer-item">
+        <footer className="card-footer">
+          <a href={`mailto: ${connection.email}`} className="card-footer-item">
             Email {connection.username} at {connection.email}!
           </a>
         </footer>
