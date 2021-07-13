@@ -1,21 +1,21 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   MapContainer,
   TileLayer,
   Marker,
   Popup,
   Polyline,
-  GeoJSON,
-} from "react-leaflet";
-import stations from "../../script/data/stations.json";
-import allLines from "../../script/data/subway_lines.geojson";
-import allStops from "../../script/data/subway_stops.geojson";
-import { postStation, deleteStation } from "../store/stations";
-import { trainStyle, lineIcons, lineOrder } from "../utils/trainUtils";
-import ExploreUsers from "./ExploreUsers";
+  GeoJSON
+} from 'react-leaflet';
+import stations from '../../script/data/stations.json';
+import allLines from '../../script/data/subway_lines.geojson';
+import allStops from '../../script/data/subway_stops.geojson';
+import { postStation, deleteStation } from '../store/stations';
+import { fetchLocations } from '../store/yelpLocations';
+import { trainStyle, lineIcons, lineOrder } from '../utils/trainUtils';
+import ExploreUsers from './ExploreUsers';
 import { greenIcon } from '../utils/markerIcons';
-
 
 function Explore() {
   // access dispatch
@@ -24,6 +24,8 @@ function Explore() {
   // state below
 
   const [myLines, setMyLines] = useState([]);
+
+  console.log('myLines = ', myLines);
 
   const myStations = useSelector((state) => state.stations);
 
@@ -42,16 +44,21 @@ function Explore() {
     });
     // store the list of lines in local state
     setMyLines(lines);
-
-
   }, [myStations]); // do this on every change to my stations
-
 
   const renderMyStations = () => {
     if (myStations.length === 0) {
       return null;
     }
     return myStations.map((station) => {
+      console.log(
+        'station lat, long = ',
+        station.name,
+        ' = ',
+        station.latitude,
+        ' , ',
+        station.longitude
+      );
       return (
         <Marker
           key={station.code}
@@ -59,25 +66,33 @@ function Explore() {
           position={[station.latitude, station.longitude]}
           alt={station.name}
           title={station.name}
-          eventHandlers={{}}
+          eventHandlers={
+            {
+              // click: (event) => {
+              //   const locations = dispatch(
+              //     fetchLocations(station.latitude, station.longitude)
+              //   );
+              //   console.log('locations = ', locations);
+              // }
+            }
+          }
         ></Marker>
       );
     });
   };
 
   return (
-
     <>
-      <div className="columns is-mobile">
-        <div className="column is-8"></div>
-        <div className="column">
+      <div className='columns is-mobile'>
+        <div className='column is-8'></div>
+        <div className='column'>
           <p>My lines</p>
           {Object.keys(lineIcons)
             .filter((line) => myLines.includes(line))
             .map((line) => {
               return (
                 <img
-                  className="line-icon-small"
+                  className='line-icon-small'
                   key={line}
                   src={lineIcons[line]}
                   name={line}
@@ -87,11 +102,11 @@ function Explore() {
             })}
         </div>
       </div>
-      <div className="columns is-mobile">
-        <div className="column is-3">
+      <div className='columns is-mobile'>
+        <div className='column is-3'>
           <ExploreUsers />
         </div>
-        <div className="column is-9">
+        <div className='column is-9'>
           <p>Explore stations and nearby activites</p>
           <MapContainer
             center={[40.785091, -73.968285]}
