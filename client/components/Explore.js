@@ -4,6 +4,7 @@ import {
   MapContainer,
   TileLayer,
   Marker,
+  Tooltip,
   Popup,
   Polyline,
   GeoJSON
@@ -13,6 +14,7 @@ import allLines from '../../script/data/subway_lines.geojson';
 import allStops from '../../script/data/subway_stops.geojson';
 import { postStation, deleteStation } from '../store/stations';
 import { fetchConnections, createMatch } from '../store/exploreUsers';
+
 import { trainStyle, lineIcons, lineOrder } from '../utils/trainUtils';
 import ExploreUsers from './ExploreUsers';
 import { greenIcon, orangeIcon } from '../utils/markerIcons';
@@ -72,17 +74,9 @@ function Explore() {
           position={[station.latitude, station.longitude]}
           alt={station.name}
           title={station.name}
-          eventHandlers={
-            {
-              // click: (event) => {
-              //   const locations = dispatch(
-              //     fetchLocations(station.latitude, station.longitude)
-              //   );
-              //   console.log('locations = ', locations);
-              // }
-            }
-          }
-        ></Marker>
+        >
+          <Tooltip>{station.name}</Tooltip>
+        </Marker>
       );
     });
   };
@@ -97,8 +91,9 @@ function Explore() {
           position={[station.latitude, station.longitude]}
           alt={station.name}
           title={station.name}
-          eventHandlers={{}}
-        ></Marker>
+        >
+          <Tooltip>{station.name}</Tooltip>
+        </Marker>
       );
     });
   };
@@ -106,46 +101,46 @@ function Explore() {
   return (
     <React.Fragment>
       <div className='columns is-mobile'>
-        <div className='column is-8'></div>
-        <div className='column'>
-          <p>My lines</p>
-          {Object.keys(lineIcons)
-            .filter((line) => myLines.includes(line))
-            .map((line) => {
-              return (
-                <img
-                  className='line-icon-small'
-                  key={line}
-                  src={lineIcons[line]}
-                  name={line}
-                  alt={line + ' train'}
-                />
-              );
-            })}
-        </div>
-      </div>
-
-      <div className='columns is-mobile'>
         <section className='section'>
           <h1 className='title'>Who's a Str8Shot Away?</h1>
+          <h2 className='subtitle'>Connect with nearby users</h2>
           <ExploreUsers
             setSharedLines={setSharedLines}
             setStationsOnLine={setStationsOnLine}
             myConnections={myConnections}
+            createMatch={createMatch}
           />
         </section>
+
         <section className='section'>
-          <h1 className='title'>Explore Stations and Nearby Activities</h1>
+          <h1 className='title indent'>
+            Explore Stations and Nearby Activities
+          </h1>
+          <h2 className='subtitle indent display-flex'>
+            <div style={{ marginRight: '.5rem' }}>My lines</div>
+            {Object.keys(lineIcons)
+              .filter((line) => myLines.includes(line))
+              .map((line) => {
+                return (
+                  <img
+                    className='line-icon-small'
+                    key={line}
+                    src={lineIcons[line]}
+                    name={line}
+                    alt={line + ' train'}
+                  />
+                );
+              })}
+          </h2>
           <MapContainer
-            center={[40.785091, -73.968285]}
-            zoom={14}
-            scrollWheelZoom={true}
+            center={[40.758845, -73.983382]}
+            zoom={13}
+            scrollWheelZoom={false}
           >
             <TileLayer
               attribution='<a href="https://www.maptiler.com/copyright/">&COPY; MapTiler</a> '
               url={`https://api.maptiler.com/maps/basic/{z}/{x}/{y}.png?key=${process.env.MAPTILER_API_KEY}`}
             />
-
             <GeoJSON
               data={allLines}
               style={(feature) => trainStyle(feature, sharedLines)}
