@@ -1,7 +1,7 @@
-import React from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
-import { logout } from "../store";
+import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { logout } from '../store';
 
 const NavbarCustom = () => {
   const dispatch = useDispatch();
@@ -14,9 +14,9 @@ const NavbarCustom = () => {
         <div className="navbar-brand">
           <a className="navbar-item">
             <img
-              src="8logo.png"
+              src="Str8shot-logo.png"
               alt="site logo"
-              style={{ maxHeight: "70px" }}
+              style={{ maxHeight: '100px' }}
             />
           </a>
         </div>
