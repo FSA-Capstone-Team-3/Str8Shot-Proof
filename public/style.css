@@ -63,6 +63,10 @@ form div {
   );
 }
 
+.indent {
+  margin-left: 48px;
+}
+
 .leaflet-container {
   margin-left: 4.1em;
   margin-bottom: 4.5em;
@@ -107,7 +111,7 @@ form div {
 
 /*isRedAndGreen circle*/
 #circle1:before {
-  content: '';
+  content: "";
   position: absolute;
   top: 5px;
   left: 5px;
@@ -123,7 +127,7 @@ form div {
 
 /*ACE7 circle*/
 #circle1:after {
-  content: '';
+  content: "";
   position: absolute;
   top: 15px;
   left: 15px;
@@ -155,7 +159,7 @@ form div {
 }
 /*GL circle*/
 #circle2:before {
-  content: '';
+  content: "";
   position: absolute;
   top: 5px;
   left: 5px;

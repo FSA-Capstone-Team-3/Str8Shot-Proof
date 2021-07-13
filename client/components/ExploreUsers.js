@@ -1,10 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 export default function ExploreUsers({
   setSharedLines,
   myConnections,
   setStationsOnLine,
+  createMatch,
 }) {
+  const dispatch = useDispatch();
+
+  // Set state
   const [selectValues, setSelectValues] = useState({});
   const [connectionStations, setConnectionStations] = useState({});
   const [connectionLines, setConnectionLines] = useState({});
@@ -29,7 +34,7 @@ export default function ExploreUsers({
       connectionLines[connection.id] = matchingLines;
       setConnectionLines(connectionLines);
 
-      selectValues[connection.id] = 'Select a line';
+      selectValues[connection.id] = "Select a line";
       setSelectValues(selectValues);
     });
   });
@@ -40,7 +45,7 @@ export default function ExploreUsers({
 
     // first reset all other select boxes
     myConnections.forEach((connection) => {
-      selectValues[connection.id] = 'Select a line';
+      selectValues[connection.id] = "Select a line";
     });
 
     // update the select we actually clicked on to reflect the new value
@@ -51,8 +56,36 @@ export default function ExploreUsers({
     setSharedLines(line);
 
     // pass up this user's stations up to the explore map
-    setStationsOnLine(connectionStations[connectionId]);
+    const stations = connectionStations[connectionId].filter((station) => {
+      if (station.lines.includes(line)) {
+        return true;
+      }
+    });
+    setStationsOnLine(stations);
   };
+
+  function renderMatchButton(connection) {
+    if (connection.requestor.length === 0) {
+      return (
+        <button
+          className="button card-footer-item"
+          onClick={() => dispatch(createMatch(connection.id))}
+        >
+          Request to Match
+        </button>
+      );
+    } else if (
+      connection.requestor.length === 1 &&
+      connection.requestee.length === 0
+    ) {
+      return <span>Match Pending...</span>;
+    } else if (
+      connection.requestor.length === 1 &&
+      connection.requestee.length === 1
+    ) {
+      return <span>Matched!</span>;
+    }
+  }
 
   return (
     <div>
@@ -63,7 +96,7 @@ export default function ExploreUsers({
               <header className="card-header">
                 <p className="card-header-title">{connection.username}</p>
               </header>
-              <div className="card-content">
+              <div className="card-content display-flex">
                 <div className="select">
                   <select
                     value={selectValues[connection.id]}
@@ -71,7 +104,7 @@ export default function ExploreUsers({
                       handleSelectChange(event, connection.id)
                     }
                   >
-                    <option value={'Select a line'}>Select a line</option>
+                    <option value={"Select a line"}>Select a line</option>
                     {connection.stations.map((station) => {
                       return station.lines.map((line) => {
                         return (
@@ -84,6 +117,9 @@ export default function ExploreUsers({
                   </select>
                 </div>
               </div>
+              <footer className="card-footer">
+                {renderMatchButton(connection)}
+              </footer>
             </div>
           </div>
         );
