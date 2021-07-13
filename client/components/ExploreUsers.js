@@ -1,18 +1,58 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchConnections, createMatch } from "../store/exploreUsers";
+import React, { useEffect, useState } from 'react';
 
-export default function ExploreUsers() {
-  // react-redux
-  const dispatch = useDispatch();
-  const myConnections = useSelector((state) => state.exploreUsers);
+export default function ExploreUsers({
+  setSharedLines,
+  myConnections,
+  setStationsOnLine,
+}) {
+  const [selectValues, setSelectValues] = useState({});
+  const [connectionStations, setConnectionStations] = useState({});
+  const [connectionLines, setConnectionLines] = useState({});
 
-  // state below
-
-  // use effect below
   useEffect(() => {
-    dispatch(fetchConnections());
-  }, []);
+    // load up each connection id with that user's stations
+    myConnections.forEach((connection) => {
+      connectionStations[connection.id] = connection.stations;
+      setConnectionStations(connectionStations);
+
+      const matchingLines = [];
+      connection.stations.forEach((station) => {
+        // on each station, walk through list of lines that go through that station
+        station.lines.forEach((line) => {
+          // if the line isn't in our list, add it
+          if (matchingLines.includes(line) === false) {
+            matchingLines.push(line);
+          }
+        });
+      });
+
+      connectionLines[connection.id] = matchingLines;
+      setConnectionLines(connectionLines);
+
+      selectValues[connection.id] = 'Select a line';
+      setSelectValues(selectValues);
+    });
+  });
+
+  const handleSelectChange = (event, connectionId) => {
+    // we've selected a new line
+    const line = event.target.value;
+
+    // first reset all other select boxes
+    myConnections.forEach((connection) => {
+      selectValues[connection.id] = 'Select a line';
+    });
+
+    // update the select we actually clicked on to reflect the new value
+    selectValues[connectionId] = event.target.value;
+    setSelectValues(selectValues);
+
+    // pass up the selected line up to the explore map
+    setSharedLines(line);
+
+    // pass up this user's stations up to the explore map
+    setStationsOnLine(connectionStations[connectionId]);
+  };
 
   return (
     <div>
@@ -23,49 +63,25 @@ export default function ExploreUsers() {
               <header className="card-header">
                 <p className="card-header-title">{connection.username}</p>
               </header>
-            </div>
-
-            {/* Dropdown needs to be updated to be dynamic*/}
-            <div className="dropdown">
-              <div className="dropdown-trigger">
-                <button
-                  className="button"
-                  aria-haspopup="true"
-                  aria-controls={`dropdown-menu${connection.id}`}
-                >
-                  <span>Click me</span>
-                  <span className="icon is-small">
-                    <i className="fas fa-angle-down" aria-hidden="true"></i>
-                  </span>
-                </button>
-              </div>
-              <div
-                className="dropdown-menu"
-                id={`dropdown-menu${connection.id}`}
-                role="menu"
-              >
-                <div className="dropdown-content">
-                  <a href="#" className="dropdown-item">
-                    Overview
-                  </a>
-                  <a href="#" className="dropdown-item">
-                    Modifiers
-                  </a>
-                  <a href="#" className="dropdown-item">
-                    Grid
-                  </a>
-                  <a href="#" className="dropdown-item">
-                    Form
-                  </a>
-                  <a href="#" className="dropdown-item">
-                    Elements
-                  </a>
-                  <a href="#" className="dropdown-item">
-                    Components
-                  </a>
-                  <a href="#" className="dropdown-item">
-                    Layout
-                  </a>
+              <div className="card-content">
+                <div className="select">
+                  <select
+                    value={selectValues[connection.id]}
+                    onChange={(event) =>
+                      handleSelectChange(event, connection.id)
+                    }
+                  >
+                    <option value={'Select a line'}>Select a line</option>
+                    {connection.stations.map((station) => {
+                      return station.lines.map((line) => {
+                        return (
+                          <option key={line} value={line}>
+                            {line} train
+                          </option>
+                        );
+                      });
+                    })}
+                  </select>
                 </div>
               </div>
             </div>
