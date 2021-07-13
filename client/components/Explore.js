@@ -4,6 +4,7 @@ import {
   MapContainer,
   TileLayer,
   Marker,
+  Tooltip,
   Popup,
   Polyline,
   GeoJSON,
@@ -63,8 +64,9 @@ function Explore() {
           position={[station.latitude, station.longitude]}
           alt={station.name}
           title={station.name}
-          eventHandlers={{}}
-        ></Marker>
+        >
+          <Tooltip>{station.name}</Tooltip>
+        </Marker>
       );
     });
   };
@@ -79,8 +81,9 @@ function Explore() {
           position={[station.latitude, station.longitude]}
           alt={station.name}
           title={station.name}
-          eventHandlers={{}}
-        ></Marker>
+        >
+          <Tooltip>{station.name}</Tooltip>
+        </Marker>
       );
     });
   };
