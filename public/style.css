@@ -1,5 +1,4 @@
 html {
-  /* height: 100%; */
 }
 
 body {
@@ -38,6 +37,13 @@ form div {
   width: 100vw;
   height: 50vh;
 }
+
+/* .leaflet-container {
+  margin-left: 4.1em;
+  margin-bottom: 4.5em;
+  height: 800px;
+  width: 1100px;
+} */
 
 #line-picker {
   display: flex;
@@ -83,13 +89,6 @@ div#pending.tag.is-large {
 .indent {
   margin-left: 48px;
 }
-
-/* .leaflet-container {
-  margin-left: 4.1em;
-  margin-bottom: 4.5em;
-  height: 800px;
-  width: 1100px;
-} */
 
 .display-flex {
   display: flex;
