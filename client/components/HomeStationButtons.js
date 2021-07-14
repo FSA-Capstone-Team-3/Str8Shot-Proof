@@ -1,6 +1,6 @@
-import React from "react";
-import { useDispatch } from "react-redux";
-import { postStation, deleteStation } from "../store/stations";
+import React from 'react';
+import { useDispatch } from 'react-redux';
+import { postStation, deleteStation } from '../store/stations';
 
 function HomeStationButtons({
   selectedStation,
@@ -29,8 +29,8 @@ function HomeStationButtons({
           type="button"
           onClick={() => {
             dispatch(deleteStation(selectedStation.code));
-            setSelectedLine("");
-            setSelectedStation("");
+            setSelectedLine('');
+            setSelectedStation('');
           }}
         >
           Remove Station
@@ -41,9 +41,10 @@ function HomeStationButtons({
           type="button"
           onClick={() => {
             dispatch(postStation(selectedStation.code));
-            setSelectedLine("");
-            setSelectedStation("");
+            setSelectedLine('');
+            setSelectedStation('');
           }}
+          style={{ marginBottom: '50px' }}
         >
           Add Station
         </button>
