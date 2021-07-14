@@ -32,6 +32,7 @@ function HomeStationButtons({
             setSelectedLine("");
             setSelectedStation("");
           }}
+          id="addremove"
         >
           Remove Station
         </button>
@@ -44,6 +45,7 @@ function HomeStationButtons({
             setSelectedLine("");
             setSelectedStation("");
           }}
+          id="addremove"
         >
           Add Station
         </button>

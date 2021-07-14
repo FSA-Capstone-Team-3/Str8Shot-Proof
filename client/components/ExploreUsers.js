@@ -80,7 +80,7 @@ export default function ExploreUsers({
     ) {
       return (
         <div className="tag is-large" id="pending">
-          Pending...
+          Pending
         </div>
       );
     } else if (
@@ -89,7 +89,7 @@ export default function ExploreUsers({
     ) {
       return (
         <div className="tag is-large" id="match">
-          Matched!
+          Matched
         </div>
       );
     }
