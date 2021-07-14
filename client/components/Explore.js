@@ -23,6 +23,7 @@ import {
 } from '../utils/trainUtils';
 import ExploreUsers from './ExploreUsers';
 import { blueIcon, greenIcon, orangeIcon } from '../utils/markerIcons';
+import { smallerBlueIcon } from '../utils/smallerMarkerIcons';
 import Loader from './Loader';
 function Explore() {
   // access dispatch
@@ -135,7 +136,7 @@ function Explore() {
     ) {
       return orangeIcon;
     } else {
-      return blueIcon;
+      return smallerBlueIcon;
     }
   };
 
