@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 export default function ExploreUsers({
   setSharedLines,
@@ -34,10 +34,10 @@ export default function ExploreUsers({
       connectionLines[connection.id] = matchingLines;
       setConnectionLines(connectionLines);
 
-      selectValues[connection.id] = "Select a line";
+      selectValues[connection.id] = 'Select a line';
       setSelectValues(selectValues);
     });
-  });
+  }, []);
 
   const handleSelectChange = (event, connectionId) => {
     // we've selected a new line
@@ -45,7 +45,7 @@ export default function ExploreUsers({
 
     // first reset all other select boxes
     myConnections.forEach((connection) => {
-      selectValues[connection.id] = "Select a line";
+      selectValues[connection.id] = 'Select a line';
     });
 
     // update the select we actually clicked on to reflect the new value
@@ -118,12 +118,13 @@ export default function ExploreUsers({
               <div className="card-content display-flex-users">
                 <div className="select">
                   <select
+                    key={connection.id}
                     value={selectValues[connection.id]}
                     onChange={(event) =>
                       handleSelectChange(event, connection.id)
                     }
                   >
-                    <option value={"Select a line"}>Select a line</option>
+                    <option>Select a line</option>
                     {connection.stations.map((station) => {
                       return station.lines.map((line) => {
                         return (
