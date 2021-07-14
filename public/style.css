@@ -61,6 +61,11 @@ form div {
   );
 }
 
+.screenshot {
+  border: 1px solid black;
+  border-radius: 16px;
+}
+
 div#match.tag.is-large {
   font-size: 1rem;
   background-color: #00933c;
