@@ -67,6 +67,17 @@ const LoginModal = () => {
                     <button className="button" type="submit">
                       {type === 'login' ? 'Log in' : 'Sign up'}
                     </button>
+                    {type === 'login' ? (
+                      <button
+                        className="button"
+                        onClick={(event) => {
+                          event.preventDefault;
+                          setType('signup');
+                        }}
+                      >
+                        Sign up!
+                      </button>
+                    ) : null}
                   </div>
 
                   {error && error.response && (
