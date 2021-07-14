@@ -7,7 +7,7 @@ import {
   Popup,
   Polyline,
   GeoJSON,
-  Tooltip
+  Tooltip,
 } from 'react-leaflet';
 import stations from '../../script/data/stations.json';
 import allLines from '../../script/data/subway_lines.geojson';
@@ -19,7 +19,7 @@ import {
   trainStyle,
   lineIcons,
   lineOrder,
-  allStations
+  allStations,
 } from '../utils/trainUtils';
 import Loader from './Loader';
 import { blueIcon, greenIcon } from '../utils/markerIcons';
@@ -65,13 +65,13 @@ function MyStations() {
   } else {
     return (
       <div>
-        <section className='section'>
-          <h1 className='title'>Choose Your Lines and Stations</h1>
-          <h2 className='subtitle'>
+        <section className="section">
+          <h1 className="title">Choose Your Lines and Stations</h1>
+          <h2 className="subtitle">
             First, select a line first. Then, select a station on that line on
             the map below.
           </h2>
-          <div id='line-picker'>
+          <div id="line-picker">
             {Object.keys(lineIcons).map((lineName, idx) => {
               // const lineName = lineOrder[idx];
               return (
@@ -93,7 +93,7 @@ function MyStations() {
             })}
           </div>
           <br />
-          <p className='title is-5 display-flex'>
+          <p className="title is-5 display-flex">
             {selectedStation
               ? Object.keys(lineIcons)
                   .filter((line) => selectedStation.lines.includes(line))
@@ -105,7 +105,7 @@ function MyStations() {
                             You've selected {selectedStation.name}
                           </div>
                           <img
-                            className='line-icon-small'
+                            className="line-icon-small"
                             key={line}
                             src={lineIcons[line]}
                             name={line}
@@ -116,7 +116,7 @@ function MyStations() {
                     } else {
                       return (
                         <img
-                          className='line-icon-small'
+                          className="line-icon-small"
                           key={line}
                           src={lineIcons[line]}
                           name={line}
@@ -157,7 +157,7 @@ function MyStations() {
                 <Marker
                   icon={
                     homeStations.filter(
-                      (homeStation) => homeStation.name === station.name
+                      (homeStation) => homeStation.code === station.code
                     ).length
                       ? greenIcon
                       : blueIcon
@@ -171,7 +171,7 @@ function MyStations() {
                       // are we clicking on an already selected station? If so, deselect it
                       if (
                         selectedStation != '' &&
-                        selectedStation.name === station.name
+                        selectedStation.code === station.code
                       ) {
                         setSelectedStation('');
                       } else {
@@ -179,7 +179,7 @@ function MyStations() {
                         setSelectedStation(station);
                         console.log(selectedStation);
                       }
-                    }
+                    },
                   }}
                 >
                   <Tooltip>{station.name}</Tooltip>
@@ -200,14 +200,14 @@ function MyStations() {
                       // are we clicking on an already selected station? If so, deselect it
                       if (
                         selectedStation != '' &&
-                        selectedStation.name === station.name
+                        selectedStation.code === station.code
                       ) {
                         setSelectedStation('');
                       } else {
                         // else make new selected station
                         setSelectedStation(station);
                       }
-                    }
+                    },
                   }}
                 >
                   <Tooltip>{station.name}</Tooltip>
