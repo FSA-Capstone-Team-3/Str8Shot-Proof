@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   MapContainer,
   TileLayer,
@@ -8,30 +8,30 @@ import {
   Polyline,
   GeoJSON,
   Tooltip,
-} from "react-leaflet";
-import stations from "../../script/data/stations.json";
-import allLines from "../../script/data/subway_lines.geojson";
-import allStops from "../../script/data/subway_stops.geojson";
+} from 'react-leaflet';
+import stations from '../../script/data/stations.json';
+import allLines from '../../script/data/subway_lines.geojson';
+import allStops from '../../script/data/subway_stops.geojson';
 
-import { fetchStations } from "../store/stations";
-import HomeStationButtons from "./HomeStationButtons";
+import { fetchStations } from '../store/stations';
+import HomeStationButtons from './HomeStationButtons';
 import {
   trainStyle,
   lineIcons,
   lineOrder,
   allStations,
-} from "../utils/trainUtils";
+} from '../utils/trainUtils';
 
-import { blueIcon, greenIcon } from "../utils/markerIcons";
+import { blueIcon, greenIcon } from '../utils/markerIcons';
 
 function MyStations() {
   // access dispatch
   const dispatch = useDispatch();
 
   // state below
-  const [selectedStation, setSelectedStation] = useState("");
+  const [selectedStation, setSelectedStation] = useState('');
 
-  const [selectedLine, setSelectedLine] = useState("");
+  const [selectedLine, setSelectedLine] = useState('');
 
   const [stations, setStations] = useState([]);
 
@@ -70,11 +70,11 @@ function MyStations() {
                 key={lineName}
                 src={lineIcons[lineName]}
                 name={lineName}
-                alt={lineName + " train"}
-                className={selectedLine === lineName ? "highlight" : ""}
+                alt={lineName + ' train'}
+                className={selectedLine === lineName ? 'highlight' : ''}
                 onClick={(event) => {
                   if (selectedLine === lineName) {
-                    setSelectedLine("");
+                    setSelectedLine('');
                   } else {
                     setSelectedLine(lineName);
                   }
@@ -92,7 +92,7 @@ function MyStations() {
                   if (idx === 0) {
                     return (
                       <React.Fragment>
-                        <div style={{ marginRight: ".5rem" }}>
+                        <div style={{ marginRight: '.5rem' }}>
                           You've selected {selectedStation.name}
                         </div>
                         <img
@@ -100,7 +100,7 @@ function MyStations() {
                           key={line}
                           src={lineIcons[line]}
                           name={line}
-                          alt={line + " train"}
+                          alt={line + ' train'}
                         />
                       </React.Fragment>
                     );
@@ -111,15 +111,15 @@ function MyStations() {
                         key={line}
                         src={lineIcons[line]}
                         name={line}
-                        alt={line + " train"}
+                        alt={line + ' train'}
                       />
                     );
                   }
                 })
-            : ""}
+            : ''}
         </p>
 
-        {selectedStation !== "" ? (
+        {selectedStation !== '' ? (
           <HomeStationButtons
             selectedStation={selectedStation}
             homeStations={homeStations}
@@ -154,7 +154,7 @@ function MyStations() {
             <Marker
               icon={
                 homeStations.filter(
-                  (homeStation) => homeStation.name === station.name
+                  (homeStation) => homeStation.code === station.code
                 ).length
                   ? greenIcon
                   : blueIcon
@@ -167,10 +167,10 @@ function MyStations() {
                 click: (event) => {
                   // are we clicking on an already selected station? If so, deselect it
                   if (
-                    selectedStation != "" &&
-                    selectedStation.name === station.name
+                    selectedStation != '' &&
+                    selectedStation.code === station.code
                   ) {
-                    setSelectedStation("");
+                    setSelectedStation('');
                   } else {
                     // else make new selected station
                     setSelectedStation(station);
@@ -196,10 +196,10 @@ function MyStations() {
                 click: (event) => {
                   // are we clicking on an already selected station? If so, deselect it
                   if (
-                    selectedStation != "" &&
-                    selectedStation.name === station.name
+                    selectedStation != '' &&
+                    selectedStation.code === station.code
                   ) {
-                    setSelectedStation("");
+                    setSelectedStation('');
                   } else {
                     // else make new selected station
                     setSelectedStation(station);
