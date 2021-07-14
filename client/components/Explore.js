@@ -182,10 +182,12 @@ function Explore() {
   } else {
     return (
       <React.Fragment>
-        <div className='columns is-mobile'>
-          <section className='section'>
-            <h1 className='title'>A Str8Shot Away</h1>
-            <h2 className='subtitle'>Connect with nearby users</h2>
+
+        <div className="columns is-mobile">
+          <section className="section">
+            <h1 className="title">A Str8Shot Away</h1>
+            <h2 className="subtitle">Connect with users on your lines</h2>
+
             <ExploreUsers
               setSharedLines={setSharedLines}
               setStationsOnLine={setStationsOnLine}
@@ -193,11 +195,10 @@ function Explore() {
               createMatch={createMatch}
             />
           </section>
-
-          <section className='section'>
-            <h1 className='title'>Explore Nearby Users</h1>
-            <h2 className='subtitle display-flex'>
-              <div style={{ marginRight: '.5rem' }}>My lines:</div>
+          <section className="section">
+            <h1 className="title">Explore Users</h1>
+            <h2 className="subtitle display-flex">
+              <div style={{ marginRight: ".5rem" }}>My lines:</div>
               {Object.keys(lineIcons)
                 .filter((line) => myLines.includes(line))
                 .map((line) => {

@@ -65,13 +65,9 @@ function MyStations() {
   } else {
     return (
       <div>
-        <section className='section'>
-          <h1 className='title'>Choose Your Lines and Stations</h1>
-          <h2 className='subtitle'>
-            First, select a line first. Then, select a station on that line on
-            the map below.
-          </h2>
-          <div id='line-picker'>
+        <section className="section">
+          <h1 className="title">Select Your Stations</h1>
+          <div id="line-picker">
             {Object.keys(lineIcons).map((lineName, idx) => {
               // const lineName = lineOrder[idx];
               return (
