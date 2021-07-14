@@ -71,7 +71,6 @@ function MyStations() {
             First, select a line first. Then, select a station on that line on
             the map below.
           </h2>
-          <br />
           <div id='line-picker'>
             {Object.keys(lineIcons).map((lineName, idx) => {
               // const lineName = lineOrder[idx];
@@ -137,86 +136,86 @@ function MyStations() {
               setSelectedStation={setSelectedStation}
             />
           ) : null}
+
+          <MapContainer
+            center={[40.758845, -73.983382]}
+            zoom={13}
+            scrollWheelZoom={false}
+          >
+            <TileLayer
+              attribution='<a href="https://www.maptiler.com/copyright/">&COPY; MapTiler</a> '
+              url={`https://api.maptiler.com/maps/basic/{z}/{x}/{y}.png?key=${process.env.MAPTILER_API_KEY}`}
+            />
+
+            <GeoJSON
+              data={allLines}
+              style={(feature) => trainStyle(feature, selectedLine)}
+            />
+
+            {stations.map((station) => {
+              return (
+                <Marker
+                  icon={
+                    homeStations.filter(
+                      (homeStation) => homeStation.name === station.name
+                    ).length
+                      ? greenIcon
+                      : blueIcon
+                  }
+                  key={station.code}
+                  position={[station.latitude, station.longitude]}
+                  alt={station.name}
+                  title={station.name}
+                  eventHandlers={{
+                    click: (event) => {
+                      // are we clicking on an already selected station? If so, deselect it
+                      if (
+                        selectedStation != '' &&
+                        selectedStation.name === station.name
+                      ) {
+                        setSelectedStation('');
+                      } else {
+                        // else make new selected station
+                        setSelectedStation(station);
+                        console.log(selectedStation);
+                      }
+                    }
+                  }}
+                >
+                  <Tooltip>{station.name}</Tooltip>
+                </Marker>
+              );
+            })}
+
+            {homeStations.map((station) => {
+              return (
+                <Marker
+                  icon={greenIcon}
+                  key={station.code}
+                  position={[station.latitude, station.longitude]}
+                  alt={station.name}
+                  title={station.name}
+                  eventHandlers={{
+                    click: (event) => {
+                      // are we clicking on an already selected station? If so, deselect it
+                      if (
+                        selectedStation != '' &&
+                        selectedStation.name === station.name
+                      ) {
+                        setSelectedStation('');
+                      } else {
+                        // else make new selected station
+                        setSelectedStation(station);
+                      }
+                    }
+                  }}
+                >
+                  <Tooltip>{station.name}</Tooltip>
+                </Marker>
+              );
+            })}
+          </MapContainer>
         </section>
-
-        <MapContainer
-          center={[40.758845, -73.983382]}
-          zoom={13}
-          scrollWheelZoom={false}
-        >
-          <TileLayer
-            attribution='<a href="https://www.maptiler.com/copyright/">&COPY; MapTiler</a> '
-            url={`https://api.maptiler.com/maps/basic/{z}/{x}/{y}.png?key=${process.env.MAPTILER_API_KEY}`}
-          />
-
-          <GeoJSON
-            data={allLines}
-            style={(feature) => trainStyle(feature, selectedLine)}
-          />
-
-          {stations.map((station) => {
-            return (
-              <Marker
-                icon={
-                  homeStations.filter(
-                    (homeStation) => homeStation.name === station.name
-                  ).length
-                    ? greenIcon
-                    : blueIcon
-                }
-                key={station.code}
-                position={[station.latitude, station.longitude]}
-                alt={station.name}
-                title={station.name}
-                eventHandlers={{
-                  click: (event) => {
-                    // are we clicking on an already selected station? If so, deselect it
-                    if (
-                      selectedStation != '' &&
-                      selectedStation.name === station.name
-                    ) {
-                      setSelectedStation('');
-                    } else {
-                      // else make new selected station
-                      setSelectedStation(station);
-                      console.log(selectedStation);
-                    }
-                  }
-                }}
-              >
-                <Tooltip>{station.name}</Tooltip>
-              </Marker>
-            );
-          })}
-
-          {homeStations.map((station) => {
-            return (
-              <Marker
-                icon={greenIcon}
-                key={station.code}
-                position={[station.latitude, station.longitude]}
-                alt={station.name}
-                title={station.name}
-                eventHandlers={{
-                  click: (event) => {
-                    // are we clicking on an already selected station? If so, deselect it
-                    if (
-                      selectedStation != '' &&
-                      selectedStation.name === station.name
-                    ) {
-                      setSelectedStation('');
-                    } else {
-                      // else make new selected station
-                      setSelectedStation(station);
-                    }
-                  }
-                }}
-              >
-                <Tooltip>{station.name}</Tooltip>
-              </Marker>
-            );
-          })}
-        </MapContainer>
       </div>
     );
   }

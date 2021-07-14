@@ -11,31 +11,31 @@ const NavbarCustom = () => {
 
   return (
     <>
-      <nav className="navbar has-shadow is-dark">
-        <div className="navbar-brand">
-          <a className="navbar-item">
+      <nav className='navbar has-shadow is-dark'>
+        <div className='navbar-brand'>
+          <a className='navbar-item'>
             <img
-              src="Str8shot-logo.png"
-              alt="site logo"
+              src='Str8shot-logo.svg'
+              alt='site logo'
               style={{ maxHeight: '100px' }}
             />
           </a>
         </div>
 
-        <div className="navbar-item">
-          <Link to="/mystations">My Stations</Link>
+        <div className='navbar-item'>
+          <Link to='/mystations'>My Stations</Link>
         </div>
 
-        <div className="navbar-item">
-          <Link to="/explore">Explore</Link>
+        <div className='navbar-item'>
+          <Link to='/explore'>Explore</Link>
         </div>
 
-        <div className="navbar-menu" id="nav-links">
-          <div className="navbar-end">
+        <div className='navbar-menu' id='nav-links'>
+          <div className='navbar-end'>
             {isLoggedIn ? (
-              <div className="navbar-item">
+              <div className='navbar-item'>
                 {/* The navbar will show these links after you log in */}
-                <a href="#" onClick={() => dispatch(logout())}>
+                <a href='#' onClick={() => dispatch(logout())}>
                   Logout
                 </a>
               </div>
