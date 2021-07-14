@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
   MapContainer,
   TileLayer,
@@ -7,24 +7,24 @@ import {
   Tooltip,
   Popup,
   Polyline,
-  GeoJSON
-} from 'react-leaflet';
-import stations from '../../script/data/stations.json';
-import allLines from '../../script/data/subway_lines.geojson';
-import allStops from '../../script/data/subway_stops.geojson';
-import { postStation, deleteStation } from '../store/stations';
-import { fetchConnections, createMatch } from '../store/exploreUsers';
+  GeoJSON,
+} from "react-leaflet";
+import stations from "../../script/data/stations.json";
+import allLines from "../../script/data/subway_lines.geojson";
+import allStops from "../../script/data/subway_stops.geojson";
+import { postStation, deleteStation } from "../store/stations";
+import { fetchConnections, createMatch } from "../store/exploreUsers";
 
 import {
   allStations,
   trainStyle,
   lineIcons,
-  lineOrder
-} from '../utils/trainUtils';
-import ExploreUsers from './ExploreUsers';
-import { blueIcon, greenIcon, orangeIcon } from '../utils/markerIcons';
-import { smallerBlueIcon } from '../utils/smallerMarkerIcons';
-import Loader from './Loader';
+  lineOrder,
+} from "../utils/trainUtils";
+import ExploreUsers from "./ExploreUsers";
+import { blueIcon, greenIcon, orangeIcon } from "../utils/markerIcons";
+import { smallerBlueIcon } from "../utils/smallerMarkerIcons";
+import Loader from "./Loader";
 function Explore() {
   // access dispatch
   const dispatch = useDispatch();
@@ -145,10 +145,10 @@ function Explore() {
   } else {
     return (
       <React.Fragment>
-        <div className='columns is-mobile'>
-          <section className='section'>
-            <h1 className='title'>Who's a Str8Shot Away?</h1>
-            <h2 className='subtitle'>Connect with nearby users</h2>
+        <div className="columns is-mobile">
+          <section className="section">
+            <h1 className="title">A Str8Shot Away</h1>
+            <h2 className="subtitle">Connect with nearby users</h2>
             <ExploreUsers
               setSharedLines={setSharedLines}
               setStationsOnLine={setStationsOnLine}
@@ -157,20 +157,20 @@ function Explore() {
             />
           </section>
 
-          <section className='section'>
-            <h1 className='title'>Explore Nearby Users</h1>
-            <h2 className='subtitle display-flex'>
-              <div style={{ marginRight: '.5rem' }}>My lines:</div>
+          <section className="section">
+            <h1 className="title">Explore Nearby Users</h1>
+            <h2 className="subtitle display-flex">
+              <div style={{ marginRight: ".5rem" }}>My lines:</div>
               {Object.keys(lineIcons)
                 .filter((line) => myLines.includes(line))
                 .map((line) => {
                   return (
                     <img
-                      className='line-icon-small'
+                      className="line-icon-small"
                       key={line}
                       src={lineIcons[line]}
                       name={line}
-                      alt={line + ' train'}
+                      alt={line + " train"}
                     />
                   );
                 })}
