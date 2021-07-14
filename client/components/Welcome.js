@@ -27,8 +27,8 @@ const Welcome = () => {
         <div className="columns ">
           <div className="column is-4">
             <div className="card">
-              <header class="card-header">
-                <p class="card-header-title">Tip 1</p>
+              <header className="card-header">
+                <p className="card-header-title">Tip 1</p>
               </header>
               <div className="card-content">
                 <div className="content">
@@ -50,8 +50,8 @@ const Welcome = () => {
 
           <div className="column is-4">
             <div className="card">
-              <header class="card-header">
-                <p class="card-header-title">Tip 2</p>
+              <header className="card-header">
+                <p className="card-header-title">Tip 2</p>
               </header>
               <div className="card-content">
                 <div className="content">
@@ -75,8 +75,8 @@ const Welcome = () => {
 
           <div className="column is-4">
             <div className="card">
-              <header class="card-header">
-                <p class="card-header-title">Tip 3</p>
+              <header className="card-header">
+                <p className="card-header-title">Tip 3</p>
               </header>
               <div className="card-content">
                 <div className="content">
@@ -102,8 +102,8 @@ const Welcome = () => {
         <div className="columns ">
           <div className="column is-4">
             <div className="card">
-              <header class="card-header">
-                <p class="card-header-title">Tip 4</p>
+              <header className="card-header">
+                <p className="card-header-title">Tip 4</p>
               </header>
               <div className="card-content">
                 <div className="content">
@@ -128,8 +128,8 @@ const Welcome = () => {
 
           <div className="column is-4">
             <div className="card">
-              <header class="card-header">
-                <p class="card-header-title">Tip 5</p>
+              <header className="card-header">
+                <p className="card-header-title">Tip 5</p>
               </header>
               <div className="card-content">
                 <div className="content">
@@ -152,8 +152,8 @@ const Welcome = () => {
 
           <div className="column is-4">
             <div className="card">
-              <header class="card-header">
-                <p class="card-header-title">Tip 6</p>
+              <header className="card-header">
+                <p className="card-header-title">Tip 6</p>
               </header>
               <div className="card-content">
                 <div className="content">
@@ -183,22 +183,3 @@ const Welcome = () => {
 
 export default Welcome;
 
-{
-  /* <div className="columns ">
-          <div className="column is-1"></div>
-
-          <div className="column is-3">
-            <article className="message is-dark">
-              <div className="message-body">
-                On the My Stations page, select a line near you
-              </div>
-            </article>
-          </div>
-          <img
-            className="screenshot column is-5"
-            src="screenshot-standin.png"
-            width={"300"}
-            heigh={"auto"}
-          />
-        </div> */
-}
