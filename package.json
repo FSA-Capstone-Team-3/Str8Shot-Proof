@@ -24,6 +24,7 @@
     "bcrypt": "^5.0.0",
     "bulma": "^0.9.3",
     "compression": "^1.7.3",
+    "cors": "^2.8.5",
     "dotenv": "^8.6.0",
     "dotenv-webpack": "^7.0.3",
     "express": "^4.16.4",
@@ -36,7 +37,9 @@
     "react-dom": "^17.0.1",
     "react-leaflet": "^3.2.0",
     "react-timeout": "^2.0.1",
-    "sequelize": "^6.3.5"
+    "request": "^2.88.2",
+    "sequelize": "^6.3.5",
+    "yelp-fusion": "^3.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.10",

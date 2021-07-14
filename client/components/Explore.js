@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   MapContainer,
   TileLayer,
@@ -7,36 +7,37 @@ import {
   Tooltip,
   Popup,
   Polyline,
-  GeoJSON,
-} from "react-leaflet";
-import stations from "../../script/data/stations.json";
-import allLines from "../../script/data/subway_lines.geojson";
-import allStops from "../../script/data/subway_stops.geojson";
-import { postStation, deleteStation } from "../store/stations";
-import { fetchConnections, createMatch } from "../store/exploreUsers";
-
+  GeoJSON
+} from 'react-leaflet';
+import stations from '../../script/data/stations.json';
+import allLines from '../../script/data/subway_lines.geojson';
+import allStops from '../../script/data/subway_stops.geojson';
+import { postStation, deleteStation } from '../store/stations';
+import { fetchConnections, createMatch } from '../store/exploreUsers';
 import {
   allStations,
   trainStyle,
   lineIcons,
-  lineOrder,
-} from "../utils/trainUtils";
-import ExploreUsers from "./ExploreUsers";
-import { blueIcon, greenIcon, orangeIcon } from "../utils/markerIcons";
-import { smallerBlueIcon } from "../utils/smallerMarkerIcons";
-import Loader from "./Loader";
+  lineOrder
+} from '../utils/trainUtils';
+import { fetchLocations } from '../store/yelpLocations';
+import ExploreUsers from './ExploreUsers';
+import { blueIcon, greenIcon, orangeIcon } from '../utils/markerIcons';
+import { smallerBlueIcon, smallerRedIcon } from '../utils/smallerMarkerIcons';
+import Loader from './Loader';
 function Explore() {
   // access dispatch
   const dispatch = useDispatch();
   const myConnections = useSelector((state) => state.exploreUsers);
-
+  const activities = useSelector((state) => state.yelpLocations);
+  const myStations = useSelector((state) => state.stations);
   // state below
   const [isLoaded, setIsLoaded] = useState(false);
   const [myLines, setMyLines] = useState([]);
   const [sharedLines, setSharedLines] = useState([]);
   const [stationsOnLine, setStationsOnLine] = useState([]);
   const [stations, setStations] = useState([]);
-  const myStations = useSelector((state) => state.stations);
+  const [clickedCoordinates, setClickedCoordinates] = useState([]);
 
   useEffect(() => {
     setStations(
@@ -117,8 +118,44 @@ function Explore() {
           position={[station.latitude, station.longitude]}
           alt={station.name}
           title={station.name}
+          eventHandlers={{
+            click: (e) => {
+              dispatch(fetchLocations(station.latitude, station.longitude));
+              setClickedCoordinates([station.latitude, station.longitude]);
+            }
+          }}
         >
           <Tooltip>{station.name}</Tooltip>
+        </Marker>
+      );
+    });
+  };
+
+  const renderNearbyActivities = () => {
+    const filteredActivities = activities.filter((activity) => {
+      const xDistance = Math.abs(
+        activity.coordinates.latitude - clickedCoordinates[0]
+      );
+      const yDistance = Math.abs(
+        activity.coordinates.longitude - clickedCoordinates[1]
+      );
+      return xDistance <= 0.01 && yDistance <= 0.01;
+    });
+    return filteredActivities.map((activity) => {
+      return (
+        <Marker
+          icon={smallerRedIcon}
+          key={activity.id}
+          position={[
+            activity.coordinates.latitude,
+            activity.coordinates.longitude
+          ]}
+        >
+          <Popup>
+            <p>name: {activity.name} </p>
+            <p>lat: {activity.coordinates.latitude} </p>
+            <p>long: {activity.coordinates.longitude} </p>
+          </Popup>
         </Marker>
       );
     });
@@ -145,10 +182,10 @@ function Explore() {
   } else {
     return (
       <React.Fragment>
-        <div className="columns is-mobile">
-          <section className="section">
-            <h1 className="title">A Str8Shot Away</h1>
-            <h2 className="subtitle">Connect with nearby users</h2>
+        <div className='columns is-mobile'>
+          <section className='section'>
+            <h1 className='title'>A Str8Shot Away</h1>
+            <h2 className='subtitle'>Connect with nearby users</h2>
             <ExploreUsers
               setSharedLines={setSharedLines}
               setStationsOnLine={setStationsOnLine}
@@ -157,20 +194,20 @@ function Explore() {
             />
           </section>
 
-          <section className="section">
-            <h1 className="title">Explore Nearby Users</h1>
-            <h2 className="subtitle display-flex">
-              <div style={{ marginRight: ".5rem" }}>My lines:</div>
+          <section className='section'>
+            <h1 className='title'>Explore Nearby Users</h1>
+            <h2 className='subtitle display-flex'>
+              <div style={{ marginRight: '.5rem' }}>My lines:</div>
               {Object.keys(lineIcons)
                 .filter((line) => myLines.includes(line))
                 .map((line) => {
                   return (
                     <img
-                      className="line-icon-small"
+                      className='line-icon-small'
                       key={line}
                       src={lineIcons[line]}
                       name={line}
-                      alt={line + " train"}
+                      alt={line + ' train'}
                     />
                   );
                 })}
@@ -191,6 +228,7 @@ function Explore() {
               {renderMyStations()}
               {renderConnectionsStations()}
               {renderRemainingStations()}
+              {renderNearbyActivities()}
             </MapContainer>
           </section>
         </div>

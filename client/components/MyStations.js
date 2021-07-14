@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   MapContainer,
   TileLayer,
@@ -7,22 +7,22 @@ import {
   Popup,
   Polyline,
   GeoJSON,
-  Tooltip,
-} from "react-leaflet";
-import stations from "../../script/data/stations.json";
-import allLines from "../../script/data/subway_lines.geojson";
-import allStops from "../../script/data/subway_stops.geojson";
-import { fetchStations } from "../store/stations";
-import HomeStationButtons from "./HomeStationButtons";
+  Tooltip
+} from 'react-leaflet';
+import stations from '../../script/data/stations.json';
+import allLines from '../../script/data/subway_lines.geojson';
+import allStops from '../../script/data/subway_stops.geojson';
+import { fetchStations } from '../store/stations';
+import HomeStationButtons from './HomeStationButtons';
 import {
   trainStyle,
   lineIcons,
   lineOrder,
-  allStations,
-} from "../utils/trainUtils";
-import Loader from "./Loader";
-import { blueIcon, greenIcon } from "../utils/markerIcons";
-import { smallerBlueIcon } from "../utils/smallerMarkerIcons";
+  allStations
+} from '../utils/trainUtils';
+import Loader from './Loader';
+import { blueIcon, greenIcon } from '../utils/markerIcons';
+import { smallerBlueIcon } from '../utils/smallerMarkerIcons';
 
 function MyStations() {
   // access dispatch
@@ -30,9 +30,9 @@ function MyStations() {
 
   // state below
   const [isLoaded, setIsLoaded] = useState(false);
-  const [selectedStation, setSelectedStation] = useState("");
+  const [selectedStation, setSelectedStation] = useState('');
 
-  const [selectedLine, setSelectedLine] = useState("");
+  const [selectedLine, setSelectedLine] = useState('');
 
   const [stations, setStations] = useState([]);
 
@@ -65,13 +65,13 @@ function MyStations() {
   } else {
     return (
       <div>
-        <section className="section">
-          <h1 className="title">Choose Your Lines and Stations</h1>
-          <h2 className="subtitle">
+        <section className='section'>
+          <h1 className='title'>Choose Your Lines and Stations</h1>
+          <h2 className='subtitle'>
             First, select a line first. Then, select a station on that line on
             the map below.
           </h2>
-          <div id="line-picker">
+          <div id='line-picker'>
             {Object.keys(lineIcons).map((lineName, idx) => {
               // const lineName = lineOrder[idx];
               return (
@@ -79,11 +79,11 @@ function MyStations() {
                   key={lineName}
                   src={lineIcons[lineName]}
                   name={lineName}
-                  alt={lineName + " train"}
-                  className={selectedLine === lineName ? "highlight" : ""}
+                  alt={lineName + ' train'}
+                  className={selectedLine === lineName ? 'highlight' : ''}
                   onClick={(event) => {
                     if (selectedLine === lineName) {
-                      setSelectedLine("");
+                      setSelectedLine('');
                     } else {
                       setSelectedLine(lineName);
                     }
@@ -93,7 +93,7 @@ function MyStations() {
             })}
           </div>
           <br />
-          <p className="title is-5 display-flex">
+          <div className='title is-5 display-flex'>
             {selectedStation
               ? Object.keys(lineIcons)
                   .filter((line) => selectedStation.lines.includes(line))
@@ -101,34 +101,34 @@ function MyStations() {
                     if (idx === 0) {
                       return (
                         <React.Fragment>
-                          <div style={{ marginRight: ".5rem" }}>
+                          <div style={{ marginRight: '.5rem' }}>
                             You've selected {selectedStation.name}
                           </div>
                           <img
-                            className="line-icon-small"
+                            className='line-icon-small'
                             key={line}
                             src={lineIcons[line]}
                             name={line}
-                            alt={line + " train"}
+                            alt={line + ' train'}
                           />
                         </React.Fragment>
                       );
                     } else {
                       return (
                         <img
-                          className="line-icon-small"
+                          className='line-icon-small'
                           key={line}
                           src={lineIcons[line]}
                           name={line}
-                          alt={line + " train"}
+                          alt={line + ' train'}
                         />
                       );
                     }
                   })
-              : ""}
-          </p>
+              : ''}
+          </div>
 
-          {selectedStation !== "" ? (
+          {selectedStation !== '' ? (
             <HomeStationButtons
               selectedStation={selectedStation}
               homeStations={homeStations}
@@ -170,16 +170,16 @@ function MyStations() {
                     click: (event) => {
                       // are we clicking on an already selected station? If so, deselect it
                       if (
-                        selectedStation != "" &&
+                        selectedStation != '' &&
                         selectedStation.code === station.code
                       ) {
-                        setSelectedStation("");
+                        setSelectedStation('');
                       } else {
                         // else make new selected station
                         setSelectedStation(station);
                         console.log(selectedStation);
                       }
-                    },
+                    }
                   }}
                 >
                   <Tooltip>{station.name}</Tooltip>
@@ -199,15 +199,15 @@ function MyStations() {
                     click: (event) => {
                       // are we clicking on an already selected station? If so, deselect it
                       if (
-                        selectedStation != "" &&
+                        selectedStation != '' &&
                         selectedStation.code === station.code
                       ) {
-                        setSelectedStation("");
+                        setSelectedStation('');
                       } else {
                         // else make new selected station
                         setSelectedStation(station);
                       }
-                    },
+                    }
                   }}
                 >
                   <Tooltip>{station.name}</Tooltip>
