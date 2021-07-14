@@ -2,6 +2,7 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { logout } from '../store';
+import LoginModal from './LoginModal';
 
 const NavbarCustom = () => {
   const dispatch = useDispatch();
@@ -39,11 +40,7 @@ const NavbarCustom = () => {
                 </a>
               </div>
             ) : (
-              <div className="navbar-item">
-                {/* The navbar will show these links before you log in */}
-                <Link to="/login">Login</Link>
-                <Link to="/signup">Sign Up</Link>
-              </div>
+              <div className="navbar-item">{<LoginModal />}</div>
             )}
           </div>
         </div>

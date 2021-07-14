@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { withRouter, Route, Switch, Redirect } from 'react-router-dom';
-import AuthForm from './components/AuthForm';
+import LoginModal from './components/LoginModal';
 import Home from './components/Home';
 import Welcome from './components/Welcome';
 import MyStations from './components/MyStations';
@@ -26,25 +26,25 @@ const Routes = () => {
     <div>
       {isLoggedIn ? (
         <Switch>
-          <Route path='/mystations'>
+          <Route path="/mystations">
             <MyStations />
           </Route>
-          <Route path='/explore'>
+          <Route path="/explore">
             <Explore />
           </Route>
-          <Redirect to='/mystations' />
+          <Redirect to="/mystations" />
         </Switch>
       ) : (
         <>
           <Switch>
-            <Route path='/' exact>
-              <AuthForm name='login' displayName='Login' />
+            <Route path="/" exact>
+              <LoginModal name="login" displayName="Login" />
             </Route>
-            <Route path='/login'>
-              <AuthForm name='login' displayName='Login' />
+            <Route path="/login">
+              <LoginModal name="login" displayName="Login" />
             </Route>
-            <Route path='/signup'>
-              <AuthForm name='signup' displayName='Sign Up' />
+            <Route path="/signup">
+              <LoginModal name="signup" displayName="Sign Up" />
             </Route>
           </Switch>
           <Welcome />
