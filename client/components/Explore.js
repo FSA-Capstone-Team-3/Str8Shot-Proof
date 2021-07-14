@@ -148,7 +148,7 @@ function Explore() {
         <div className="columns is-mobile">
           <section className="section">
             <h1 className="title">A Str8Shot Away</h1>
-            <h2 className="subtitle">Connect with nearby users</h2>
+            <h2 className="subtitle">Connect with users on your lines</h2>
             <ExploreUsers
               setSharedLines={setSharedLines}
               setStationsOnLine={setStationsOnLine}
@@ -158,7 +158,7 @@ function Explore() {
           </section>
 
           <section className="section">
-            <h1 className="title">Explore Nearby Users</h1>
+            <h1 className="title">Explore Users</h1>
             <h2 className="subtitle display-flex">
               <div style={{ marginRight: ".5rem" }}>My lines:</div>
               {Object.keys(lineIcons)

@@ -1,13 +1,13 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { withRouter, Route, Switch, Redirect } from 'react-router-dom';
-import LoginModal from './components/LoginModal';
-import Home from './components/Home';
-import Welcome from './components/Welcome';
-import MyStations from './components/MyStations';
-import Explore from './components/Explore';
-import { me } from './store';
-import { fetchStations } from './store/stations';
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { withRouter, Route, Switch, Redirect } from "react-router-dom";
+import LoginModal from "./components/LoginModal";
+import Home from "./components/Home";
+import Welcome from "./components/Welcome";
+import MyStations from "./components/MyStations";
+import Explore from "./components/Explore";
+import { me } from "./store";
+import { fetchStations } from "./store/stations";
 
 /**
  * COMPONENT
@@ -36,17 +36,6 @@ const Routes = () => {
         </Switch>
       ) : (
         <>
-          <Switch>
-            <Route path="/" exact>
-              <LoginModal name="login" displayName="Login" />
-            </Route>
-            <Route path="/login">
-              <LoginModal name="login" displayName="Login" />
-            </Route>
-            <Route path="/signup">
-              <LoginModal name="signup" displayName="Sign Up" />
-            </Route>
-          </Switch>
           <Welcome />
         </>
       )}
