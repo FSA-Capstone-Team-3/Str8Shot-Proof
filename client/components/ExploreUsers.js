@@ -52,8 +52,12 @@ export default function ExploreUsers({
     selectValues[connectionId] = event.target.value;
     setSelectValues(selectValues);
 
-    // pass up the selected line up to the explore map
-    setSharedLines(line);
+    if (line === 'Select a line') {
+      // pass up the selected line up to the explore map
+      setSharedLines([]);
+    } else {
+      setSharedLines(line);
+    }
 
     // pass up this user's stations up to the explore map
     const stations = connectionStations[connectionId].filter((station) => {
