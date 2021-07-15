@@ -63,9 +63,6 @@ function Explore() {
     });
     // store the list of lines in local state
     setMyLines(lines);
-    setTimeout(() => {
-      setIsLoaded(true);
-    }, 3000);
   }, [myStations]); // do this on every change to my stations
 
   useEffect(() => {
