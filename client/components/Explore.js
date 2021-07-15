@@ -153,6 +153,7 @@ function Explore() {
         >
           <Popup>
             <p>name: {activity.name} </p>
+            <p>address: {activity.location.address1}</p>
             <p>
               categories:{' '}
               {activity.categories
