@@ -202,7 +202,7 @@ function Explore() {
             />
           </section>
           <section className="section">
-            <h1 className="title">Explore Users</h1>
+            <h1 className="title">Explore Users &amp; Nearby Activities</h1>
             <h2 className="subtitle display-flex">
               <div style={{ marginRight: '.5rem' }}>My lines:</div>
               {Object.keys(lineIcons)

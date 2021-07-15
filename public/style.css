@@ -109,6 +109,10 @@ div#pending.tag.is-large {
   margin-bottom: 2em;
 }
 
+#welcometext {
+  font-size: 1.5em;
+}
+
 /* container for the whole thing so that the loader will be in front of everything so you cant interact with the app itself if its rendered */
 #loader-wrapper {
   position: fixed;
