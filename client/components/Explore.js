@@ -7,7 +7,7 @@ import {
   Tooltip,
   Popup,
   Polyline,
-  GeoJSON
+  GeoJSON,
 } from 'react-leaflet';
 import stations from '../../script/data/stations.json';
 import allLines from '../../script/data/subway_lines.geojson';
@@ -18,7 +18,7 @@ import {
   allStations,
   trainStyle,
   lineIcons,
-  lineOrder
+  lineOrder,
 } from '../utils/trainUtils';
 import { fetchLocations } from '../store/yelpLocations';
 import ExploreUsers from './ExploreUsers';
@@ -122,7 +122,7 @@ function Explore() {
             click: (e) => {
               dispatch(fetchLocations(station.latitude, station.longitude));
               setClickedCoordinates([station.latitude, station.longitude]);
-            }
+            },
           }}
         >
           <Tooltip>{station.name}</Tooltip>
@@ -148,13 +148,20 @@ function Explore() {
           key={activity.id}
           position={[
             activity.coordinates.latitude,
-            activity.coordinates.longitude
+            activity.coordinates.longitude,
           ]}
         >
           <Popup>
             <p>name: {activity.name} </p>
-            <p>lat: {activity.coordinates.latitude} </p>
-            <p>long: {activity.coordinates.longitude} </p>
+            <p>address: {activity.location.address1}</p>
+            <p>
+              categories:{' '}
+              {activity.categories
+                .map((category) => {
+                  return category.title;
+                })
+                .join(', ')}
+            </p>
           </Popup>
         </Marker>
       );
@@ -182,7 +189,6 @@ function Explore() {
   } else {
     return (
       <React.Fragment>
-
         <div className="columns is-mobile">
           <section className="section">
             <h1 className="title">A Str8Shot Away</h1>
@@ -198,13 +204,13 @@ function Explore() {
           <section className="section">
             <h1 className="title">Explore Users</h1>
             <h2 className="subtitle display-flex">
-              <div style={{ marginRight: ".5rem" }}>My lines:</div>
+              <div style={{ marginRight: '.5rem' }}>My lines:</div>
               {Object.keys(lineIcons)
                 .filter((line) => myLines.includes(line))
                 .map((line) => {
                   return (
                     <img
-                      className='line-icon-small'
+                      className="line-icon-small"
                       key={line}
                       src={lineIcons[line]}
                       name={line}
