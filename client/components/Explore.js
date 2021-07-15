@@ -45,9 +45,7 @@ function Explore() {
         return station.lines.includes(sharedLines);
       })
     );
-    setTimeout(() => {
-      setIsLoaded(true);
-    }, 3000);
+    setClickedCoordinates([]);
   }, [sharedLines]);
 
   useEffect(() => {
@@ -132,40 +130,42 @@ function Explore() {
   };
 
   const renderNearbyActivities = () => {
-    const filteredActivities = activities.filter((activity) => {
-      const xDistance = Math.abs(
-        activity.coordinates.latitude - clickedCoordinates[0]
-      );
-      const yDistance = Math.abs(
-        activity.coordinates.longitude - clickedCoordinates[1]
-      );
-      return xDistance <= 0.01 && yDistance <= 0.01;
-    });
-    return filteredActivities.map((activity) => {
-      return (
-        <Marker
-          icon={smallerRedIcon}
-          key={activity.id}
-          position={[
-            activity.coordinates.latitude,
-            activity.coordinates.longitude,
-          ]}
-        >
-          <Popup>
-            <p>name: {activity.name} </p>
-            <p>address: {activity.location.address1}</p>
-            <p>
-              categories:{' '}
-              {activity.categories
-                .map((category) => {
-                  return category.title;
-                })
-                .join(', ')}
-            </p>
-          </Popup>
-        </Marker>
-      );
-    });
+    if (clickedCoordinates[0]) {
+      const filteredActivities = activities.filter((activity) => {
+        const xDistance = Math.abs(
+          activity.coordinates.latitude - clickedCoordinates[0]
+        );
+        const yDistance = Math.abs(
+          activity.coordinates.longitude - clickedCoordinates[1]
+        );
+        return xDistance <= 0.01 && yDistance <= 0.01;
+      });
+      return filteredActivities.map((activity) => {
+        return (
+          <Marker
+            icon={smallerRedIcon}
+            key={activity.id}
+            position={[
+              activity.coordinates.latitude,
+              activity.coordinates.longitude,
+            ]}
+          >
+            <Popup>
+              <p>name: {activity.name} </p>
+              <p>address: {activity.location.address1}</p>
+              <p>
+                categories:{' '}
+                {activity.categories
+                  .map((category) => {
+                    return category.title;
+                  })
+                  .join(', ')}
+              </p>
+            </Popup>
+          </Marker>
+        );
+      });
+    }
   };
 
   const iconColor = (station) => {
