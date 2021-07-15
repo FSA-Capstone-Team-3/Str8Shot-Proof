@@ -39,11 +39,6 @@ const LoginModal = () => {
         <div className="modal-background" onClick={toggleModal}></div>
         <div className="modal-content">
           <div className="card">
-            <header className="card-header">
-              <p className="card-header-title">
-                {type === 'login' ? 'Log in' : 'Sign up'}
-              </p>
-            </header>
             <div className="card-content">
               <div className="columns">
                 <form onSubmit={handleSubmit} name={type} className="column">
@@ -63,7 +58,7 @@ const LoginModal = () => {
                       <input className="input" name="email" type="text" />
                     </>
                   ) : null}
-                  <div className="field is-grouped">
+                  <div className="field is-grouped" id="flex-buttons">
                     <button className="button" type="submit">
                       {type === 'login' ? 'Log in' : 'Sign up'}
                     </button>
@@ -75,7 +70,7 @@ const LoginModal = () => {
                           setType('signup');
                         }}
                       >
-                        Sign up!
+                        Sign up
                       </button>
                     ) : null}
                   </div>
