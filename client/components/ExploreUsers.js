@@ -113,6 +113,7 @@ export default function ExploreUsers({
   return (
     <div>
       {myConnections.map((connection) => {
+        let uniqueLines = [];
         return (
           <div key={connection.id}>
             <div className="card">
@@ -131,11 +132,14 @@ export default function ExploreUsers({
                     <option>Select a line</option>
                     {connection.stations.map((station) => {
                       return station.lines.map((line) => {
-                        return (
-                          <option key={line} value={line}>
-                            {line} train
-                          </option>
-                        );
+                        if (!uniqueLines.includes(line)) {
+                          uniqueLines.push(line);
+                          return (
+                            <option key={line} value={line}>
+                              {line} train
+                            </option>
+                          );
+                        }
                       });
                     })}
                   </select>

@@ -89,18 +89,33 @@ function Explore() {
   };
 
   const renderConnectionsStations = () => {
+    const myStationsArr = myStations.map((station) => station.code);
     return stationsOnLine.map((station) => {
-      return (
-        <Marker
-          key={station.code}
-          icon={orangeIcon}
-          position={[station.latitude, station.longitude]}
-          alt={station.name}
-          title={station.name}
-        >
-          <Tooltip>{station.name}</Tooltip>
-        </Marker>
-      );
+      if (myStationsArr.includes(station.code)) {
+        return (
+          <Marker
+            key={station.code}
+            icon={orangeIcon}
+            position={[station.latitude - 0.001, station.longitude + 0.001]}
+            alt={station.name}
+            title={station.name}
+          >
+            <Tooltip>{station.name}</Tooltip>
+          </Marker>
+        );
+      } else {
+        return (
+          <Marker
+            key={station.code}
+            icon={orangeIcon}
+            position={[station.latitude, station.longitude]}
+            alt={station.name}
+            title={station.name}
+          >
+            <Tooltip>{station.name}</Tooltip>
+          </Marker>
+        );
+      }
     });
   };
 
